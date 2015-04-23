@@ -1,0 +1,42 @@
+[user]
+  me = maxbeizer
+  email = max.beizer@gmail.com
+[github]
+	user = maxbeizer
+[diff]
+  tool = vimdiff
+[core]
+  whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+  editor = vim
+[alias]
+  stb = status -sb
+  cim = commit -m
+  co = checkout
+  cob = checkout -b
+  ap = add -p
+  w = whatchanged
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  amend = commit --amend -C HEAD
+  undo = reset --soft HEAD^
+  mg = merge --no-ff --log
+  mgff = merge --ff-only
+  au = add --update
+  sth = stash
+  stp = stash pop
+  br = branch
+  unstage = reset HEAD
+  oops = commit --amend -m
+  cp = cherry-pick
+  sync = "!f() { echo Syncing with master && git checkout master && git pull && git checkout - && git rebase master; }; f"
+  up = !sh -c 'git pull --rebase --prune && git log --pretty=format:\"%Cred%ae %Creset- %C(yellow)%s %Creset(%ar)\" HEAD@{1}..'
+
+  ; Get a summary of yesterday commits. Useful for Scrum standup.
+  standup  = "!git log --since yesterday --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  ; Get a summary of today's commits. Useful for timesheets
+  today  = "!git log --since='6am' --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  ; Delete all local branches that have been merged into master
+  cleanup = !sh -c 'git branch --merged | grep -v "master$" | grep -v "^*" | xargs git branch -d'
+[help]
+  autocorrect = 1
+[rerere]
+	enabled = true

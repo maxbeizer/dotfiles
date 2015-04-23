@@ -1,0 +1,83 @@
+# https://github.com/thoughtbot/laptop
+
+git_clone_or_pull() {
+  local REPOSRC=$1
+  local LOCALREPO=$2
+  local LOCALREPO_VC_DIR=$LOCALREPO/.git
+  if [[ ! -d "$LOCALREPO_VC_DIR" ]]; then
+    git clone --recursive $REPOSRC $LOCALREPO
+  else
+    pushd $LOCALREPO
+    git pull $REPOSRC && git submodule update --init --recursive
+    popd
+  fi
+}
+
+brew_cask_expand_alias() {
+  brew cask info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
+}
+
+brew_cask_is_installed() {
+  local NAME=$(brew_cask_expand_alias "$1")
+  brew cask list -1 | grep -Fqx "$NAME"
+}
+
+brew_cask_install() {
+  if ! brew_cask_is_installed "$1"; then
+    brew cask install "$@"
+  fi
+}
+
+brew_cask_install_or_upgrade() {
+  if brew_cask_is_installed "$1"; then
+    echo "$1 is already installed, brew cask upgrade is not yet implemented"
+  else
+    brew cask install "$@"
+  fi
+}
+
+fancy_echo "Cloning ThoughtBot's Dotfiles"
+git_clone_or_pull https://github.com/thoughtbot/dotfiles.git ~/dotfiles
+env RCRC=$HOME/dotfiles/rcrc rcup
+
+fancy_echo "Cloning Dertfiles"
+git_clone_or_pull https://github.com/maxbeizer/dertfiles.git ~/.dotfiles
+
+# brews
+fancy_echo "Installing brews"
+brew_install_or_upgrade 'elixir'
+brew_install_or_upgrade 'rbenv-gemset'
+brew_install_or_upgrade 'wget'
+
+# casks
+fancy_echo "Installing casks"
+brew tap caskroom/cask
+brew_install_or_upgrade 'brew-cask'
+
+brew_cask_install 'alfred'
+brew_cask_install 'dropbox'
+brew_cask_install 'evernote'
+brew_cask_install 'firefox'
+brew_cask_install 'flux'
+brew_cask_install 'google-chrome'
+brew_cask_install 'imageoptim'
+brew_cask_install 'macvim'
+brew_cask_install 'iterm2'
+brew_cask_install 'pg-commander'
+brew_cask_install 'screenhero'
+brew_cask_install 'sequel-pro'
+brew_cask_install 'skitch'
+brew_cask_install 'slack'
+brew_cask_install 'skype'
+brew_cask_install 'spotify'
+brew_cask_install 'the-unarchiver'
+brew_cask_install 'virtualbox'
+
+fancy_echo "Changing Key Repeat Speeds"
+defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
+defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
+
+
+# End of Script Warnings/Messages
+fancy_echo "You may have to log back in to see the key repeat speed changes"
+fancy_echo "Don't forget to map CAPS to Ctrl:  Keyboard > Modifier Keys"
