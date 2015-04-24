@@ -43,6 +43,10 @@ fancy_echo "Cloning Dertfiles"
 git_clone_or_pull https://github.com/maxbeizer/dertfiles.git ~/dotfiles-local
 env RCRC=$HOME/dotfiles/rcrc rcup
 
+fancy_echo "Getting Rehash Plugin"
+mkdir -p ~/.rbenv/plugins
+git_clone_or_pull https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+
 # brews
 fancy_echo "Installing brews"
 brew_install_or_upgrade 'elixir'
@@ -79,5 +83,4 @@ defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
 
 
 # End of Script Warnings/Messages
-fancy_echo "You may have to log back in to see the key repeat speed changes"
 fancy_echo "Don't forget to map CAPS to Ctrl:  Keyboard > Modifier Keys"

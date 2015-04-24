@@ -1,0 +1,8 @@
+"Don't wrap lines
+set nowrap
+
+"Case insensitve search
+set ignorecase
+
+"Case sensitve search if search has capital letter
+set smartcase

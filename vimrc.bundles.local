@@ -1,1 +1,3 @@
 Plugin 'godlygeek/tabular'
+Plugin 'tpope/vim-ragtag'
+Plugin 'Townk/vim-autoclose'
