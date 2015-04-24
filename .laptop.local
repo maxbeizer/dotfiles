@@ -38,10 +38,10 @@ brew_cask_install_or_upgrade() {
 
 fancy_echo "Cloning ThoughtBot's Dotfiles"
 git_clone_or_pull https://github.com/thoughtbot/dotfiles.git ~/dotfiles
-env RCRC=$HOME/dotfiles/rcrc rcup
 
 fancy_echo "Cloning Dertfiles"
-git_clone_or_pull https://github.com/maxbeizer/dertfiles.git ~/.dotfiles
+git_clone_or_pull https://github.com/maxbeizer/dertfiles.git ~/dotfiles-local
+env RCRC=$HOME/dotfiles/rcrc rcup
 
 # brews
 fancy_echo "Installing brews"
