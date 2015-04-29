@@ -3,6 +3,8 @@ autoload colors; colors;
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 setopt prompt_subst
 
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
 # prompt
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}["
@@ -40,3 +42,6 @@ rbenv_version_status() {
 PROMPT='
 %{$fg[yellow]%}$(rbenv_version_status)%{$reset_color%} %{$fg[cyan]%}%~% 
 $(git_custom_status) %(?.%{$fg[green]%}.%{$fg[red]%})%B$%b'
+
+export PATH="$HOME/.bin:$PATH"
+eval "$(rbenv init - zsh --no-rehash)"
