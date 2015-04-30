@@ -4,6 +4,7 @@ export LSCOLORS="Gxfxcxdxbxegedabagacad"
 setopt prompt_subst
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+setopt NO_BEEP
 
 # prompt
 
