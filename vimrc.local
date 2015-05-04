@@ -35,6 +35,29 @@ endif
 match ErrorMsg '\s\+$'
 nnoremap <Leader>rtw :%s/\s\+$//e<CR>
 
+" Return to last edit position when opening files
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+
+" Remember info about open buffers on close
+set viminfo^=%
+
+" ================ status line ========================
+set laststatus=2
+set statusline=\ "
+set statusline+=%1*%-25.80f%*\ " file name minimum 25, maximum 80 (right justified)
+set statusline+=%2*
+set statusline+=%h "help file flag
+set statusline+=%r "read only flag
+set statusline+=%m "modified flag
+set statusline+=%w "preview flag
+set statusline+=%*\ "
+set statusline+=%4*%{fugitive#statusline()}%*\ " Fugitive
+set statusline+=%= " right align
+set statusline+=%8*%-14.(%l,%c%V%)\ %<%P%* " offset
+
 " ================ Plugins ========================
 
 " Fugitive {
