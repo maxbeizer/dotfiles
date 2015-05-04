@@ -1,0 +1,7 @@
+alias vimrc="vim ~/.vimrc.local"
+alias aliases="vim ~/.aliases.local"
+
+# Rails
+alias dm="rake db:migrate"
+alias dmr="rake db:migrate:redo"
+alias rc="rails c"
