@@ -13,5 +13,35 @@ if $TERM_PROGRAM =~ "iTerm"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 endif
 
+" No bells
 set vb
 set t_vb=
+
+" Set leader to comma
+let mapleader=","
+
+" Set the font face and size
+set gfn=Monaco:h15
+
+" Highlight search
+set hlsearch
+
+" Twilight theme for gui vim
+if has("gui_running")
+  colorscheme twilight
+endif
+
+" Trailing white space
+match ErrorMsg '\s\+$'
+nnoremap <Leader>rtw :%s/\s\+$//e<CR>
+
+" ================ Plugins ========================
+
+" Fugitive {
+    nnoremap <silent> <leader>gs :Gstatus<CR>
+    nnoremap <silent> <leader>gd :Gdiff<CR>
+    nnoremap <silent> <leader>gc :Gcommit<CR>
+    nnoremap <silent> <leader>gb :Gblame<CR>
+    nnoremap <silent> <leader>gl :Glog<CR>
+    nnoremap <silent> <leader>gp :Git push<CR>
+     "}
