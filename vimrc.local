@@ -44,6 +44,14 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
+" pry macros
+map <Leader>b obinding.pry<esc>:w<CR>
+map <Leader>B Obinding.pry<esc>:w<CR>
+map <C-b> :g/binding.pry/d<CR>:w<CR>
+
+" Open a new tab with the current buffer's path
+map <leader>vs :vs <c-r>=expand("%:p:h")<cr>/
+
 " ================ status line ========================
 set laststatus=2
 set statusline=\ "
