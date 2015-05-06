@@ -7,3 +7,6 @@ alias dmr="rake db:migrate:redo"
 alias rc="rails c"
 alias rss="rspec spec"
 alias rgm="rails g migration"
+
+# Heroku
+alias h="heroku"
