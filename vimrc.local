@@ -52,6 +52,13 @@ map <C-b> :g/binding.pry/d<CR>:w<CR>
 " Open a new tab with the current buffer's path
 map <leader>vs :vs <c-r>=expand("%:p:h")<cr>/
 
+let g:rspec_runner = "os_x_iterm"
+
+" ================ scrolling ==========================
+set scrolloff=8
+set sidescrolloff=15
+set sidescroll=1
+
 " ================ status line ========================
 set laststatus=2
 set statusline=\ "
