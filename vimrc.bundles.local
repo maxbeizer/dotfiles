@@ -1,3 +1,4 @@
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-ragtag'
 Plug 'Townk/vim-autoclose'
+Plug 'scrooloose/nerdtree'

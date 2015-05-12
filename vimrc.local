@@ -74,6 +74,9 @@ set statusline+=%= " right align
 set statusline+=%8*%-14.(%l,%c%V%)\ %<%P%* " offset
 
 " ================ Plugins ========================
+" NerdTree {
+    map <C-n> :NERDTreeToggle<CR>
+     "}
 
 " Fugitive {
     nnoremap <silent> <leader>gs :Gstatus<CR>
