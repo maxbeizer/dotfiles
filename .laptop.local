@@ -42,6 +42,9 @@ git_clone_or_pull https://github.com/maxbeizer/dertfiles.git ~/dotfiles-local
 
 curl --remote-name https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.zsh
 mv tmuxinator.zsh $HOME/.bin/tmuxinator.zsh
+
+fancy_echo "Adding nvm"
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | bash
 env RCRC=$HOME/dotfiles/rcrc rcup
 
 fancy_echo "Getting Rehash Plugin"

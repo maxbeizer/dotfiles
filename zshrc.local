@@ -44,5 +44,14 @@ PROMPT='
 %{$fg[yellow]%}$(rbenv_version_status)%{$reset_color%} %{$fg[cyan]%}%~% 
 $(git_custom_status) %(?.%{$fg[green]%}.%{$fg[red]%})%B$%b'
 
-export PATH="$HOME/.bin:$PATH"
+HISTFILE=~/.histfile
+HISTSIZE=100000
+SAVEHIST=100000
+
+export PATH="$HOME/.bin:/$HOME/bin:$PATH"
 eval "$(rbenv init - zsh --no-rehash)"
+
+export NVM_DIR="/Users/$USER/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+export PATH="$HOME/.bin:$PATH"
