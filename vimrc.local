@@ -35,6 +35,9 @@ endif
 match ErrorMsg '\s\+$'
 nnoremap <Leader>rtw :%s/\s\+$//e<CR>
 
+" Remove trailing whitespace on save for ruby files
+au BufWritePre *.rb :%s/\s\+$//e
+
 " Return to last edit position when opening files
 autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
