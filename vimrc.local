@@ -67,6 +67,10 @@ map <Leader>b obinding.pry<esc>:w<CR>
 map <Leader>B Obinding.pry<esc>:w<CR>
 map <C-b> :g/binding.pry/d<CR>:w<CR>
 
+" debugger macros
+map <Leader>d odebugger<esc>:w<CR>
+map <Leader>D Odebugger<esc>:w<CR>
+
 " Open a new tab with the current buffer's path
 map <leader>vs :vs <c-r>=expand("%:p:h")<cr>/
 
