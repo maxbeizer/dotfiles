@@ -45,6 +45,9 @@ mv tmuxinator.zsh $HOME/.bin/tmuxinator.zsh
 
 fancy_echo "Adding nvm"
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | bash
+
+fancy_echo "Getting ImageOptim CLI"
+npm install -g imageoptim-cli
 env RCRC=$HOME/dotfiles/rcrc rcup
 
 fancy_echo "Getting Rehash Plugin"
