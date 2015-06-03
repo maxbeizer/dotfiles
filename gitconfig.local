@@ -40,3 +40,5 @@
   autocorrect = 1
 [rerere]
 	enabled = true
+[credential]
+  helper = netrc
