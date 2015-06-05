@@ -91,6 +91,7 @@ brew_cask_install 'slack'
 brew_cask_install 'skype'
 brew_cask_install 'spotify'
 brew_cask_install 'the-unarchiver'
+brew_cask_install 'vagrant'
 brew_cask_install 'virtualbox'
 
 fancy_echo "Changing Key Repeat Speeds"
