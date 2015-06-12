@@ -74,6 +74,7 @@ brew tap caskroom/cask
 brew_install_or_upgrade 'brew-cask'
 
 brew_cask_install 'alfred'
+brew_cask_install 'cyberduck'
 brew_cask_install 'dropbox'
 brew_cask_install 'evernote'
 #brew_cask_install 'firefox'
