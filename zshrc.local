@@ -48,6 +48,9 @@ HISTFILE=~/.histfile
 HISTSIZE=100000
 SAVEHIST=100000
 
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
+
 export PATH="$HOME/.bin:/$HOME/bin:$PATH"
 eval "$(rbenv init - zsh --no-rehash)"
 
