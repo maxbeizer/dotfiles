@@ -6,6 +6,9 @@ setopt prompt_subst
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 setopt NO_BEEP
 
+# https://github.com/github/hub
+eval "$(hub alias -s)"
+
 # prompt
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}["

@@ -14,3 +14,7 @@ alias fr="foreman run"
 
 # Heroku
 alias h="heroku"
+alias hlr="heroku local:run"
+
+#Ruby
+alias gemset="rbenv gemset"
