@@ -36,15 +36,16 @@ git_custom_status() {
   [ -n "$git_where" ] && echo "$ZSH_THEME_GIT_PROMPT_PREFIX${git_where#(refs/heads/|tags/)}$ZSH_THEME_GIT_PROMPT_SUFFIX$(parse_git_dirty)"
 }
 
-# show current rbenv version if different from rbenv global
-rbenv_version_status() {
-  local ver=$(rbenv version-name)
-  echo "[$ver]"
+function prompt_rvm {
+  rbv=`rvm-prompt`
+  rbv=${rbv#ruby-}
+  [[ $rbv == *"@"* ]] || rbv="${rbv}@default"
+  echo $rbv
 }
 
 # basic prompt on the left
 PROMPT='
-%{$fg[yellow]%}$(rbenv_version_status)%{$reset_color%} %{$fg[cyan]%}%~% 
+%{$fg[yellow]%}[$(prompt_rvm)]%{$reset_color%} %{$fg[cyan]%}%~% 
 $(git_custom_status) %(?.%{$fg[green]%}.%{$fg[red]%})%B$%b'
 
 HISTFILE=~/.histfile
@@ -55,7 +56,6 @@ bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
 export PATH="$HOME/.bin:/$HOME/bin:$PATH"
-eval "$(rbenv init - zsh --no-rehash)"
 
 export NVM_DIR="/Users/$USER/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

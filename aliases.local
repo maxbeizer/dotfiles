@@ -11,6 +11,7 @@ alias rr="rake routes | ag"
 alias be="bundle exec"
 alias nobe="NO_BUNDLE_EXEC=1"
 alias fr="foreman run"
+alias lvh="rails s -p 3000 -b lvh.me"
 
 # Heroku
 alias h="heroku"

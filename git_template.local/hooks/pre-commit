@@ -5,6 +5,11 @@ if [ -n "$images" ]; then
   echo $images | imageoptim && git add $images
 fi
 
+svgs=$(git diff --exit-code --cached --name-only --diff-filter=ACM -- '*.svg')
+if [ -n "$svgs" ]; then
+  echo $svgs | svgo --pretty && git add $svgs
+fi
+
 count=`grep -iR 'console\.log' **/javascripts/* | wc -l | awk '{print $1}'`
 if [[ "$count" -ge 2 ]]; then
   echo "    remove any config.log() statements in javascript sources"
