@@ -104,3 +104,4 @@ defaults write -g com.apple.swipescrolldirection -bool TRUE
 
 # End of Script Warnings/Messages
 fancy_echo "Don't forget to map CAPS to Ctrl:  Keyboard > Modifier Keys"
+fancy_echo "Don't forget to run: sudo mv /etc/zshenv /etc/zprofile to fix zsh install"
