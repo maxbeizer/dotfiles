@@ -9,6 +9,7 @@
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
   editor = vim
 [alias]
+  s = status -sb
   stb = status -sb
   cim = commit -m
   co = checkout
@@ -29,6 +30,7 @@
   cp = cherry-pick
   sync = "!f() { echo Syncing with master && git checkout master && git pull && git checkout - && git rebase master; }; f"
   up = !sh -c 'git pull --rebase --prune && git log --pretty=format:\"%Cred%ae %Creset- %C(yellow)%s %Creset(%ar)\" HEAD@{1}..'
+  fwl = push --force-with-lease
 
   ; Get a summary of yesterday commits. Useful for Scrum standup.
   standup  = "!git log --since yesterday --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
