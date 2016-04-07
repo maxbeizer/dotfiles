@@ -63,6 +63,7 @@ brew_install_or_upgrade 'elixir'
 brew_install_or_upgrade 'phantomjs'
 brew_install_or_upgrade 'rbenv-gemset'
 #brew_install_or_upgrade 'wget'
+brew_install_or_upgrade 'awscli'
 
 # gems
 fancy_echo "Installing gems"
