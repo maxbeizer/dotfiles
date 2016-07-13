@@ -16,6 +16,7 @@ alias lvh="rails s -p 3000 -b lvh.me"
 # Heroku
 alias h="heroku"
 alias hlr="heroku local:run"
+alias hlw="heroku local web"
 
 #Ruby
 alias gemset="rbenv gemset"

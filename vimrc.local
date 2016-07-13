@@ -28,8 +28,12 @@ set hlsearch
 
 " Twilight theme for gui vim
 if has("gui_running")
-  colorscheme twilight
+  colorscheme solarized
 endif
+
+" trying out the solarized light for a while
+set background=light
+colorscheme solarized
 
 if has("gui_macvim")
   " Switch to specific tab numbers with Command-number
