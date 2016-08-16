@@ -34,6 +34,8 @@ endif
 " trying out the solarized light for a while
 set background=light
 colorscheme solarized
+" toggle background light/dark
+map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR> )
 
 if has("gui_macvim")
   " Switch to specific tab numbers with Command-number
@@ -79,6 +81,9 @@ map <Leader>D Odebugger<esc>:w<CR>
 map <leader>vs :vs <c-r>=expand("%:p:h")<cr>/
 
 let g:rspec_runner = "os_x_iterm"
+
+" Treat es6 files as javascript
+autocmd BufRead,BufNewFile *.es6 setfiletype javascript
 
 " ================ scrolling ==========================
 set scrolloff=8
