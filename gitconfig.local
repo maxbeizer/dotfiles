@@ -31,6 +31,7 @@
   sync = "!f() { echo Syncing with master && git checkout master && git pull && git checkout - && git rebase master; }; f"
   up = !sh -c 'git pull --rebase --prune && git log --pretty=format:\"%Cred%ae %Creset- %C(yellow)%s %Creset(%ar)\" HEAD@{1}..'
   fwl = push --force-with-lease
+  conflicts = diff --name-only --diff-filter=U
 
   ; Get a summary of yesterday commits. Useful for Scrum standup.
   standup  = "!git log --since yesterday --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
