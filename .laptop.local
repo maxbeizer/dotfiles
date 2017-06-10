@@ -59,12 +59,14 @@ git_clone_or_pull https://github.com/maljub01/rbenv-bundle-exec.git ~/.rbenv/plu
 
 # brews
 fancy_echo "Installing brews"
-brew 'elixir'
-#brew 'phantomjs'
-#brew 'rbenv-gemset'
-#brew 'wget'
-#brew 'awscli'
-brew 'neovim/neovim/neovim'
+brew bundle --file=- <<EOF
+brew "elixir"
+#brew "phantomjs"
+#brew "rbenv-gemset"
+#brew "wget"
+#brew "awscli"
+brew "neovim/neovim/neovim"
+EOF
 
 # gems
 fancy_echo "Installing gems"
