@@ -60,14 +60,16 @@ git_clone_or_pull https://github.com/maljub01/rbenv-bundle-exec.git ~/.rbenv/plu
 # brews
 fancy_echo "Installing brews"
 brew_install_or_upgrade 'elixir'
-brew_install_or_upgrade 'phantomjs'
-brew_install_or_upgrade 'rbenv-gemset'
+#brew_install_or_upgrade 'phantomjs'
+#brew_install_or_upgrade 'rbenv-gemset'
 #brew_install_or_upgrade 'wget'
-brew_install_or_upgrade 'awscli'
+#brew_install_or_upgrade 'awscli'
+brew_install_or_upgrade 'neovim/neovim/neovim'
 
 # gems
 fancy_echo "Installing gems"
 gem_install_or_update 'tmuxinator'
+gem_install_or_update 'gripst'
 
 # casks
 fancy_echo "Installing casks"
@@ -75,24 +77,24 @@ brew tap caskroom/cask
 brew_install_or_upgrade 'brew-cask'
 
 brew_cask_install 'alfred'
-brew_cask_install 'cyberduck'
-brew_cask_install 'dropbox'
-brew_cask_install 'evernote'
+#brew_cask_install 'cyberduck'
+#brew_cask_install 'dropbox'
+#brew_cask_install 'evernote'
 #brew_cask_install 'firefox'
-brew_cask_install 'flux'
-#brew_cask_install 'google-chrome'
-brew_cask_install 'hipchat'
+#brew_cask_install 'flux'
+brew_cask_install 'google-chrome'
+#brew_cask_install 'hipchat'
 brew_cask_install 'imageoptim'
 brew_cask_install 'lastpass'
-brew_cask_install 'macvim'
+#brew_cask_install 'macvim'
 brew_cask_install 'iterm2'
-brew_cask_install 'pg-commander'
-brew_cask_install 'screenhero'
-brew_cask_install 'sequel-pro'
-brew_cask_install 'sketch'
-brew_cask_install 'skitch'
+#brew_cask_install 'pg-commander'
+#brew_cask_install 'screenhero'
+#brew_cask_install 'sequel-pro'
+#brew_cask_install 'sketch'
+#brew_cask_install 'skitch'
 brew_cask_install 'slack'
-brew_cask_install 'skype'
+#brew_cask_install 'skype'
 brew_cask_install 'spotify'
 brew_cask_install 'the-unarchiver'
 brew_cask_install 'vagrant'
