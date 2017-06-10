@@ -57,6 +57,7 @@ git_clone_or_pull https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/p
 fancy_echo "Getting rbenv-bundle-exec Plugin"
 git_clone_or_pull https://github.com/maljub01/rbenv-bundle-exec.git ~/.rbenv/plugins/rbenv-bundle-exec
 
+# https://github.com/Homebrew/homebrew-bundle
 # brews
 fancy_echo "Installing brews"
 brew bundle --file=- <<EOF
@@ -65,7 +66,8 @@ brew "elixir"
 #brew "rbenv-gemset"
 #brew "wget"
 #brew "awscli"
-brew "neovim/neovim/neovim"
+tap "neovim/neovim"
+brew "neovim"
 EOF
 
 # gems
