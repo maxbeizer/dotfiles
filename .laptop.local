@@ -68,41 +68,41 @@ brew "elixir"
 #brew "awscli"
 tap "neovim/neovim"
 brew "neovim"
-EOF
-
-# gems
-fancy_echo "Installing gems"
-gem_install_or_update 'tmuxinator'
-gem_install_or_update 'gripst'
 
 # casks
 fancy_echo "Installing casks"
 brew tap caskroom/cask
 brew_install_or_upgrade 'brew-cask'
 
-brew_cask_install 'alfred'
+cask 'alfred'
 #brew_cask_install 'cyberduck'
 #brew_cask_install 'dropbox'
 #brew_cask_install 'evernote'
 #brew_cask_install 'firefox'
 #brew_cask_install 'flux'
-brew_cask_install 'google-chrome'
+cask 'google-chrome'
 #brew_cask_install 'hipchat'
-brew_cask_install 'imageoptim'
-brew_cask_install 'lastpass'
+cask 'imageoptim'
+cask 'lastpass'
 #brew_cask_install 'macvim'
-brew_cask_install 'iterm2'
+cask 'iterm2'
 #brew_cask_install 'pg-commander'
 #brew_cask_install 'screenhero'
 #brew_cask_install 'sequel-pro'
 #brew_cask_install 'sketch'
 #brew_cask_install 'skitch'
-brew_cask_install 'slack'
+cask 'slack'
 #brew_cask_install 'skype'
-brew_cask_install 'spotify'
-brew_cask_install 'the-unarchiver'
-brew_cask_install 'vagrant'
-brew_cask_install 'virtualbox'
+cask 'spotify'
+cask 'the-unarchiver'
+cask 'vagrant'
+cask'virtualbox'
+EOF
+
+# gems
+fancy_echo "Installing gems"
+gem_install_or_update 'tmuxinator'
+gem_install_or_update 'gripst'
 
 fancy_echo "Changing Key Repeat Speeds"
 defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
