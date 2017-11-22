@@ -68,6 +68,7 @@ brew "elixir"
 #brew "awscli"
 tap "neovim/neovim"
 brew "neovim"
+brew "git-secrets"
 
 # casks
 fancy_echo "Installing casks"
@@ -78,7 +79,7 @@ cask 'alfred'
 #brew_cask_install 'cyberduck'
 #brew_cask_install 'dropbox'
 #brew_cask_install 'evernote'
-#brew_cask_install 'firefox'
+brew_cask_install 'firefox'
 #brew_cask_install 'flux'
 cask 'google-chrome'
 #brew_cask_install 'hipchat'
