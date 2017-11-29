@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 images=$(git diff --exit-code --cached --name-only --diff-filter=ACM -- '*.png' '*.jpg')
 if [ -n "$images" ]; then
@@ -15,3 +15,5 @@ if [[ "$count" -ge 2 ]]; then
   echo "    remove any config.log() statements in javascript sources"
   exit 1
 fi
+
+git secrets --pre_commit_hook -- "$@"
