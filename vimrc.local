@@ -71,7 +71,9 @@ set viminfo^=%
 " pry macros
 map <Leader>b obinding.pry<esc>:w<CR>
 map <Leader>B Obinding.pry<esc>:w<CR>
-map <C-b> :g/binding.pry/d<CR>:w<CR>
+map <C-b> :g/binding.*pry/d<CR>:w<CR>
+map <Leader>br obinding.remote_pry<esc>:w<CR>
+map <Leader>BR Obinding.remote_pry<esc>:w<CR>
 
 " debugger macros
 map <Leader>d odebugger<esc>:w<CR>

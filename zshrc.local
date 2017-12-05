@@ -67,3 +67,5 @@ export PATH="$HOME/.bin:$PATH"
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 eval "$(rbenv init - --no-rehash)"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+eval "$(rbenv init - zsh --no-rehash)"
+source /Users/mbeizer/.asdf/asdf.sh
