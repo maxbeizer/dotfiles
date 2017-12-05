@@ -69,6 +69,7 @@ brew "elixir"
 tap "neovim/neovim"
 brew "neovim"
 brew "git-secrets"
+brew "httpie"
 
 # casks
 fancy_echo "Installing casks"
