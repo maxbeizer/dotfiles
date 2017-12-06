@@ -85,6 +85,7 @@ tap "neovim/neovim"
 brew "neovim"
 brew "git-secrets"
 brew "httpie"
+brew "pgcli"
 
 # casks
 tap 'caskroom/cask'
