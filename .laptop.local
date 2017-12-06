@@ -34,6 +34,21 @@ brew_cask_install_or_upgrade() {
   fi
 }
 
+fancy_echo() {
+  local fmt="$1"; shift
+
+  # shellcheck disable=SC2059
+  printf "\n$fmt\n" "$@"
+}
+
+gem_install_or_update() {
+  if gem list "$1" --installed > /dev/null; then
+    gem update "$@"
+  else
+    gem install "$@"
+  fi
+}
+
 fancy_echo "Cloning ThoughtBot's Dotfiles"
 git_clone_or_pull https://github.com/thoughtbot/dotfiles.git ~/dotfiles
 
@@ -72,17 +87,16 @@ brew "git-secrets"
 brew "httpie"
 
 # casks
-fancy_echo "Installing casks"
-brew tap caskroom/cask
-brew_install_or_upgrade 'brew-cask'
+tap 'caskroom/cask'
+#brew 'brew-cask'
 
 cask 'alfred'
 #brew_cask_install 'cyberduck'
 #brew_cask_install 'dropbox'
 #brew_cask_install 'evernote'
-brew_cask_install 'firefox'
+#cask 'firefox'
 #brew_cask_install 'flux'
-cask 'google-chrome'
+#cask 'google-chrome'
 #brew_cask_install 'hipchat'
 cask 'imageoptim'
 cask 'lastpass'
