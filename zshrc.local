@@ -36,16 +36,9 @@ git_custom_status() {
   [ -n "$git_where" ] && echo "$ZSH_THEME_GIT_PROMPT_PREFIX${git_where#(refs/heads/|tags/)}$ZSH_THEME_GIT_PROMPT_SUFFIX$(parse_git_dirty)"
 }
 
-function prompt_rvm {
-  rbv=`rvm-prompt`
-  rbv=${rbv#ruby-}
-  [[ $rbv == *"@"* ]] || rbv="${rbv}@default"
-  echo $rbv
-}
-
 # basic prompt on the left
 PROMPT='
-%{$fg[yellow]%}[$(prompt_rvm)]%{$reset_color%} %{$fg[cyan]%}%~% 
+%{$fg[cyan]%}%~% 
 $(git_custom_status) %(?.%{$fg[green]%}.%{$fg[red]%})%B$%b'
 
 HISTFILE=~/.histfile
@@ -64,8 +57,9 @@ export GOPATH=$HOME/code/go
 PATH=$PATH:$GOPATH/bin
 export PATH="$HOME/.bin:$PATH"
 # source /usr/local/share/zsh/site-functions/_aws
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-eval "$(rbenv init - --no-rehash)"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-eval "$(rbenv init - zsh --no-rehash)"
 source /Users/mbeizer/.asdf/asdf.sh
+
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash
