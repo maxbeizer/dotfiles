@@ -121,6 +121,9 @@ fancy_echo "Installing gems"
 gem_install_or_update 'tmuxinator'
 gem_install_or_update 'gripst'
 
+# asdf
+asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+
 fancy_echo "Changing Key Repeat Speeds"
 defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
 defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
