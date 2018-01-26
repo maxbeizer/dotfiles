@@ -56,8 +56,11 @@ endif
 match ErrorMsg '\s\+$'
 nnoremap <Leader>rtw :%s/\s\+$//e<CR>
 
-" Remove trailing whitespace on save for ruby files
+" Remove trailing whitespace on save for ruby/elixir/js files
 au BufWritePre *.rb :%s/\s\+$//e
+au BufWritePre *.ex :%s/\s\+$//e
+au BufWritePre *.exs :%s/\s\+$//e
+au BufWritePre *.js :%s/\s\+$//e
 
 " Return to last edit position when opening files
 autocmd BufReadPost *
@@ -74,6 +77,9 @@ map <Leader>B Obinding.pry<esc>:w<CR>
 map <C-b> :g/binding.*pry/d<CR>:w<CR>
 map <Leader>br obinding.remote_pry<esc>:w<CR>
 map <Leader>BR Obinding.remote_pry<esc>:w<CR>
+map <Leader>i orequire IEx<CR>IEx.pry<esc>:w<CR>
+map <Leader>I Orequire IEx<CR>IEx.pry<esc>:w<CR>
+map <C-i> :g/IEx/d<CR>:w<CR>
 
 " debugger macros
 map <Leader>d odebugger<esc>:w<CR>

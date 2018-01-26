@@ -63,3 +63,6 @@ source /Users/mbeizer/.asdf/asdf.sh
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
+
+# heroku autocomplete setup
+CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zsh_setup && test -f $CLI_ENGINE_AC_ZSH_SETUP_PATH && source $CLI_ENGINE_AC_ZSH_SETUP_PATH;
