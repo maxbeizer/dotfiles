@@ -58,11 +58,11 @@ PATH=$PATH:$GOPATH/bin
 export PATH="$HOME/.bin:$PATH"
 # source /usr/local/share/zsh/site-functions/_aws
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-source /Users/mbeizer/.asdf/asdf.sh
+source $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
 
 # heroku autocomplete setup
-CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zsh_setup && test -f $CLI_ENGINE_AC_ZSH_SETUP_PATH && source $CLI_ENGINE_AC_ZSH_SETUP_PATH;
+CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zsh_setup && test -f $CLI_ENGINE_AC_ZSH_SETUP_PATH && source $CLI_ENGINE_AC_ZSH_SETUP_PATH;source /Users/frankocean/.asdf/asdf.sh
