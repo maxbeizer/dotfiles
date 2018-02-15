@@ -80,6 +80,7 @@ brew "httpie"
 brew "pgcli"
 brew "bats"
 brew "coreutils"
+brew "fzf"
 
 # casks
 tap 'caskroom/cask'
@@ -116,7 +117,12 @@ gem_install_or_update 'tmuxinator'
 gem_install_or_update 'gripst'
 
 # asdf
+fancy_echo "Adding elixir asdf plugin"
 asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+
+# fzf  keybindings and completions
+fancy_echo "Enabling fzf keybindings and completions"
+$(brew --prefix)/opt/fzf/install
 
 fancy_echo "Changing Key Repeat Speeds"
 defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)

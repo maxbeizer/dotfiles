@@ -26,6 +26,9 @@ set gfn=Monaco:h15
 " Highlight search
 set hlsearch
 
+" Use fzf
+set rtp+=/usr/local/opt/fzf
+
 " Twilight theme for gui vim
 if has("gui_running")
   colorscheme solarized
