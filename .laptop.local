@@ -58,8 +58,8 @@ git_clone_or_pull https://github.com/maxbeizer/dertfiles.git ~/dotfiles-local
 curl --remote-name https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.zsh
 mv tmuxinator.zsh $HOME/.bin/tmuxinator.zsh
 
-fancy_echo "Adding nvm"
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | bash
+fancy_echo "Adding z"
+curl --remote-name https://raw.githubusercontent.com/rupa/z/master/z.sh ~
 
 fancy_echo "Getting ImageOptim CLI"
 npm install -g imageoptim-cli
@@ -69,7 +69,7 @@ env RCRC=$HOME/dotfiles/rcrc rcup
 # brews
 fancy_echo "Installing brews"
 brew bundle --file=- <<EOF
-brew "elixir"
+#brew "elixir"
 #brew "phantomjs"
 #brew "wget"
 #brew "awscli"

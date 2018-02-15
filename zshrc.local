@@ -64,6 +64,7 @@ source $HOME/.asdf/asdf.sh
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
+. ~/z.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
