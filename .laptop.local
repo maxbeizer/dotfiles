@@ -59,7 +59,7 @@ curl --remote-name https://raw.githubusercontent.com/tmuxinator/tmuxinator/maste
 mv tmuxinator.zsh $HOME/.bin/tmuxinator.zsh
 
 fancy_echo "Adding z"
-curl --remote-name https://raw.githubusercontent.com/rupa/z/master/z.sh ~
+curl --remote-name https://raw.githubusercontent.com/rupa/z/master/z.sh
 
 fancy_echo "Getting ImageOptim CLI"
 npm install -g imageoptim-cli
