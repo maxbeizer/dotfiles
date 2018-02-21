@@ -48,25 +48,23 @@ SAVEHIST=100000
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
-export PATH="$HOME/.bin:/$HOME/bin:$PATH"
 
-export NVM_DIR="/Users/$USER/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
+# export PATH="$HOME/.bin:/$HOME/bin:$PATH"
+#
 export GOPATH=$HOME/code/go
-PATH=$PATH:$GOPATH/bin
-export PATH="$HOME/.bin:$PATH"
+export PATH=$PATH:$GOPATH/bin
+# export PATH="$HOME/.bin:$PATH"
 export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
-# source /usr/local/share/zsh/site-functions/_aws
+# # source /usr/local/share/zsh/site-functions/_aws
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-source $HOME/.asdf/asdf.sh
 
-. $HOME/.asdf/asdf.sh
-
-. $HOME/.asdf/completions/asdf.bash
 . ~/z.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # heroku autocomplete setup
-CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zsh_setup && test -f $CLI_ENGINE_AC_ZSH_SETUP_PATH && source $CLI_ENGINE_AC_ZSH_SETUP_PATH;
+# CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zsh_setup && test -f $CLI_ENGINE_AC_ZSH_SETUP_PATH && source $CLI_ENGINE_AC_ZSH_SETUP_PATH;
+
+source $HOME/.asdf/asdf.sh
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
