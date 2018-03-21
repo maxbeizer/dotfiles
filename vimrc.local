@@ -91,6 +91,9 @@ map <Leader>D Odebugger<esc>:w<CR>
 " Open a new tab with the current buffer's path
 map <leader>vs :vs <c-r>=expand("%:p:h")<cr>/
 
+" Switch CWD to the directory of the open buffer
+nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
+
 let g:rspec_runner = "os_x_iterm"
 
 " Treat es6 files as javascript
