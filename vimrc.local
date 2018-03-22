@@ -34,8 +34,7 @@ if has("gui_running")
   colorscheme solarized
 endif
 
-" trying out the solarized light for a while
-set background=light
+set background=dark
 colorscheme solarized
 " toggle background light/dark
 map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR> )
