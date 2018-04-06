@@ -108,7 +108,8 @@ cask 'slack'
 cask 'spotify'
 cask 'the-unarchiver'
 cask 'vagrant'
-cask'virtualbox'
+#cask 'virtualbox'
+cask 'visual-studio-code'
 EOF
 
 # gems
