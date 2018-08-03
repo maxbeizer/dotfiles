@@ -81,6 +81,7 @@ brew "pgcli"
 brew "bats"
 brew "coreutils"
 brew "fzf"
+brew "jq"
 
 # casks
 tap 'caskroom/cask'

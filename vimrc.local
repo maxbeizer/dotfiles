@@ -101,18 +101,18 @@ set sidescrolloff=15
 set sidescroll=1
 
 " ================ status line ========================
-set laststatus=2
-set statusline=\ "
-set statusline+=%1*%-25.80f%*\ " file name minimum 25, maximum 80 (right justified)
-set statusline+=%2*
-set statusline+=%h "help file flag
-set statusline+=%r "read only flag
-set statusline+=%m "modified flag
-set statusline+=%w "preview flag
-set statusline+=%*\ "
-set statusline+=%4*%{fugitive#statusline()}%*\ " Fugitive
-set statusline+=%= " right align
-set statusline+=%8*%-14.(%l,%c%V%)\ %<%P%* " offset
+" set laststatus=2
+" set statusline=\ "
+" set statusline+=%1*%-25.80f%*\ " file name minimum 25, maximum 80 (right justified)
+" set statusline+=%2*
+" set statusline+=%h "help file flag
+" set statusline+=%r "read only flag
+" set statusline+=%m "modified flag
+" set statusline+=%w "preview flag
+" set statusline+=%*\ "
+" set statusline+=%4*%{fugitive#statusline()}%*\ " Fugitive
+" set statusline+=%= " right align
+" set statusline+=%8*%-14.(%l,%c%V%)\ %<%P%* " offset
 
 " ================ Plugins ========================
 " NerdTree {
@@ -127,3 +127,9 @@ set statusline+=%8*%-14.(%l,%c%V%)\ %<%P%* " offset
     nnoremap <silent> <leader>gl :Glog<CR>
     nnoremap <silent> <leader>gp :Git push<CR>
      "}
+
+" ================ Linters ========================
+" Disable dialyzer as it's killing my CPU
+let g:ale_linters = {
+      \ 'elixir': ['credo', 'dogma']
+      \ }

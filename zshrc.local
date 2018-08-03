@@ -59,7 +59,8 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$HOME/code/heroku/vault-checklists
 # export PATH="$HOME/.bin:$PATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:$PATH"
-# # source /usr/local/share/zsh/site-functions/_aws
+export PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
+export PATH="$PATH:/usr/bin"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 . ~/z.sh
@@ -67,4 +68,7 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # heroku autocomplete setup
-# CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zsh_setup && test -f $CLI_ENGINE_AC_ZSH_SETUP_PATH && source $CLI_ENGINE_AC_ZSH_SETUP_PATH;
+CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zsh_setup && test -f $CLI_ENGINE_AC_ZSH_SETUP_PATH && source $CLI_ENGINE_AC_ZSH_SETUP_PATH;
+
+# heroku autocomplete setup
+HEROKU_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
