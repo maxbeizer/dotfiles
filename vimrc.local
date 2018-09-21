@@ -128,6 +128,12 @@ set sidescroll=1
     nnoremap <silent> <leader>gp :Git push<CR>
      "}
 
+" FZF {
+    map <C-p> :Files<CR>
+    map <C-t> :Buffers<CR>
+    let $FZF_DEFAULT_COMMAND='ag -g ""'
+    let g:fzf_tags_command = 'ctags -R'
+    "}
 " ================ Linters ========================
 " Disable dialyzer as it's killing my CPU
 let g:ale_linters = {
