@@ -38,7 +38,7 @@ git_custom_status() {
 
 # basic prompt on the left
 PROMPT='
-%{$fg[cyan]%}%~% 
+%{$fg[yellow]%}[%*]%{$reset_color%} %{$fg[cyan]%}%~% 
 $(git_custom_status) %(?.%{$fg[green]%}.%{$fg[red]%})%B$%b'
 
 HISTFILE=~/.histfile
