@@ -44,6 +44,8 @@
   today  = "!git log --since='6am' --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
   ; Delete all local branches that have been merged into master
   cleanup = !sh -c 'git branch --merged | grep -v "master$" | grep -v "^*" | xargs git branch -d'
+  ; Show branches by revent commits descending
+  branch-recent = branch --sort=-committerdate
 [help]
   autocorrect = 1
 [rerere]
