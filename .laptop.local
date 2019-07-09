@@ -138,6 +138,9 @@ defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
 defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
 defaults write -g com.apple.swipescrolldirection -bool TRUE
 
+fancy_echo "Disabling Zoom Video on join"
+defaults write ~/Library/Preferences/us.zoom.config.plist ZDisableVideo 1
+
 # End of Script Warnings/Messages
 fancy_echo "Don't forget to map CAPS to Ctrl:  Keyboard > Modifier Keys"
 fancy_echo "Don't forget to run: sudo mv /etc/zshenv /etc/zprofile to fix zsh install"
