@@ -76,6 +76,7 @@ brew bundle --file=- <<EOF
 tap "neovim/neovim"
 brew "neovim"
 brew "git-secrets"
+brew "htop"
 brew "httpie"
 brew "pgcli"
 brew "bats"
