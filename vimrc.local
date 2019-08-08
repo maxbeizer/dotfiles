@@ -129,7 +129,6 @@ set sidescroll=1
      "}
 
 " FZF {
-    map <C-p> :Files<CR>
     nnoremap <C-p> :Files<Cr>
     map <C-t> :Buffers<CR>
     let $FZF_DEFAULT_COMMAND='ag -g ""'
