@@ -53,7 +53,7 @@ fancy_echo "Cloning ThoughtBot's Dotfiles"
 git_clone_or_pull https://github.com/thoughtbot/dotfiles.git ~/dotfiles
 
 fancy_echo "Cloning Dertfiles"
-git_clone_or_pull https://github.com/maxbeizer/dertfiles.git ~/dotfiles-local
+git_clone_or_pull https://github.com/maxbeizer/dotfiles.git ~/dotfiles-local
 
 curl --remote-name https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.zsh
 mv tmuxinator.zsh $HOME/.bin/tmuxinator.zsh
@@ -69,49 +69,35 @@ env RCRC=$HOME/dotfiles/rcrc rcup
 # brews
 fancy_echo "Installing brews"
 brew bundle --file=- <<EOF
-#brew "elixir"
-#brew "phantomjs"
-#brew "wget"
-#brew "awscli"
-tap "neovim/neovim"
-brew "neovim"
-brew "git-secrets"
-brew "htop"
-brew "httpie"
-brew "pgcli"
-brew "bats"
-brew "coreutils"
-brew "fzf"
-brew "jq"
+brew 'bats'
+brew 'coreutils'
+brew 'fzf'
+brew 'git-secrets'
+brew 'httpie'
+brew 'jq'
+brew 'mycli'
+brew 'neovim'
+brew 'pgcli'
+brew 'ripgrep'
+tap 'neovim/neovim'
 
 # casks
 tap 'caskroom/cask'
-#brew 'brew-cask'
 
 cask 'alfred'
-#brew_cask_install 'cyberduck'
-#brew_cask_install 'dropbox'
-#brew_cask_install 'evernote'
-#cask 'firefox'
-#brew_cask_install 'flux'
-#cask 'google-chrome'
-#brew_cask_install 'hipchat'
+cask 'dropbox'
+cask 'firefox'
+cask 'google-chrome'
 cask 'imageoptim'
+cask 'insomnia'
+cask 'iterm2'
 cask 'lastpass'
 cask 'licecap'
-#brew_cask_install 'macvim'
-cask 'iterm2'
-#brew_cask_install 'pg-commander'
-#brew_cask_install 'screenhero'
-#brew_cask_install 'sequel-pro'
-#brew_cask_install 'sketch'
-#brew_cask_install 'skitch'
+cask 'ngrok'
 cask 'slack'
-#brew_cask_install 'skype'
 cask 'spotify'
 cask 'the-unarchiver'
 cask 'vagrant'
-#cask 'virtualbox'
 cask 'visual-studio-code'
 EOF
 
