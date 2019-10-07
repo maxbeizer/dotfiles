@@ -95,6 +95,10 @@ let g:rspec_runner = "os_x_iterm"
 " Treat es6 files as javascript
 autocmd BufRead,BufNewFile *.es6 setfiletype javascript
 
+" ================ abbreviations/spelling ==========================
+iab organziation organization
+iab orgnaization organization
+
 " ================ scrolling ==========================
 set scrolloff=8
 set sidescrolloff=15
