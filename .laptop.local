@@ -79,10 +79,11 @@ brew 'mycli'
 brew 'neovim'
 brew 'pgcli'
 brew 'ripgrep'
-tap 'neovim/neovim'
+brew 'telnet'
 
 # casks
 tap 'caskroom/cask'
+tap 'neovim/neovim'
 
 cask 'alfred'
 cask 'dropbox'
