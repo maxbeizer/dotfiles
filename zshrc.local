@@ -5,6 +5,7 @@ setopt prompt_subst
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 setopt NO_BEEP
+setopt HIST_IGNORE_SPACE
 
 # https://github.com/github/hub
 eval "$(hub alias -s)"
@@ -59,6 +60,7 @@ export PATH=$PATH:$GOPATH/bin
 # export PATH="$HOME/.bin:$PATH"
 export PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
 export PATH="$PATH:/usr/bin"
+export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 export PATH="$PATH:$HOME/code/github/gh-helper-cli/exe"
 

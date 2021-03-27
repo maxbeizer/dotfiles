@@ -8,6 +8,8 @@
 	user = maxbeizer
 [diff]
   tool = vimdiff
+[init]
+  defaultBranch = main
 [core]
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
   editor = vim
@@ -34,6 +36,7 @@
   oops = commit --amend -m
   cp = cherry-pick
   sync = "!f() { echo Syncing with master && git checkout master && git pull && git checkout - && git rebase master; }; f"
+  syncm = "!f() { echo Syncing with main && git checkout main && git pull && git checkout - && git rebase main; }; f"
   up = !sh -c 'git pull --rebase --prune && git log --pretty=format:\"%Cred%ae %Creset- %C(yellow)%s %Creset(%ar)\" HEAD@{1}..'
   fwl = push --force-with-lease
   conflicts = diff --name-only --diff-filter=U
@@ -43,9 +46,11 @@
   ; Get a summary of today's commits. Useful for timesheets
   today  = "!git log --since='6am' --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
   ; Delete all local branches that have been merged into master
-  cleanup = !sh -c 'git branch --merged | grep -v "master$" | grep -v "^*" | xargs git branch -d'
+  cleanup = !sh -c 'git branch --merged | grep -v "master|main$" | grep -v "^*" | xargs git branch -d'
   ; Show branches by revent commits descending
   branch-recent = branch --sort=-committerdate
+  ; Checkout a recent branch via fzf
+  brr = !sh -c 'git branch --sort=-committerdate | fzf | xargs git checkout'
 [help]
   autocorrect = 1
 [rerere]
