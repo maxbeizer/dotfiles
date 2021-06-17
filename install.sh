@@ -15,7 +15,7 @@ get() {
   wget $1 $2
 }
 
-if [ "$CODESPACE" == "true" ]
+if [ "$CODESPACES" == "true" ]
 then
   fancy_echo "In codespaces! Installing dotfiles"
 
