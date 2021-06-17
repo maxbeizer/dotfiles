@@ -46,7 +46,8 @@
   ; Get a summary of today's commits. Useful for timesheets
   today  = "!git log --since='6am' --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
   ; Delete all local branches that have been merged into master
-  cleanup = !sh -c 'git branch --merged | grep -v "master|main$" | grep -v "^*" | xargs git branch -d'
+  cleanup = !sh -c 'git branch --merged | grep -Ev "master" | grep -v "^*" | xargs git branch -d'
+  cleanupm = !sh -c 'git branch --merged | grep -Ev "main" | grep -v "^*" | xargs git branch -d'
   ; Show branches by revent commits descending
   branch-recent = branch --sort=-committerdate
   ; Checkout a recent branch via fzf

@@ -52,6 +52,9 @@ bindkey "^[[B" history-search-forward
 source $HOME/.asdf/asdf.sh
 . $HOME/.asdf/asdf.sh
 
+# https://github.com/Aloxaf/fzf-tab
+source ~/code/fzf-tab/fzf-tab.plugin.zsh
+
 # export PATH="$HOME/.bin:/$HOME/bin:$PATH"
 #
 export GOPATH=$HOME/code/go
@@ -67,6 +70,20 @@ export PATH="$PATH:$HOME/code/github/gh-helper-cli/exe"
 . ~/z.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+thehub() {
+  local filename
+  filename=$(rg '' -l ~/code/github/thehub/docs/**/*.md | fzf --reverse --prompt="TheHub >" --border --print-query --preview="cat {}" --preview-window=down:50% --inline-info | tail -1)
+
+  if [ -n "$filename" ]; then
+    open "https://thehub.github.com/$(echo $filename | cut -f7- -d'/' | sed 's/docs//' | sed 's/.md$//')"
+  fi
+}
+
+HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+if [ -f "$HB_CNF_HANDLER" ]; then
+ source "$HB_CNF_HANDLER";
+fi
 
 # heroku autocomplete setup
 CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zsh_setup && test -f $CLI_ENGINE_AC_ZSH_SETUP_PATH && source $CLI_ENGINE_AC_ZSH_SETUP_PATH;
