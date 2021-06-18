@@ -38,7 +38,7 @@ if [ "$CODESPACES" == "true" ]; then
     mkdir "$HOME"/.vim/autoload/
     get https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim "$HOME"/.vim/autoload/plug.vim
   fi
-  vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
+  # vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
   reset -Q
 
   [[ -f ~/.aliases ]] && source ~/.aliases
