@@ -12,7 +12,7 @@ fancy_echo() {
 }
 
 get() {
-  wget $1 -P $2
+  wget -c $1 -O $2
 }
 
 if [ "$CODESPACES" == "true" ]; then
