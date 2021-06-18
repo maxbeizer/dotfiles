@@ -15,8 +15,7 @@ get() {
   wget $1 $2
 }
 
-if [ "$CODESPACES" == "true" ]
-then
+if [ "$CODESPACES" == "true" ]; then
   fancy_echo "In codespaces! Installing dotfiles"
 
   ln -s $(pwd)/tmux.conf.local $HOME/.tmux.conf.local
@@ -33,11 +32,20 @@ then
   get https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitmessage $HOME/.gitmessage
   get https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitignore $HOME/.gitignore
 
-  vim -Es -u $HOME/.vimrc -c "PlugInstall | qa"
+  if [ -e "$HOME"/.vim/autoload/plug.vim ]; then
+    vim -E -s +PlugUpgrade +qa
+  else
+    mkdir "$HOME"/.vim/autoload/
+    get https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim "$HOME"/.vim/autoload/plug.vim
+  fi
+  vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
+  reset -Q
 
   [[ -f ~/.aliases ]] && source ~/.aliases
 
   export EDITOR=vim
 
   fancy_echo "All done"
+else
+  fancy_echo "Not running in a codespace"
 fi
