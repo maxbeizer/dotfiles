@@ -34,6 +34,8 @@ if [ "$CODESPACES" == "true" ]; then
   get $HOME/.gitignore https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitignore
   get $HOME/.tmux.conf https://raw.githubusercontent.com/thoughtbot/dotfiles/master/tmux.conf
 
+  fancy_echo "Installing vim plugins"
+
   if [ -e "$HOME"/.vim/autoload/plug.vim ]; then
     vim -E -s +PlugUpgrade +qa
   else
@@ -42,6 +44,8 @@ if [ "$CODESPACES" == "true" ]; then
   fi
   vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
   reset -Q
+
+  fancy_echo "Sourcing aliases"
 
   [[ -f ~/.aliases ]] && source ~/.aliases
 
