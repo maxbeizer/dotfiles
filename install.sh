@@ -50,6 +50,7 @@ if [ "$CODESPACES" == "true" ]; then
   [[ -f ~/.aliases ]] && source ~/.aliases
 
   export EDITOR=vim
+  echo "alias g='git'" >> "$HOME"/.bashrc
 
   fancy_echo "All done"
 else
