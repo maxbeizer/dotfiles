@@ -12,7 +12,7 @@ fancy_echo() {
 }
 
 get() {
-  wget -c $1 -O $2
+  curl -fLo $1 --create-dirs $2
 }
 
 if [ "$CODESPACES" == "true" ]; then
@@ -22,15 +22,17 @@ if [ "$CODESPACES" == "true" ]; then
   ln -s $(pwd)/vimrc.local $HOME/.vimrc.local
   ln -s $(pwd)/vimrc.bundles.local $HOME/.vimrc.bundles.local
   ln -s $(pwd)/aliases.local $HOME/.aliases.local
+  ln -s $(pwd)/tmux.conf.local $HOME/.tmux.conf.local
 
   fancy_echo "Getting thoughtbot dotfiles"
 
-  get https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc $HOME/.vimrc
-  get https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc.bundles $HOME/.vimrc.bundles
-  get https://raw.githubusercontent.com/thoughtbot/dotfiles/master/aliases $HOME/.aliases
-  get https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitconfig $HOME/.gitconfig
-  get https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitmessage $HOME/.gitmessage
-  get https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitignore $HOME/.gitignore
+  get $HOME/.vimrc https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc
+  get $HOME/.vimrc.bundles https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc.bundles
+  get $HOME/.aliases https://raw.githubusercontent.com/thoughtbot/dotfiles/master/aliases
+  get $HOME/.gitconfig https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitconfig
+  get $HOME/.gitmessage https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitmessage
+  get $HOME/.gitignore https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitignore
+  get $HOME/.tmux.conf https://raw.githubusercontent.com/thoughtbot/dotfiles/master/tmux.conf
 
   if [ -e "$HOME"/.vim/autoload/plug.vim ]; then
     vim -E -s +PlugUpgrade +qa
