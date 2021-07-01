@@ -123,6 +123,9 @@ $(brew --prefix)/opt/fzf/install
 # tldr  easier to parse man pages
 go get github.com/anoopengineer/tldr
 
+# ripgreprc
+ln -s $(pwd)/ripgreprc $HOME/.ripgreprc
+
 fancy_echo "Changing Key Repeat Speeds"
 defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
 defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
