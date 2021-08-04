@@ -17,12 +17,17 @@ get() {
 
 if [ "$CODESPACES" == "true" ]; then
   fancy_echo "In codespaces! Installing dotfiles"
+  export EDITOR=vim
 
   locals=( "tmux.conf.local" "vimrc.local" "vimrc.bundles.local" "aliases.local" "gitconfig.local" "ripgreprc" )
   for i in "${locals[@]}"
   do
     ln -s $(pwd)/"$i" $HOME/."$i"
   done
+
+  fancy_echo "Installing apt-get packages"
+
+  apt-get install fzf
 
   fancy_echo "Getting thoughtbot dotfiles"
 
@@ -49,7 +54,6 @@ if [ "$CODESPACES" == "true" ]; then
 
   [[ -f ~/.aliases ]] && source ~/.aliases
 
-  export EDITOR=vim
   echo "alias g='git'" >> "$HOME"/.bashrc
 
   fancy_echo "All done"
