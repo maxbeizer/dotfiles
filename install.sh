@@ -27,7 +27,7 @@ if [ "$CODESPACES" == "true" ]; then
 
   fancy_echo "Installing apt-get packages"
 
-  apt-get install fzf
+  apt-get install fzf ctags
 
   fancy_echo "Getting thoughtbot dotfiles"
 
