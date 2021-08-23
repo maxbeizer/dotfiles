@@ -38,11 +38,6 @@ if [ "$CODESPACES" == "true" ]; then
   get $HOME/.gitignore https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitignore
   get $HOME/.tmux.conf https://raw.githubusercontent.com/thoughtbot/dotfiles/master/tmux.conf
 
-  fancy_echo "Installing gh-helper-cli"
-
-  git clone --depth 1 https://github.com/github/gh-helper-cli $HOME
-  echo "export PATH=$PATH:$HOME/gh-helper-cli/exe" > $HOME/.bashrc
-
   fancy_echo "Installing vim plugins"
 
   if [ -e "$HOME"/.vim/autoload/plug.vim ]; then
