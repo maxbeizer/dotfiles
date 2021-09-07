@@ -58,7 +58,7 @@ if [ "$CODESPACES" == "true" ]; then
 
   fancy_echo "Installing gems"
 
-  gem install ripper-tags && ripper-tags -R --exclude=node_modules
+  gem install ripper-tags && ripper-tags -R
 
   fancy_echo "All done"
 else
