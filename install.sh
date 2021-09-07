@@ -56,6 +56,10 @@ if [ "$CODESPACES" == "true" ]; then
   echo "alias g='git'" >> "$HOME"/.bashrc
   echo "export EDITOR=vim" >> "$HOME"/.bashrc
 
+  fancy_echo "Installing gems"
+
+  gem install ripper-tags && ripper-tags -R --exclude=node_modules
+
   fancy_echo "All done"
 else
   fancy_echo "Not running in a codespace"
