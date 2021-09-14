@@ -17,7 +17,6 @@ get() {
 
 if [ "$CODESPACES" == "true" ]; then
   fancy_echo "In codespaces! Installing dotfiles"
-
   locals=( "tmux.conf.local" "vimrc.local" "vimrc.bundles.local" "aliases.local" "gitconfig.local" "ripgreprc" )
   for i in "${locals[@]}"
   do
@@ -25,11 +24,9 @@ if [ "$CODESPACES" == "true" ]; then
   done
 
   fancy_echo "Installing apt-get packages"
-
   apt-get install fzf ctags
 
   fancy_echo "Getting thoughtbot dotfiles"
-
   get $HOME/.vimrc https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc
   get $HOME/.vimrc.bundles https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc.bundles
   get $HOME/.aliases https://raw.githubusercontent.com/thoughtbot/dotfiles/master/aliases
@@ -39,7 +36,6 @@ if [ "$CODESPACES" == "true" ]; then
   get $HOME/.tmux.conf https://raw.githubusercontent.com/thoughtbot/dotfiles/master/tmux.conf
 
   fancy_echo "Installing vim plugins"
-
   if [ -e "$HOME"/.vim/autoload/plug.vim ]; then
     vim -E -s +PlugUpgrade +qa
   else
@@ -50,15 +46,15 @@ if [ "$CODESPACES" == "true" ]; then
   reset -Q
 
   fancy_echo "Sourcing aliases"
-
   [[ -f ~/.aliases ]] && source ~/.aliases
-
   echo "alias g='git'" >> "$HOME"/.bashrc
   echo "export EDITOR=vim" >> "$HOME"/.bashrc
 
   fancy_echo "Installing gems"
-
   gem install ripper-tags && ripper-tags -R
+
+  fancy_echo "Sourcing bashrc"
+  source ~/.bashrc
 
   fancy_echo "All done"
 else
