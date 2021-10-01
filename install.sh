@@ -51,7 +51,7 @@ if [ "$CODESPACES" == "true" ]; then
   echo "export EDITOR=vim" >> "$HOME"/.bashrc
 
   fancy_echo "Installing gems"
-  gem install ripper-tags && ripper-tags -R
+  sudo gem install ripper-tags && sudo ripper-tags -R
 
   fancy_echo "Sourcing bashrc"
   source ~/.bashrc
