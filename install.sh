@@ -45,13 +45,20 @@ if [ "$CODESPACES" == "true" ]; then
   vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
   reset -Q
 
+  fancy_echo "Setting up neovim"
+  brew install neovim
+  echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> "$HOME"/.config/nvim/init.vim
+  echo "let &packpath=&runtimepath" >> "$HOME"/.config/nvim/init.vim
+  echo "source ~/.vimrc" >> "$HOME"/.config/nvim/init.vim
+
   fancy_echo "Sourcing aliases"
   [[ -f ~/.aliases ]] && source ~/.aliases
   echo "alias g='git'" >> "$HOME"/.bashrc
   echo "export EDITOR=vim" >> "$HOME"/.bashrc
 
   fancy_echo "Installing gems"
-  sudo gem install ripper-tags && sudo ripper-tags -R
+  sudo gem install ripper-tags
+  sudo ripper-tags -R --exclude=vendor
 
   fancy_echo "Sourcing bashrc"
   source ~/.bashrc
