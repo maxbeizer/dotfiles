@@ -47,6 +47,7 @@ if [ "$CODESPACES" == "true" ]; then
 
   fancy_echo "Setting up neovim"
   brew install neovim
+  mkdir -p "$HOME"/.config/nvim
   echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> "$HOME"/.config/nvim/init.vim
   echo "let &packpath=&runtimepath" >> "$HOME"/.config/nvim/init.vim
   echo "source ~/.vimrc" >> "$HOME"/.config/nvim/init.vim
