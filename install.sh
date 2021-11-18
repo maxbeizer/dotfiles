@@ -53,7 +53,7 @@ if [ "$CODESPACES" == "true" ]; then
   echo "source ~/.vimrc" >> "$HOME"/.config/nvim/init.vim
 
   fancy_echo "Sourcing aliases"
-  [[ -f ~/.aliases ]] && source ~/.aliases
+  [[ -f "$HOME"/.aliases ]] && source "$HOME"/.aliases
   echo "alias g='git'" >> "$HOME"/.bashrc
   echo "export EDITOR=vim" >> "$HOME"/.bashrc
 
