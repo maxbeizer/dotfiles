@@ -23,8 +23,6 @@ if [ "$CODESPACES" == "true" ]; then
     ln -s $(pwd)/"$i" $HOME/."$i"
   done
 
-  fancy_echo "Installing apt-get packages"
-  apt-get install fzf ctags
 
   fancy_echo "Getting thoughtbot dotfiles"
   get $HOME/.vimrc https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc
@@ -45,21 +43,23 @@ if [ "$CODESPACES" == "true" ]; then
   vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
   reset -Q
 
+  fancy_echo "Installing packages"
+  brew install fzf ctags neovim
+
   fancy_echo "Setting up neovim"
-  brew install neovim
   mkdir -p "$HOME"/.config/nvim
   echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> "$HOME"/.config/nvim/init.vim
   echo "let &packpath=&runtimepath" >> "$HOME"/.config/nvim/init.vim
   echo "source ~/.vimrc" >> "$HOME"/.config/nvim/init.vim
 
   fancy_echo "Sourcing aliases"
-  [[ -f "$HOME"/.aliases ]] && source "$HOME"/.aliases
+  echo "source "$HOME"/.aliases" >> "$HOME"/.bashrc
   echo "alias g='git'" >> "$HOME"/.bashrc
   echo "export EDITOR=vim" >> "$HOME"/.bashrc
 
   fancy_echo "Installing gems"
-  sudo gem install ripper-tags
-  sudo ripper-tags -R --exclude=vendor
+  # sudo gem install ripper-tags
+  # sudo ripper-tags -R --exclude=vendor
 
   fancy_echo "Sourcing bashrc"
   source ~/.bashrc
