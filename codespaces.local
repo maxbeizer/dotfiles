@@ -1,4 +1,5 @@
 function codespace() {
-  brew install ctags fzf nvim
-  ctags -R --exclude=.git
+  brew install fzf nvim
+  gem install ripper-tags --no-ri --no-rdoc
+  ripper-tags -R --exclude=.git --exclude=node_modules --exclude=vendor --exclude=public
 }
