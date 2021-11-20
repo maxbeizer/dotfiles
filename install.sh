@@ -44,7 +44,7 @@ if [ "$CODESPACES" == "true" ]; then
   reset -Q
 
   fancy_echo "Installing packages"
-  apt-get install -y --no-install-recommends fzf ctags neovim
+  apt-get install -y --no-install-recommends fzf exuberant-ctags neovim
 
   fancy_echo "Setting up neovim"
   mkdir -p "$HOME"/.config/nvim
