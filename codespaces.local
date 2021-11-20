@@ -1,0 +1,4 @@
+function codespace() {
+  brew install ctags fzf nvim
+  ctags -R --exclude=.git
+}
