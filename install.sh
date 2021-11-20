@@ -56,6 +56,7 @@ if [ "$CODESPACES" == "true" ]; then
   echo "source "$HOME"/.aliases" >> "$HOME"/.bashrc
   echo "alias g='git'" >> "$HOME"/.bashrc
   echo "export EDITOR=vim" >> "$HOME"/.bashrc
+  reset -Q
 
   fancy_echo "Installing gems"
   # sudo gem install ripper-tags
