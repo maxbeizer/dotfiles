@@ -1,5 +1,5 @@
 function codespace() {
   brew install fzf nvim
-  gem install ripper-tags --no-ri --no-rdoc
+  gem install ripper-tags --no-document
   ripper-tags -R --exclude=.git --exclude=node_modules --exclude=vendor --exclude=public
 }
