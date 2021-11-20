@@ -43,9 +43,6 @@ if [ "$CODESPACES" == "true" ]; then
   vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
   reset -Q
 
-  fancy_echo "Installing packages"
-  # apt-get install -y --no-install-recommends fzf exuberant-ctags neovim
-
   fancy_echo "Setting up neovim"
   mkdir -p "$HOME"/.config/nvim
   echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> "$HOME"/.config/nvim/init.vim
@@ -57,10 +54,6 @@ if [ "$CODESPACES" == "true" ]; then
   echo "alias g='git'" >> "$HOME"/.bashrc
   echo "export EDITOR=vim" >> "$HOME"/.bashrc
   echo "source "$HOME"/.codespaces.local" >> "$HOME"/.bashrc
-
-  fancy_echo "Installing gems"
-  # sudo gem install ripper-tags
-  # sudo ripper-tags -R --exclude=vendor
 
   fancy_echo "Sourcing bashrc"
   source ~/.bashrc
