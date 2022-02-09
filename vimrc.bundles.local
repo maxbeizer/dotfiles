@@ -16,5 +16,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'c-brenn/phoenix.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'github/copilot.vim'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-orgmode/orgmode'
 " Something is up with vim-ruby making ctags unusable
 UnPlug 'vim-ruby'

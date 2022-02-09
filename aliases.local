@@ -21,5 +21,9 @@ alias hlr="heroku local:run"
 alias hlw="heroku local web"
 alias hs="heroku sudo"
 
-#Ruby
+# Ruby
 alias gemset="rbenv gemset"
+
+## Other
+
+alias speedtest="networkQuality"

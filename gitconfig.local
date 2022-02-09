@@ -2,7 +2,9 @@
   me = maxbeizer
   email = max.beizer@gmail.com
   name = Max Beizer
-  signingkey = B3D159623F1D82C7
+  signingkey = C4E91512328E2AE4
+[credential]
+  helper = osxkeychain
 [github]
 	user = maxbeizer
 [diff]

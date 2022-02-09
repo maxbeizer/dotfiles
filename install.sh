@@ -54,6 +54,7 @@ if [ "$CODESPACES" == "true" ]; then
   echo "alias g='git'" >> "$HOME"/.bashrc
   echo "export EDITOR=vim" >> "$HOME"/.bashrc
   echo "source "$HOME"/.codespaces.local" >> "$HOME"/.bashrc
+  echo "machine goproxy.githubapp.com login nobody password $GITHUB_TOKEN" >> $HOME/.netrc
 
   fancy_echo "Sourcing bashrc"
   source ~/.bashrc

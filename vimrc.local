@@ -143,3 +143,5 @@ set sidescroll=1
 let g:ale_linters = {
       \ 'elixir': ['credo', 'dogma']
       \ }
+
+autocmd CursorHold * silent! checktime
