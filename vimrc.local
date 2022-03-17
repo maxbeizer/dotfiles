@@ -140,8 +140,12 @@ set sidescroll=1
     "}
 " ================ Linters ========================
 " Disable dialyzer as it's killing my CPU
-let g:ale_linters = {
-      \ 'elixir': ['credo', 'dogma']
-      \ }
+" let g:ale_linters = {
+"       \ 'elixir': ['credo', 'dogma']
+"       \ }
 
 autocmd CursorHold * silent! checktime
+autocmd FileType markdown set wrap linebreak
+autocmd FileType markdown set tw=0
+autocmd FileType markdown noremap j gj
+autocmd FileType markdown noremap k gk
