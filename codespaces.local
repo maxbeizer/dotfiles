@@ -2,4 +2,12 @@ function codespace() {
   brew install fzf nvim universal-ctags/universal-ctags/universal-ctags
   echo "building ctags"
   script/build-ctags > /dev/null 2>&1
+
+  echo "Installing rdm"
+  wget https://github.com/BlakeWilliams/remote-development-manager/releases/latest/download/rdm-linux-amd64
+  sudo mv rdm-linux-amd64 /usr/local/bin/rdm
+  sudo chmod +x /usr/local/bin/rdm
+  gh config set browser "rdm open"
+  alias open="rdm open"
+  alias xdg-open="rdm open"
 }
