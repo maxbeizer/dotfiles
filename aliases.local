@@ -25,5 +25,5 @@ alias hs="heroku sudo"
 alias gemset="rbenv gemset"
 
 ## Other
-
 alias speedtest="networkQuality"
+alias gs="git status -b -s"
