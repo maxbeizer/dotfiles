@@ -23,7 +23,6 @@ if [ "$CODESPACES" == "true" ]; then
     ln -s $(pwd)/"$i" $HOME/."$i"
   done
 
-
   fancy_echo "Getting thoughtbot dotfiles"
   get $HOME/.vimrc https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc
   get $HOME/.vimrc.bundles https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc.bundles
@@ -42,6 +41,8 @@ if [ "$CODESPACES" == "true" ]; then
   fi
   vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
   reset -Q
+
+  [ -f /workspaces/github ] && export PATH="/workspaces/github/bin:$PATH"
 
   fancy_echo "Setting up neovim"
   mkdir -p "$HOME"/.config/nvim
