@@ -1,7 +1,13 @@
 function codespace() {
-  brew install fzf nvim
+  brew install fzf
 
-  if [ -f ./script/build-ctags ] then
+  if ! command -v nvim --version &> /dev/null
+  then
+    brew install nvim
+  fi
+
+  if [ -f ./script/build-ctags ]
+  then
     echo "installing ctags"
     brew install --HEAD universal-ctags/universal-ctags/universal-ctags
     echo "building ctags"
