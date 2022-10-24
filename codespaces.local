@@ -1,5 +1,8 @@
 function codespace() {
-  brew install fzf
+  if ! command -v fzf --version &> /dev/null
+  then
+    brew install fzf
+  fi
 
   if ! command -v nvim --version &> /dev/null
   then

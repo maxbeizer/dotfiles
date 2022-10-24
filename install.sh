@@ -57,6 +57,10 @@ if [ "$CODESPACES" == "true" ]; then
   echo "source "$HOME"/.codespaces.local" >> "$HOME"/.bashrc
   echo "machine goproxy.githubapp.com login nobody password $GITHUB_TOKEN" >> $HOME/.netrc
 
+  if [ -d "/workspaces/github/bin" ]; then
+    echo "export PATH="$PATH":/workspaces/github/bin" >> "$HOME"/.bashrc
+  fi
+
   fanch_echo "Adding bashrc to .bash_profile"
   echo "source $HOME/.bashrc" >> "$HOME"/.bash_profile
 
