@@ -61,8 +61,12 @@ if [ "$CODESPACES" == "true" ]; then
     echo "export PATH="$PATH":/workspaces/github/bin" >> "$HOME"/.bashrc
   fi
 
-  echo "export CODESPACES_FRIENDLY_NAME='$(gh api /user/codespaces/$CODESPACE_NAME | jq .display_name | tr -d '"')'" >> "$HOME"/.bashrc
-  echo "export PS1=[$CODESPACES_FRIENDLY_NAME]:$PS1" >> "$HOME"/.bashrc
+  # Update the PS1 only if the gh cli is installed
+  if ! command -v gh &> /dev/null
+  then
+    echo "export CODESPACES_FRIENDLY_NAME='$(gh api /user/codespaces/$CODESPACE_NAME | jq .display_name | tr -d '"')'" >> "$HOME"/.bashrc
+    echo "export PS1=[$CODESPACES_FRIENDLY_NAME]:$PS1" >> "$HOME"/.bashrc
+  fi
 
   fanch_echo "Adding bashrc to .bash_profile"
   echo "source $HOME/.bashrc" >> "$HOME"/.bash_profile
