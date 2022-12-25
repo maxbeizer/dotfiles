@@ -62,19 +62,7 @@ require('packer').startup(function(use)
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
   use('theprimeagen/harpoon')
-  local mark = require("harpoon.mark")
-  local ui = require("harpoon.ui")
-  vim.keymap.set("n", "<leader>a", mark.add_file)
-  vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
-  vim.keymap.set("n", "<C-h>", function() ui.nav_file(1) end)
-  vim.keymap.set("n", "<C-t>", function() ui.nav_file(2) end)
-  vim.keymap.set("n", "<C-n>", function() ui.nav_file(3) end)
-  vim.keymap.set("n", "<C-s>", function() ui.nav_file(4) end)
-
   use('mbbill/undotree')
-  vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
-
-  vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
@@ -237,7 +225,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
+  ensure_installed = { 'c', 'ruby', 'go', 'lua', 'rust', 'typescript', 'help' },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
