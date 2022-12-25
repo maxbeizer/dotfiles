@@ -61,6 +61,21 @@ require('packer').startup(function(use)
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
+  use('theprimeagen/harpoon')
+  local mark = require("harpoon.mark")
+  local ui = require("harpoon.ui")
+  vim.keymap.set("n", "<leader>a", mark.add_file)
+  vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+  vim.keymap.set("n", "<C-h>", function() ui.nav_file(1) end)
+  vim.keymap.set("n", "<C-t>", function() ui.nav_file(2) end)
+  vim.keymap.set("n", "<C-n>", function() ui.nav_file(3) end)
+  vim.keymap.set("n", "<C-s>", function() ui.nav_file(4) end)
+
+  use('mbbill/undotree')
+  vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+
+  vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
   if has_plugins then
@@ -157,7 +172,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    theme = 'onedark',
+    theme = 'everforest',
     component_separators = '|',
     section_separators = '',
   },
