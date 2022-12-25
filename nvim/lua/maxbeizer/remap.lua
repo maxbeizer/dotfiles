@@ -1,3 +1,6 @@
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set("n", "<leader>rtw", ":%s/\\s\\+$//e<CR>")
+vim.keymap.set("n", "<leader>vs", ":vs <C-r>=expand('%:p:h')<CR>")
+vim.keymap.set('n', '<leader><space>', "<C-^>")
