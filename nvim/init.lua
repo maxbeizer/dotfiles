@@ -61,8 +61,49 @@ require('packer').startup(function(use)
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
-  use('theprimeagen/harpoon')
+  use('Townk/vim-autoclose')
+  use('github/copilot.vim')
+  use('godlygeek/tabular')
   use('mbbill/undotree')
+  -- use('scrooloose/nerdtree')
+  use('theprimeagen/harpoon')
+  use('tpope/vim-bundler')
+  use('tpope/vim-endwise')
+  use('tpope/vim-eunuch')
+  use('tpope/vim-projectionist')
+  use('tpope/vim-ragtag')
+  use('tpope/vim-rails')
+  use('tpope/vim-rake')
+  use('tpope/vim-repeat')
+  use('tpope/vim-surround')
+
+  use {
+    'nvim-tree/nvim-tree.lua',
+    tag = 'nightly'
+  }
+
+  require("nvim-tree").setup()
+  use {'nvim-orgmode/orgmode', config = function()
+    require('orgmode').setup{}
+  end
+  }
+  -- Load custom tree-sitter grammar for org filetype
+  require('orgmode').setup_ts_grammar()
+
+  -- Tree-sitter configuration
+  require'nvim-treesitter.configs'.setup {
+    -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
+    highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
+    },
+    ensure_installed = {'org'}, -- Or run :TSUpdate org
+  }
+
+  require('orgmode').setup({
+    org_agenda_files = {'~/code/1-1-Repo-maxbeizer/daily/*' },
+    org_default_notes_file = '~/code/1-1-Repo-maxbeizer/notes.org',
+  })
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
@@ -100,7 +141,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- See `:help vim.o`
 
 -- Set highlight on search
-vim.o.hlsearch = false
+-- vim.o.hlsearch = false
 
 -- Make line numbers default
 vim.wo.number = true
@@ -427,6 +468,8 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+require("maxbeizer")
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
