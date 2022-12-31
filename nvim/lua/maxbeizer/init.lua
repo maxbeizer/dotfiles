@@ -1,5 +1,6 @@
 require("maxbeizer.set")
 require("maxbeizer.remap")
+require("maxbeizer.null-ls")
 
 local augroup = vim.api.nvim_create_augroup
 local MaxBeizerGroup = augroup('MaxBeizer', {})

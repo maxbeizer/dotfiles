@@ -65,8 +65,6 @@ require('packer').startup(function(use)
   use('github/copilot.vim')
   use('godlygeek/tabular')
   use('mbbill/undotree')
-  -- use('scrooloose/nerdtree')
-  use('theprimeagen/harpoon')
   use('tpope/vim-bundler')
   use('tpope/vim-endwise')
   use('tpope/vim-eunuch')
@@ -76,6 +74,7 @@ require('packer').startup(function(use)
   use('tpope/vim-rake')
   use('tpope/vim-repeat')
   use('tpope/vim-surround')
+  use('jose-elias-alvarez/null-ls.nvim')
 
   use {
     'nvim-tree/nvim-tree.lua',
@@ -444,7 +443,7 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<Tab>'] = cmp.mapping(function(fallback)
+    ['<C-p>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then
@@ -453,7 +452,7 @@ cmp.setup {
         fallback()
       end
     end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
+    ['<C-n>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
