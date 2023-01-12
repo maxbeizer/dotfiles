@@ -1,5 +1,5 @@
 -- https://neovim.io/doc/user/options.html
-vim.opt.colorcolumn = '+1'
+vim.opt.colorcolumn = "+1"
 vim.opt.hlsearch = true
 vim.opt.ignorecase = true
 vim.opt.incsearch = true
@@ -15,3 +15,5 @@ vim.opt.smartcase = true
 vim.opt.tabstop = 2
 vim.opt.textwidth = 80
 vim.opt.wrap = false
+vim.splitbelow = true
+vim.splitright = true
