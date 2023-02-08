@@ -68,15 +68,6 @@ if [ "$CODESPACES" == "true" ]; then
     echo "export PS1=[$CODESPACES_FRIENDLY_NAME]:$PS1" >> "$HOME"/.bashrc
   fi
 
-  # Install linux brew
-  if ! command -v brew &> /dev/null
-  then
-    test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
-    test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bash_profile
-    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.profile
-  fi
-
   fanch_echo "Adding bashrc to .bash_profile"
   echo "source $HOME/.bashrc" >> "$HOME"/.bash_profile
 

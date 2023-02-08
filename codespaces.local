@@ -1,4 +1,13 @@
 function codespace() {
+  # Install linux brew
+  if ! command -v brew &> /dev/null
+  then
+    test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+    test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bash_profile
+    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.profile
+  fi
+
   if ! command -v fzf --version &> /dev/null
   then
     brew install fzf
