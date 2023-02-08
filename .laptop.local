@@ -73,6 +73,7 @@ brew 'bats'
 brew 'coreutils'
 brew 'fzf'
 brew 'git-secrets'
+brew 'htop'
 brew 'httpie'
 brew 'jq'
 brew 'mycli'
@@ -80,13 +81,14 @@ brew 'neovim'
 brew 'pgcli'
 brew 'ripgrep'
 brew 'telnet'
+brew 'tldr'
 
 # casks
 tap 'caskroom/cask'
 tap 'neovim/neovim'
 tap 'homebrew/command-not-found'
 
-cask 'alfred'
+cask '1password'
 cask 'dropbox'
 cask 'firefox'
 cask 'google-chrome'
@@ -94,9 +96,9 @@ cask 'imageoptim'
 cask 'insomnia'
 cask 'iterm2'
 cask 'kap'
-cask 'lastpass'
 cask 'licecap'
 cask 'ngrok'
+cask 'raycast'
 cask 'slack'
 cask 'spotify'
 cask 'the-unarchiver'
@@ -119,9 +121,6 @@ asdf plugin-add nodejs
 # fzf  keybindings and completions
 fancy_echo "Enabling fzf keybindings and completions"
 $(brew --prefix)/opt/fzf/install
-
-# tldr  easier to parse man pages
-go get github.com/anoopengineer/tldr
 
 # ripgreprc
 ln -s $(pwd)/ripgreprc $HOME/.ripgreprc
