@@ -65,20 +65,11 @@ export PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
 export PATH="$PATH:/usr/bin"
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-export PATH="$PATH:$HOME/code/github/gh-helper-cli/exe"
+export PATH="$HOME/.bin:$PATH"
 
 . ~/z.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-thehub() {
-  local filename
-  filename=$(rg '' -l ~/code/github/thehub/docs/**/*.md | fzf --reverse --prompt="TheHub >" --border --print-query --preview="cat {}" --preview-window=down:50% --inline-info | tail -1)
-
-  if [ -n "$filename" ]; then
-    open "https://thehub.github.com/$(echo $filename | cut -f7- -d'/' | sed 's/docs//' | sed 's/.md$//')"
-  fi
-}
 
 HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
 if [ -f "$HB_CNF_HANDLER" ]; then
