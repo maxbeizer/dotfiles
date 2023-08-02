@@ -7,9 +7,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 setopt NO_BEEP
 setopt HIST_IGNORE_SPACE
 
-# https://github.com/github/hub
-eval "$(hub alias -s)"
-
 # prompt
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}["
@@ -49,8 +46,9 @@ SAVEHIST=100000
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
-source $HOME/.asdf/asdf.sh
 . $HOME/.asdf/asdf.sh
+fpath=(${ASDF_DIR}/completions $fpath)
+autoload -Uz compinit && compinit
 
 # https://github.com/Aloxaf/fzf-tab
 source ~/code/fzf-tab/fzf-tab.plugin.zsh
@@ -81,5 +79,3 @@ CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zs
 
 # heroku autocomplete setup
 HEROKU_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
-
-eval "$(nodenv init -)"
