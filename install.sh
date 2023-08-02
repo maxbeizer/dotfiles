@@ -45,10 +45,11 @@ if [ "$CODESPACES" == "true" ]; then
   [ -f /workspaces/github ] && export PATH="/workspaces/github/bin:$PATH"
 
   fancy_echo "Setting up neovim"
+  git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+    ~/.local/share/nvim/site/pack/packer/start/packer.nvim
   mkdir -p "$HOME"/.config/nvim
-  echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> "$HOME"/.config/nvim/init.vim
-  echo "let &packpath=&runtimepath" >> "$HOME"/.config/nvim/init.vim
-  echo "source ~/.vimrc" >> "$HOME"/.config/nvim/init.vim
+  cat $(pwd)/nvim.local >> "$HOME"/.config/nvim/init.vim
+  vim -E -s +PackerSync +qa
 
   fancy_echo "Sourcing aliases"
   echo "source "$HOME"/.aliases" >> "$HOME"/.bashrc
@@ -59,13 +60,6 @@ if [ "$CODESPACES" == "true" ]; then
 
   if [ -d "/workspaces/github/bin" ]; then
     echo "export PATH="$PATH":/workspaces/github/bin" >> "$HOME"/.bashrc
-  fi
-
-  # Update the PS1 only if the gh cli is installed
-  if ! command -v gh &> /dev/null
-  then
-    echo "export CODESPACES_FRIENDLY_NAME='$(gh api /user/codespaces/$CODESPACE_NAME | jq .display_name | tr -d '"')'" >> "$HOME"/.bashrc
-    echo "export PS1=[$CODESPACES_FRIENDLY_NAME]:$PS1" >> "$HOME"/.bashrc
   fi
 
   fanch_echo "Adding bashrc to .bash_profile"
