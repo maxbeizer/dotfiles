@@ -49,7 +49,7 @@ if [ "$CODESPACES" == "true" ]; then
     ~/.local/share/nvim/site/pack/packer/start/packer.nvim
   mkdir -p "$HOME"/.config/nvim
   cat $(pwd)/nvim.local >> "$HOME"/.config/nvim/init.vim
-  vim -E -s +PackerSync +qa
+  vim -E -c PackerSync -c q
 
   fancy_echo "Sourcing aliases"
   echo "source "$HOME"/.aliases" >> "$HOME"/.bashrc
