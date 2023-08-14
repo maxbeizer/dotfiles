@@ -21,3 +21,4 @@ if has('nvim')
 endif
 " Something is up with vim-ruby making ctags unusable
 UnPlug 'vim-ruby'
+Plug 'mrtazz/vim-plan'

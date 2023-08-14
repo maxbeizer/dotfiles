@@ -149,3 +149,15 @@ autocmd FileType markdown set wrap linebreak
 autocmd FileType markdown set tw=0
 autocmd FileType markdown noremap j gj
 autocmd FileType markdown noremap k gk
+
+" Plan https://github.com/mrtazz/vim-plan
+" base dir for all notes
+let g:PlanBaseDir = get(g:, 'PlanBaseDir', $HOME . "/code/1-1-Repo-maxbeizer")
+" template dir relative to base dir
+let g:PlanTemplateDir = get(g:, 'PlanTemplatePath', "templates")
+" daily notes dir relative to base dir
+let g:PlanDailiesDir = get(g:, 'PlanTemplatePath', "dailies")
+" generic notes dir relative to base dir
+let g:PlanNotesDir = get(g:, 'PlanTemplatePath', "notes")
+" allow user to add title to notes
+let g:PlanNotesTitleEnabled = get(g:, 'PlanNotesTitleEnabled', 0)
