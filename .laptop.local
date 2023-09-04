@@ -82,6 +82,7 @@ brew 'pgcli'
 brew 'ripgrep'
 brew 'telnet'
 brew 'tldr'
+brew 'azure-cli'
 
 # casks
 tap 'caskroom/cask'

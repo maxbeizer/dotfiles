@@ -160,4 +160,4 @@ let g:PlanDailiesDir = get(g:, 'PlanTemplatePath', "dailies")
 " generic notes dir relative to base dir
 let g:PlanNotesDir = get(g:, 'PlanTemplatePath', "notes")
 " allow user to add title to notes
-let g:PlanNotesTitleEnabled = get(g:, 'PlanNotesTitleEnabled', 0)
+let g:PlanPromptForTitle = get(g:, 'PlanPromptForTitle', 1)
