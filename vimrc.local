@@ -150,6 +150,9 @@ autocmd FileType markdown set tw=0
 autocmd FileType markdown noremap j gj
 autocmd FileType markdown noremap k gk
 
+" Use dotcom's safe-ruby if it's available
+autocmd FileType ruby if executable('bin/safe-ruby') | let g:ale_ruby_ruby_executable = 'bin/safe-ruby' | endif
+
 " Plan https://github.com/mrtazz/vim-plan
 " base dir for all notes
 let g:PlanBaseDir = get(g:, 'PlanBaseDir', $HOME . "/code/1-1-Repo-maxbeizer")
