@@ -71,6 +71,7 @@ fancy_echo "Installing brews"
 brew bundle --file=- <<EOF
 brew 'bats'
 brew 'coreutils'
+brew 'entr'
 brew 'fzf'
 brew 'git-secrets'
 brew 'htop'
@@ -89,21 +90,19 @@ tap 'caskroom/cask'
 tap 'neovim/neovim'
 tap 'homebrew/command-not-found'
 
+cask 'arc'
 cask '1password'
 cask 'dropbox'
 cask 'firefox'
 cask 'google-chrome'
+cask 'hiddenbar'
 cask 'imageoptim'
-cask 'insomnia'
 cask 'iterm2'
 cask 'kap'
-cask 'licecap'
-cask 'ngrok'
 cask 'raycast'
 cask 'slack'
 cask 'spotify'
 cask 'the-unarchiver'
-cask 'vagrant'
 cask 'visual-studio-code'
 EOF
 
@@ -118,6 +117,7 @@ asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
 asdf plugin-add erlang
 asdf plugin-add golang
 asdf plugin-add nodejs
+asdf plugin-add ruby
 
 # fzf  keybindings and completions
 fancy_echo "Enabling fzf keybindings and completions"
