@@ -47,9 +47,10 @@ if [ "$CODESPACES" == "true" ]; then
   fancy_echo "Setting up neovim"
   git clone --depth 1 https://github.com/wbthomason/packer.nvim\
     ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-  mkdir -p "$HOME"/.config/nvim
+  mkdir -p "$HOME"/.config/nvim/lua
   cat $(pwd)/nvim.local >> "$HOME"/.config/nvim/init.vim
-  vim -E -c PackerSync -c q
+  cat $(pwd)/nvim/lua/plugins.lua >> "$HOME"/.config/nvim/lua/plugins.lua
+  nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
   fancy_echo "Sourcing aliases"
   echo "source "$HOME"/.aliases" >> "$HOME"/.bashrc
