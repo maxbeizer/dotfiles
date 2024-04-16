@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-images=$(git diff --exit-code --cached --name-only --diff-filter=ACM -- '*.png' '*.jpg')
-if [ -n "$images" ]; then
-  echo $images | imageoptim && git add $images
-fi
-
 svgs=$(git diff --exit-code --cached --name-only --diff-filter=ACM -- '*.svg')
 if [ -n "$svgs" ]; then
   echo $svgs | svgo --pretty && git add $svgs
