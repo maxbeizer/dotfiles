@@ -15,11 +15,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'c-brenn/phoenix.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'github/copilot.vim'
-if has('nvim')
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'nvim-orgmode/orgmode'
-endif
 " Something is up with vim-ruby making ctags unusable
 UnPlug 'vim-ruby'
 Plug 'mrtazz/vim-plan'
-" Plug '~/code/vim-plan'
+Plug 'tpope/vim-dispatch'
