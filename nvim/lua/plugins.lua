@@ -12,7 +12,7 @@ require('packer').startup(function(use)
 
   -- Setup language servers.
   local lspconfig = require('lspconfig')
-  lspconfig.tsserver.setup {}
+  lspconfig.ts_ls.setup {}
   lspconfig.sorbet.setup{}
 
   -- Global mappings.
