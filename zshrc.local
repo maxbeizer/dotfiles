@@ -46,7 +46,7 @@ SAVEHIST=100000
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
-. $HOME/.asdf/asdf.sh
+# . $HOME/.asdf/asdf.sh
 fpath=(${ASDF_DIR}/completions $fpath)
 autoload -Uz compinit && compinit
 

@@ -69,7 +69,7 @@ env RCRC=$HOME/dotfiles/rcrc rcup
 # brews
 fancy_echo "Installing brews"
 brew bundle --file=- <<EOF
-brew 'bats'
+brew 'asdf'
 brew 'coreutils'
 brew 'entr'
 brew 'fzf'

@@ -29,10 +29,13 @@ set hlsearch
 " Use fzf
 set rtp+=/usr/local/opt/fzf
 
-" Twilight theme for gui vim
+" Solarized theme for gui vim
 if has("gui_running")
   colorscheme solarized
 endif
+
+" Set termguicolors off
+set notgc
 
 set background=dark
 colorscheme solarized
