@@ -29,18 +29,21 @@ set hlsearch
 " Use fzf
 set rtp+=/usr/local/opt/fzf
 
-" Solarized theme for gui vim
-if has("gui_running")
-  colorscheme solarized
-endif
-
-" Set termguicolors off
-set notgc
-
-set background=dark
-colorscheme solarized
 " toggle background light/dark
 map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR> )
+" Put these BEFORE colorscheme solarized
+let g:solarized_termcolors=256
+let g:solarized_contrast="normal"
+let g:solarized_visibility="normal"
+let g:solarized_termtrans=0
+set termguicolors
+set background=dark
+colorscheme NeoSolarized
+if has('termguicolors')
+  set termguicolors
+endif
+let g:solarized_termcolors=256
+let g:solarized_contrast="normal"
 
 if has("gui_macvim")
   " Switch to specific tab numbers with Command-number
