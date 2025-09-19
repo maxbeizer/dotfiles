@@ -59,6 +59,11 @@ if [ "$CODESPACES" == "true" ]; then
   echo "source "$HOME"/.codespaces.local" >> "$HOME"/.bashrc
   echo "machine goproxy.githubapp.com login nobody password $GITHUB_TOKEN" >> $HOME/.netrc
 
+  fancy_echo "Adding copilot CLI"
+  npm config set "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN"
+  npm config set "@github:registry=https://npm.pkg.github.com/"
+  npm install -g @github/copilot
+
   if [ -d "/workspaces/github/bin" ]; then
     echo "export PATH="$PATH":/workspaces/github/bin" >> "$HOME"/.bashrc
   fi
