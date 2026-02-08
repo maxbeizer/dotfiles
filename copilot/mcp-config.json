@@ -1,0 +1,35 @@
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "X-MCP-Toolsets": "context,repos,issues,pull_requests,notifications,discussions,projects,copilot"
+      },
+      "tools": [
+        "*"
+      ]
+    },
+    "hubbers-mcp-server": {
+      "tools": [
+        "*"
+      ],
+      "type": "local",
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/maxbeizer/code/github/hubbers-mcp-server",
+        "run",
+        "hubbers.py"
+      ]
+    },
+    "datadog": {
+      "type": "http",
+      "url": "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?",
+      "headers": {},
+      "tools": [
+        "*"
+      ]
+    }
+  }
+}
