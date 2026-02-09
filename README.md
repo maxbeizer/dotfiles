@@ -8,7 +8,6 @@ Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbo
 .
 ├── .laptop.local           # Laptop script extensions (brews, casks, asdf plugins, macOS defaults)
 ├── install.sh              # Codespaces bootstrap (auto-detected via $CODESPACES)
-├── install-copilot.sh      # Symlinks copilot/ configs into ~/.copilot/
 ├── install-gh-extensions.sh# Installs gh CLI extensions (idempotent)
 │
 ├── aliases.local           # Shell aliases (Rails, Heroku, Ruby, Git)
@@ -23,7 +22,6 @@ Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbo
 ├── nvim.local              # Neovim init — sources ~/.vimrc then loads Lua plugins
 ├── nvim/lua/               # Neovim Lua plugin configs (packer)
 │
-├── copilot/                # GitHub Copilot CLI configs (see copilot/README.md)
 ├── gemrc.local             # Gem defaults (skip ri/rdoc)
 ├── ripgreprc               # Ripgrep defaults (smart-case, max-columns, glob exclusions)
 └── codespaces.local        # Codespaces-specific setup (linuxbrew, fzf, nvim, ctags)
@@ -38,10 +36,7 @@ curl --remote-name https://raw.githubusercontent.com/maxbeizer/dertfiles/master/
 less mac
 sh mac 2>&1 | tee ~/laptop.log
 
-# 2. Link Copilot CLI configs
-./install-copilot.sh
-
-# 3. Install gh CLI extensions
+# 2. Install gh CLI extensions
 ./install-gh-extensions.sh
 ```
 
@@ -95,10 +90,6 @@ Defined in `gitconfig.local`. Highlights:
 - Strips trailing whitespace on save for `.rb`, `.ex`, `.exs`, `.js`
 
 Plugins are managed by vim-plug in `vimrc.bundles.local`.
-
-## Copilot CLI
-
-See [`copilot/README.md`](copilot/README.md) for Copilot CLI config, MCP servers, and skills setup.
 
 ## Dependencies
 
