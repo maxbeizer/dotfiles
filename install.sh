@@ -74,4 +74,11 @@ if [ "$CODESPACES" == "true" ]; then
   fancy_echo "All done"
 else
   fancy_echo "Not running in a codespace"
+
+  # Ghostty terminal config
+  if [ -d "$(pwd)/ghostty" ]; then
+    fancy_echo "Linking Ghostty config"
+    mkdir -p "$HOME/.config/ghostty"
+    ln -sf "$(pwd)/ghostty/config" "$HOME/.config/ghostty/config"
+  fi
 fi

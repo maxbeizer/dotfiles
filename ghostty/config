@@ -1,0 +1,19 @@
+# appearance
+#
+theme = iTerm2 Solarized Dark
+palette = 8=#586e75
+# theme = Solarized Dark - Patched
+# font-family = "Monaspace Krypton Var"
+# font-family = "Monaco"
+font-size = 16
+window-inherit-font-size = false
+
+# behavior
+#
+command = /opt/homebrew/bin/zsh
+copy-on-select = clipboard
+link-url = true
+
+# pass alt+left/right through to tmux for pane resizing
+keybind = alt+left=unbind
+keybind = alt+right=unbind

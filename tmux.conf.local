@@ -3,3 +3,9 @@ set -g prefix C-a
 # bind 'C-a C-a' to type 'C-a'
 bind C-a send-prefix
 unbind C-b
+
+# resize panes with prefix + Option+Arrow
+bind -r M-Up resize-pane -U 5
+bind -r M-Down resize-pane -D 5
+bind -r M-Left resize-pane -L 5
+bind -r M-Right resize-pane -R 5

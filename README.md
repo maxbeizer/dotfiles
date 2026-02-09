@@ -15,6 +15,7 @@ Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbo
 ├── git_template.local/     # Git hooks (commit, pre-commit, prepare-commit-message)
 ├── zshrc.local             # Zsh prompt, history, PATH, plugins (fzf, fzf-tab, z, asdf)
 ├── zshenv.local            # (empty — reserved for env vars loaded before .zshrc)
+├── ghostty/config          # Ghostty terminal config (keybindings, theme, font)
 ├── tmux.conf.local         # Tmux: rebinds prefix to C-a
 │
 ├── vimrc.local             # Vim settings, keybindings, plugin config (NERDTree, FZF, Fugitive, ALE)
