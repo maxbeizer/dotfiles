@@ -48,6 +48,8 @@ Or run one command after cloning this repo:
 ~/dotfiles-local/bin/bootstrap-machine
 ```
 
+`bootstrap-machine` imports GitHub CLI aliases automatically from `~/dotfiles-local/gh-aliases`.
+
 ## Project hygiene
 
 - Track notable changes in [`CHANGELOG.md`](./CHANGELOG.md).
@@ -84,6 +86,12 @@ Tracked in `gh-aliases` as the output of:
 
 ```bash
 gh alias list
+```
+
+On fresh machine bootstrap, aliases are imported with:
+
+```bash
+gh alias import ~/dotfiles-local/gh-aliases --clobber
 ```
 
 ## Git aliases
