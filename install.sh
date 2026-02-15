@@ -8,7 +8,7 @@ fancy_echo() {
   local fmt="$1"; shift
 
   # shellcheck disable=SC2059
-  printf "\\n$fmt\\n" "$@"
+  printf "\n$fmt\n" "$@"
 }
 
 get() {
@@ -20,17 +20,17 @@ if [ "$CODESPACES" == "true" ]; then
   locals=( "tmux.conf.local" "vimrc.local" "vimrc.bundles.local" "aliases.local" "gitconfig.local" "ripgreprc" "codespaces.local")
   for i in "${locals[@]}"
   do
-    ln -s $(pwd)/"$i" $HOME/."$i"
+    ln -sf $(pwd)/"$i" $HOME/."$i"
   done
 
   fancy_echo "Getting thoughtbot dotfiles"
-  get $HOME/.vimrc https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc
-  get $HOME/.vimrc.bundles https://raw.githubusercontent.com/thoughtbot/dotfiles/master/vimrc.bundles
-  get $HOME/.aliases https://raw.githubusercontent.com/thoughtbot/dotfiles/master/aliases
-  get $HOME/.gitconfig https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitconfig
-  get $HOME/.gitmessage https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitmessage
-  get $HOME/.gitignore https://raw.githubusercontent.com/thoughtbot/dotfiles/master/gitignore
-  get $HOME/.tmux.conf https://raw.githubusercontent.com/thoughtbot/dotfiles/master/tmux.conf
+  get $HOME/.vimrc https://raw.githubusercontent.com/thoughtbot/dotfiles/main/vimrc
+  get $HOME/.vimrc.bundles https://raw.githubusercontent.com/thoughtbot/dotfiles/main/vimrc.bundles
+  get $HOME/.aliases https://raw.githubusercontent.com/thoughtbot/dotfiles/main/aliases
+  get $HOME/.gitconfig https://raw.githubusercontent.com/thoughtbot/dotfiles/main/gitconfig
+  get $HOME/.gitmessage https://raw.githubusercontent.com/thoughtbot/dotfiles/main/gitmessage
+  get $HOME/.gitignore https://raw.githubusercontent.com/thoughtbot/dotfiles/main/gitignore
+  get $HOME/.tmux.conf https://raw.githubusercontent.com/thoughtbot/dotfiles/main/tmux.conf
 
   fancy_echo "Installing vim plugins"
   if [ -e "$HOME"/.vim/autoload/plug.vim ]; then
@@ -45,12 +45,11 @@ if [ "$CODESPACES" == "true" ]; then
   [ -f /workspaces/github ] && export PATH="/workspaces/github/bin:$PATH"
 
   fancy_echo "Setting up neovim"
-  git clone --depth 1 https://github.com/wbthomason/packer.nvim\
-    ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-  mkdir -p "$HOME"/.config/nvim/lua
-  cat $(pwd)/nvim.local >> "$HOME"/.config/nvim/init.vim
-  cat $(pwd)/nvim/lua/plugins.lua >> "$HOME"/.config/nvim/lua/plugins.lua
-  nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+  mkdir -p "$HOME"/.config/nvim
+  cp "$(pwd)/nvim.local" "$HOME/.config/nvim/init.vim"
+  rm -rf "$HOME/.config/nvim/lua"
+  cp -R "$(pwd)/nvim/lua" "$HOME/.config/nvim/lua"
+  nvim --headless '+Lazy! sync' +qa
 
   fancy_echo "Sourcing aliases"
   echo "source "$HOME"/.aliases" >> "$HOME"/.bashrc
@@ -68,7 +67,7 @@ if [ "$CODESPACES" == "true" ]; then
     echo "export PATH="$PATH":/workspaces/github/bin" >> "$HOME"/.bashrc
   fi
 
-  fanch_echo "Adding bashrc to .bash_profile"
+  fancy_echo "Adding bashrc to .bash_profile"
   echo "source $HOME/.bashrc" >> "$HOME"/.bash_profile
 
   fancy_echo "All done"

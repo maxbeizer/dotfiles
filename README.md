@@ -1,4 +1,4 @@
-# Dertfiles
+# dotfiles-local
 
 Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbot/laptop) and [dotfiles](https://github.com/thoughtbot/dotfiles). Everything here is the `*.local` overlay — thoughtbot's dotfiles source these automatically via their `rcm` setup.
 
@@ -9,6 +9,7 @@ Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbo
 ├── .laptop.local           # Laptop script extensions (brews, casks, asdf plugins, macOS defaults)
 ├── install.sh              # Codespaces bootstrap (auto-detected via $CODESPACES)
 ├── install-gh-extensions.sh# Installs gh CLI extensions (idempotent)
+├── bin/codespaces-vim-lab # Codespaces helper for Vim/Neovim doctor+refresh+timing
 │
 ├── aliases.local           # Shell aliases (Rails, Heroku, Ruby, Git)
 ├── gitconfig.local         # Git identity, aliases, editor, diff tool
@@ -25,26 +26,28 @@ Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbo
 │
 ├── gemrc.local             # Gem defaults (skip ri/rdoc)
 ├── ripgreprc               # Ripgrep defaults (smart-case, max-columns, glob exclusions)
-└── codespaces.local        # Codespaces-specific setup (linuxbrew, fzf, nvim, ctags)
+├── codespaces.local        # Codespaces-specific setup (linuxbrew, fzf, nvim, ctags)
+└── docs/CODESPACES.md      # Codespaces testing workflow for Vim/Neovim changes
 ```
 
 ## Fresh machine setup
 
-```bash
-# 1. Run thoughtbot's laptop script
-curl --remote-name https://raw.githubusercontent.com/thoughtbot/laptop/master/mac
-curl --remote-name https://raw.githubusercontent.com/maxbeizer/dertfiles/master/.laptop.local
-less mac
-sh mac 2>&1 | tee ~/laptop.log
+Recommended (uses the local bootstrap script):
 
-# 2. Install gh CLI extensions
-./install-gh-extensions.sh
+```bash
+git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles-local
+~/dotfiles-local/bin/bootstrap-machine
+~/dotfiles-local/install-gh-extensions.sh
 ```
 
-Or run one command after cloning this repo:
+Alternative (run thoughtbot laptop + local overlay):
 
 ```bash
-~/dotfiles-local/bin/bootstrap-machine
+curl --remote-name https://raw.githubusercontent.com/thoughtbot/laptop/main/mac
+curl --remote-name https://raw.githubusercontent.com/maxbeizer/dotfiles/main/.laptop.local
+less mac
+sh mac 2>&1 | tee ~/laptop.log
+~/dotfiles-local/install-gh-extensions.sh
 ```
 
 ## Project hygiene
@@ -56,13 +59,29 @@ Or run one command after cloning this repo:
 
 ## Codespaces
 
-When `$CODESPACES` is set, `install.sh` runs automatically and:
+When `$CODESPACES` is set, run:
 
-- Symlinks local dotfiles into `$HOME`
-- Downloads thoughtbot base dotfiles
-- Installs vim-plug plugins
-- Sets up Neovim with packer
-- Configures bash with aliases, editor, and Go/Copilot paths
+```bash
+CODESPACES=true ./install.sh
+```
+
+This will:
+
+- Symlink local overlay files into `$HOME`
+- Download thoughtbot base dotfiles from `main`
+- Install/update vim-plug plugins
+- Install modular Neovim config and sync `lazy.nvim` plugins
+- Configure bash aliases, editor defaults, and Copilot CLI
+
+For iterative Vim/Neovim testing:
+
+```bash
+./bin/codespaces-vim-lab doctor
+./bin/codespaces-vim-lab refresh
+./bin/codespaces-vim-lab startup
+```
+
+See [`docs/CODESPACES.md`](./docs/CODESPACES.md) for the full workflow.
 
 ## Key aliases
 

@@ -1,4 +1,10 @@
-set runtimepath^=~/.vim runtimepath+=~/.vim/after+=~/.local/share/nvim/site/pack/packer/start
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath=&runtimepath
 source ~/.vimrc
-lua require('plugins')
+
+lua << LUAEOF
+local ok, maxbeizer = pcall(require, 'maxbeizer')
+if ok and maxbeizer.setup then
+  maxbeizer.setup()
+end
+LUAEOF
