@@ -47,8 +47,6 @@ bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
 # . $HOME/.asdf/asdf.sh
-fpath=(${ASDF_DIR}/completions $fpath)
-autoload -Uz compinit && compinit
 
 # https://github.com/Aloxaf/fzf-tab
 source ~/code/fzf-tab/fzf-tab.plugin.zsh
@@ -65,13 +63,15 @@ export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 export PATH="$HOME/.bin:$PATH"
 
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
 . ~/z.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-if [ -f "$HB_CNF_HANDLER" ]; then
- source "$HB_CNF_HANDLER";
+HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
+if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
+  source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
 fi
 
 # heroku autocomplete setup
@@ -79,3 +79,5 @@ CLI_ENGINE_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/completions/zs
 
 # heroku autocomplete setup
 HEROKU_AC_ZSH_SETUP_PATH=/Users/mbeizer/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
+
+eval "$(gh hubber-skills completion zsh)"

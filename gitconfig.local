@@ -2,7 +2,6 @@
   me = maxbeizer
   email = max.beizer@gmail.com
   name = Max Beizer
-  signingkey = C4E91512328E2AE4
 [credential]
   helper = osxkeychain
 [github]
@@ -15,7 +14,7 @@
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
   editor = vim
 [commit]
-  gpgsign = true
+  gpgsign = false
 [alias]
   s = status -sb
   stb = status -sb

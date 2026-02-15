@@ -41,6 +41,17 @@ sh mac 2>&1 | tee ~/laptop.log
 ./install-gh-extensions.sh
 ```
 
+Or run one command after cloning this repo:
+
+```bash
+~/dotfiles-local/bin/bootstrap-machine
+```
+
+## Project hygiene
+
+- Track notable changes in [`CHANGELOG.md`](./CHANGELOG.md).
+- Use [`AGENTS.md`](./AGENTS.md) for repeatable agent setup and VM rehearsal notes.
+
 `.laptop.local` handles Homebrew packages, cask apps, Ruby gems, asdf language plugins, fzf setup, ripgrep config, and macOS keyboard repeat settings.
 
 ## Codespaces
@@ -100,3 +111,15 @@ Plugins are managed by vim-plug in `vimrc.bundles.local`.
 - [fzf](https://github.com/junegunn/fzf) — fuzzy finder
 - [fzf-tab](https://github.com/Aloxaf/fzf-tab) — fzf-powered zsh tab completion (cloned to `~/code/fzf-tab`)
 - [z](https://github.com/rupa/z) — directory jumper (sourced from `~/z.sh`)
+
+## Verified commits without GPG
+
+Yes — you can use SSH commit signing instead of GPG.
+
+```bash
+git config --global gpg.format ssh
+git config --global user.signingkey ~/.ssh/id_ed25519.pub
+git config --global commit.gpgsign true
+```
+
+Then add the corresponding SSH signing key in GitHub settings under **SSH and GPG keys** as a **Signing key**.

@@ -1,0 +1,86 @@
+#!/bin/sh
+
+set -eu
+
+dry_run=0
+skip_verify=0
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -n|--dry-run) dry_run=1 ;;
+    --skip-verify) skip_verify=1 ;;
+    -h|--help)
+      cat <<'EOF'
+Usage: bootstrap-machine [--dry-run] [--skip-verify]
+
+Bootstraps thoughtbot dotfiles + dotfiles-local overlay:
+  - ensures ~/dotfiles exists
+  - ensures ~/dotfiles-local exists
+  - installs rcm when missing
+  - runs rcup using ~/dotfiles/rcrc
+  - optionally verifies startup
+EOF
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+run() {
+  echo "+ $*"
+  if [ "$dry_run" -eq 0 ]; then
+    "$@"
+  fi
+}
+
+DOTFILES_URL="${DOTFILES_URL:-https://github.com/thoughtbot/dotfiles.git}"
+DOTFILES_LOCAL_URL="${DOTFILES_LOCAL_URL:-https://github.com/maxbeizer/dotfiles.git}"
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
+DOTFILES_LOCAL_DIR="${DOTFILES_LOCAL_DIR:-$HOME/dotfiles-local}"
+RCRC_PATH="$DOTFILES_DIR/rcrc"
+
+if ! command -v git >/dev/null 2>&1; then
+  echo "git is required." >&2
+  exit 1
+fi
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Homebrew is required. Install from https://brew.sh/ and retry." >&2
+  exit 1
+fi
+
+if [ ! -d "$DOTFILES_DIR/.git" ]; then
+  run git clone "$DOTFILES_URL" "$DOTFILES_DIR"
+fi
+
+if [ ! -d "$DOTFILES_LOCAL_DIR/.git" ]; then
+  run git clone "$DOTFILES_LOCAL_URL" "$DOTFILES_LOCAL_DIR"
+fi
+
+if ! command -v rcup >/dev/null 2>&1; then
+  run brew install rcm
+fi
+
+if [ ! -f "$RCRC_PATH" ]; then
+  echo "Missing rcrc at $RCRC_PATH" >&2
+  exit 1
+fi
+
+run env RCRC="$RCRC_PATH" rcup
+
+if [ "$skip_verify" -eq 0 ]; then
+  if [ "$dry_run" -eq 1 ]; then
+    echo "+ zsh -lic 'echo shell-ok'"
+    echo "+ rcup -v"
+  else
+    zsh -lic 'echo shell-ok' >/dev/null
+    rcup -v >/dev/null
+    echo "Verification passed."
+  fi
+fi
+
+echo "Bootstrap complete."

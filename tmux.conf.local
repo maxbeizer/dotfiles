@@ -9,3 +9,6 @@ bind -r M-Up resize-pane -U 5
 bind -r M-Down resize-pane -D 5
 bind -r M-Left resize-pane -L 5
 bind -r M-Right resize-pane -R 5
+
+# allow Shift+Enter to insert newline in Copilot CLI
+bind -n S-Enter send-keys Escape Enter

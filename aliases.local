@@ -13,7 +13,7 @@ alias be="bundle exec"
 alias nobe="NO_BUNDLE_EXEC=1"
 alias fr="foreman run"
 alias lvh="bin/rails s -p 3000 -b lvh.me"
-alias testchanges="bin/tt $(git status --porcelain | grep test/ | awk \{print\ \$2\})"
+alias testchanges='bin/tt $(git status --porcelain | grep test/ | awk \{print\ \$2\})'
 
 # Heroku
 alias h="heroku"
