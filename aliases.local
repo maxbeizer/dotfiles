@@ -21,6 +21,12 @@ alias hlr="heroku local:run"
 alias hlw="heroku local web"
 alias hs="heroku sudo"
 
+# GitHub CLI
+alias ghpr="gh pr create --fill"
+alias ghpv="gh pr view --web"
+alias ghpc="gh pr checkout"
+alias ghrv="gh repo view --web"
+
 # Ruby
 alias gemset="rbenv gemset"
 
