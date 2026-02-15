@@ -11,6 +11,7 @@ Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbo
 ├── install-gh-extensions.sh# Installs gh CLI extensions (idempotent)
 │
 ├── aliases.local           # Shell aliases (Rails, Heroku, Ruby, Git)
+├── gh-aliases              # Snapshot from `gh alias list`
 ├── gitconfig.local         # Git identity, aliases, editor, diff tool
 ├── git_template.local/     # Git hooks (commit, pre-commit, prepare-commit-message)
 ├── zshrc.local             # Zsh prompt, history, PATH, plugins (fzf, fzf-tab, z, asdf)
@@ -76,6 +77,14 @@ When `$CODESPACES` is set, `install.sh` runs automatically and:
 | `speedtest` | `networkQuality` |
 
 See `aliases.local` for the full list.
+
+## GitHub CLI aliases
+
+Tracked in `gh-aliases` as the output of:
+
+```bash
+gh alias list
+```
 
 ## Git aliases
 
