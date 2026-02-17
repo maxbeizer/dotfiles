@@ -21,6 +21,7 @@
   cim = commit -m
   co = checkout
   cob = checkout -b
+  aa = add --all
   ap = add -p
   w = whatchanged
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
