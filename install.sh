@@ -17,6 +17,16 @@ get() {
 
 if [ "$CODESPACES" == "true" ]; then
   fancy_echo "In codespaces! Installing dotfiles"
+
+  fancy_echo "Installing modern Node via fnm"
+  curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+  export PATH="$HOME/.local/share/fnm:$PATH"
+  eval "$(fnm env)"
+  fnm install 22
+  fnm use 22
+  echo 'export PATH="$HOME/.local/share/fnm:$PATH"' >> "$HOME"/.bashrc
+  echo 'eval "$(fnm env)"' >> "$HOME"/.bashrc
+
   locals=( "tmux.conf.local" "vimrc.local" "vimrc.bundles.local" "aliases.local" "gitconfig.local" "ripgreprc" "codespaces.local")
   for i in "${locals[@]}"
   do
