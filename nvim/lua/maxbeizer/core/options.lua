@@ -17,3 +17,6 @@ if vim.fn.isdirectory(vendored_node) == 1 then
   vim.env.PATH = vendored_node .. ':' .. vendored_node .. '/bin:' .. vim.env.PATH
   vim.g.copilot_node_command = vendored_node .. '/node'
 end
+
+-- Use bundled language server instead of npx (avoids registry auth issues)
+vim.g.copilot_npx = false
