@@ -59,5 +59,14 @@ return {
       })
     end,
   },
+  {
+    'iCyMind/NeoSolarized',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.opt.background = 'dark'
+      pcall(vim.cmd.colorscheme, 'NeoSolarized')
+    end,
+  },
   { 'github/copilot.vim' },
 }
