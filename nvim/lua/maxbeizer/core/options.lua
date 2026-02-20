@@ -10,3 +10,9 @@ vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.completeopt = 'menuone,noselect'
+
+-- Ensure gh/gh vendored Node is on PATH for copilot.vim and LSPs
+local vendored_node = '/workspaces/github/vendor/node'
+if vim.fn.isdirectory(vendored_node) == 1 then
+  vim.env.PATH = vendored_node .. ':' .. vendored_node .. '/bin:' .. vim.env.PATH
+end
