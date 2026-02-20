@@ -40,7 +40,12 @@ return {
         servers.solargraph = {}
       end
 
-      if vim.fn.executable('srb') == 1 or vim.fn.executable('bin/srb') == 1 then
+      -- gh/gh codespace: use the repo's run-sorbet wrapper with RBI skip
+      if vim.fn.filereadable('.vscode/run-sorbet') == 1 then
+        servers.sorbet = {
+          cmd = { 'env', 'SRB_SKIP_GEM_RBIS=1', '.vscode/run-sorbet', '--lsp' },
+        }
+      elseif vim.fn.executable('srb') == 1 or vim.fn.executable('bin/srb') == 1 then
         servers.sorbet = {}
       end
 
