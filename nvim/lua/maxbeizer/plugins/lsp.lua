@@ -21,38 +21,41 @@ return {
       'williamboman/mason-lspconfig.nvim',
     },
     config = function()
-      local lspconfig = require('lspconfig')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-      local servers = {
-        lua_ls = {
-          settings = {
-            Lua = {
-              diagnostics = { globals = { 'vim' } },
-            },
+      -- Servers configured via native vim.lsp.config (nvim 0.11+)
+      vim.lsp.config('lua_ls', {
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            diagnostics = { globals = { 'vim' } },
           },
         },
-        ts_ls = {},
-        gopls = {},
-      }
+      })
+
+      vim.lsp.config('ts_ls', { capabilities = capabilities })
+      vim.lsp.config('gopls', { capabilities = capabilities })
+
+      local enable = { 'lua_ls', 'ts_ls', 'gopls' }
 
       if vim.fn.executable('solargraph') == 1 or vim.fn.executable('bin/solargraph') == 1 then
-        servers.solargraph = {}
+        vim.lsp.config('solargraph', { capabilities = capabilities })
+        table.insert(enable, 'solargraph')
       end
 
       -- gh/gh codespace: use the repo's run-sorbet wrapper with RBI skip
       if vim.fn.filereadable('.vscode/run-sorbet') == 1 then
-        servers.sorbet = {
+        vim.lsp.config('sorbet', {
+          capabilities = capabilities,
           cmd = { 'env', 'SRB_SKIP_GEM_RBIS=1', '.vscode/run-sorbet', '--lsp' },
-        }
+        })
+        table.insert(enable, 'sorbet')
       elseif vim.fn.executable('srb') == 1 or vim.fn.executable('bin/srb') == 1 then
-        servers.sorbet = {}
+        vim.lsp.config('sorbet', { capabilities = capabilities })
+        table.insert(enable, 'sorbet')
       end
 
-      for server, config in pairs(servers) do
-        config.capabilities = capabilities
-        lspconfig[server].setup(config)
-      end
+      vim.lsp.enable(enable)
 
       vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next)

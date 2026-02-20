@@ -3,9 +3,8 @@ return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = function()
-      require('nvim-treesitter.configs').setup({
+      require('nvim-treesitter').setup({
         ensure_installed = { 'lua', 'vim', 'vimdoc', 'ruby', 'javascript', 'typescript', 'go', 'json', 'markdown' },
-        highlight = { enable = true },
       })
     end,
   },
