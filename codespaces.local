@@ -27,3 +27,18 @@ function codespace() {
     script/build-ctags > /dev/null 2>&1
   fi
 }
+
+# Inject CODESPACE_NAME from the shared env file if not already set
+if [ "$CODESPACES" = "true" ] && [ -z "$CODESPACE_NAME" ]; then
+  _cs_env="/workspaces/.codespaces/shared/environment-variables.json"
+  if [ -f "$_cs_env" ]; then
+    CODESPACE_NAME=$(grep -o '"CODESPACE_NAME": *"[^"]*"' "$_cs_env" | cut -d'"' -f4)
+    export CODESPACE_NAME
+  fi
+fi
+
+# Show codespace name in prompt
+if [ -n "$CODESPACE_NAME" ]; then
+  _cs_short=$(echo "$CODESPACE_NAME" | sed 's/-[a-z0-9]*$//')
+  PS1="[\[\e[36m\]${_cs_short}\[\e[0m\]] ${PS1:-\w \$ }"
+fi
