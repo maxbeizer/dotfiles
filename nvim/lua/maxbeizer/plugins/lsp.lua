@@ -33,10 +33,18 @@ return {
         },
       })
 
-      vim.lsp.config('ts_ls', { capabilities = capabilities })
       vim.lsp.config('gopls', { capabilities = capabilities })
 
-      local enable = { 'lua_ls', 'ts_ls', 'gopls' }
+      local enable = { 'lua_ls' }
+
+      if vim.fn.executable('typescript-language-server') == 1 then
+        vim.lsp.config('ts_ls', { capabilities = capabilities })
+        table.insert(enable, 'ts_ls')
+      end
+
+      if vim.fn.executable('gopls') == 1 then
+        table.insert(enable, 'gopls')
+      end
 
       if vim.fn.executable('solargraph') == 1 or vim.fn.executable('bin/solargraph') == 1 then
         vim.lsp.config('solargraph', { capabilities = capabilities })

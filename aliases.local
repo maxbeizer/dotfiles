@@ -33,3 +33,4 @@ alias gemset="rbenv gemset"
 ## Other
 alias speedtest="networkQuality"
 alias gs="git status -b -s"
+alias g="git"
