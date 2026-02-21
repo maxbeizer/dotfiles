@@ -18,6 +18,7 @@ Bootstraps thoughtbot dotfiles + dotfiles-local overlay:
   - ensures ~/dotfiles-local exists
   - installs rcm when missing
   - runs rcup using ~/dotfiles/rcrc
+  - imports gh aliases from ~/dotfiles-local/gh-aliases
   - optionally verifies startup
 EOF
       exit 0
@@ -41,6 +42,7 @@ DOTFILES_URL="${DOTFILES_URL:-https://github.com/thoughtbot/dotfiles.git}"
 DOTFILES_LOCAL_URL="${DOTFILES_LOCAL_URL:-https://github.com/maxbeizer/dotfiles.git}"
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
 DOTFILES_LOCAL_DIR="${DOTFILES_LOCAL_DIR:-$HOME/dotfiles-local}"
+GH_ALIASES_PATH="$DOTFILES_LOCAL_DIR/gh-aliases"
 RCRC_PATH="$DOTFILES_DIR/rcrc"
 
 if ! command -v git >/dev/null 2>&1; then
@@ -71,6 +73,14 @@ if [ ! -f "$RCRC_PATH" ]; then
 fi
 
 run env RCRC="$RCRC_PATH" rcup
+
+if [ -f "$GH_ALIASES_PATH" ]; then
+  if command -v gh >/dev/null 2>&1; then
+    run gh alias import "$GH_ALIASES_PATH" --clobber
+  else
+    echo "Skipping gh alias import: gh is not installed."
+  fi
+fi
 
 if [ "$skip_verify" -eq 0 ]; then
   if [ "$dry_run" -eq 1 ]; then

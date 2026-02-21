@@ -12,6 +12,7 @@ Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbo
 ├── bin/codespaces-vim-lab # Codespaces helper for Vim/Neovim doctor+refresh+timing
 │
 ├── aliases.local           # Shell aliases (Rails, Heroku, Ruby, Git)
+├── gh-aliases              # Snapshot from `gh alias list`
 ├── gitconfig.local         # Git identity, aliases, editor, diff tool
 ├── git_template.local/     # Git hooks (commit, pre-commit, prepare-commit-message)
 ├── zshrc.local             # Zsh prompt, history, PATH, plugins (fzf, fzf-tab, z, asdf)
@@ -49,6 +50,8 @@ less mac
 sh mac 2>&1 | tee ~/laptop.log
 ~/dotfiles-local/install-gh-extensions.sh
 ```
+
+`bootstrap-machine` imports GitHub CLI aliases automatically from `~/dotfiles-local/gh-aliases`.
 
 ## Project hygiene
 
@@ -95,6 +98,20 @@ See [`docs/CODESPACES.md`](./docs/CODESPACES.md) for the full workflow.
 | `speedtest` | `networkQuality` |
 
 See `aliases.local` for the full list.
+
+## GitHub CLI aliases
+
+Tracked in `gh-aliases` as the output of:
+
+```bash
+gh alias list
+```
+
+On fresh machine bootstrap, aliases are imported with:
+
+```bash
+gh alias import ~/dotfiles-local/gh-aliases --clobber
+```
 
 ## Git aliases
 
