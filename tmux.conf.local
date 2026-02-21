@@ -12,3 +12,12 @@ bind -r M-Right resize-pane -R 5
 
 # allow Shift+Enter to insert newline in Copilot CLI
 bind -n S-Enter send-keys Escape Enter
+
+# dim inactive panes to make focused pane obvious
+set -g window-style 'bg=#001a26'
+set -g window-active-style 'bg=#002b36'
+
+# thick bright border on active pane
+set -g pane-active-border-style 'fg=#859900,bold'
+set -g pane-border-style 'fg=colour240'
+set -g pane-border-lines heavy
