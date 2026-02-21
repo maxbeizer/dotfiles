@@ -1,0 +1,105 @@
+#!/bin/bash
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: codespaces-vim-lab <doctor|refresh|startup>
+
+Commands:
+  doctor   Check vim/nvim tooling and config wiring in Codespaces
+  refresh  Refresh vim-plug and lazy.nvim plugins
+  startup  Capture startup timing logs for vim and nvim
+EOF
+}
+
+require_codespaces() {
+  if [[ "${CODESPACES:-}" != "true" ]]; then
+    echo "This helper is intended for GitHub Codespaces sessions." >&2
+    exit 1
+  fi
+}
+
+doctor() {
+  local expected_files=(
+    "$HOME/.vimrc"
+    "$HOME/.vimrc.bundles"
+    "$HOME/.vimrc.local"
+    "$HOME/.vimrc.bundles.local"
+    "$HOME/.config/nvim/init.vim"
+  )
+
+  echo "Repo: $(pwd)"
+  echo "CODESPACES=${CODESPACES:-false}"
+  echo "vim:  $(command -v vim || echo 'missing')"
+  echo "nvim: $(command -v nvim || echo 'missing')"
+  if command -v vim >/dev/null 2>&1; then
+    vim --version | head -n 1
+  fi
+  if command -v nvim >/dev/null 2>&1; then
+    nvim --version | head -n 1
+  fi
+
+  echo
+  echo "Config files:"
+  for file in "${expected_files[@]}"; do
+    if [[ -e "$file" ]]; then
+      echo "  ✓ $file"
+    else
+      echo "  ✗ $file (missing)"
+    fi
+  done
+}
+
+refresh() {
+  if command -v vim >/dev/null 2>&1; then
+    vim -u "$HOME/.vimrc.bundles" +PlugUpdate +PlugClean! +qa
+  else
+    echo "vim not found, skipping vim-plug refresh"
+  fi
+
+  if command -v nvim >/dev/null 2>&1; then
+    nvim --headless '+Lazy! sync' +qa
+  else
+    echo "nvim not found, skipping lazy.nvim refresh"
+  fi
+}
+
+startup() {
+  local vim_log="${TMPDIR:-/tmp}/vim-startuptime.log"
+  local nvim_log="${TMPDIR:-/tmp}/nvim-startuptime.log"
+
+  if command -v vim >/dev/null 2>&1; then
+    vim --startuptime "$vim_log" +qa
+    echo "vim startup log: $vim_log"
+    tail -n 5 "$vim_log"
+  else
+    echo "vim not found, skipping vim startup timing"
+  fi
+
+  if command -v nvim >/dev/null 2>&1; then
+    nvim --headless --startuptime "$nvim_log" +qa
+    echo "nvim startup log: $nvim_log"
+    tail -n 5 "$nvim_log"
+  else
+    echo "nvim not found, skipping nvim startup timing"
+  fi
+}
+
+main() {
+  local cmd="${1:-doctor}"
+  require_codespaces
+  case "$cmd" in
+    doctor) doctor ;;
+    refresh) refresh ;;
+    startup) startup ;;
+    -h|--help|help) usage ;;
+    *)
+      usage
+      echo "Unknown command: $cmd" >&2
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"

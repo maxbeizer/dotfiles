@@ -49,3 +49,13 @@ This is a good practice, not gauche.
    ~/dotfiles-local/bin/bootstrap-machine
    ```
 5. Save a clean snapshot before each rehearsal run.
+
+## Codespaces test loop for Vim/Neovim
+```bash
+CODESPACES=true ./install.sh
+./bin/codespaces-vim-lab doctor
+./bin/codespaces-vim-lab refresh
+./bin/codespaces-vim-lab startup
+```
+
+Use this loop before merging Neovim changes to validate behavior and startup time in a clean environment.
