@@ -68,5 +68,11 @@ return {
       pcall(vim.cmd.colorscheme, 'NeoSolarized')
     end,
   },
+  {
+    'mbbill/undotree',
+    keys = {
+      { '<leader>u', vim.cmd.UndotreeToggle, desc = 'Toggle Undotree' },
+    },
+  },
   { 'github/copilot.vim' },
 }
