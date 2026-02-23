@@ -16,6 +16,7 @@ extensions=(
   github/gh-bother
   kmcq/gh-combine-dependabot-prs
   maxbeizer/gh-contrib
+  maxbeizer/gh-rdm
   github/gh-discussions
   zerowidth/gh-md
   github/gh-merge-queue

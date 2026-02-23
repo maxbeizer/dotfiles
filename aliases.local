@@ -27,6 +27,14 @@ alias ghpv="gh pr view --web"
 alias ghpc="gh pr checkout"
 alias ghrv="gh repo view --web"
 
+# gh-rdm (remote clipboard/open forwarding)
+if [ "$CODESPACES" = "true" ] || [ -n "$SSH_CONNECTION" ]; then
+  alias pbcopy="gh rdm copy"
+  alias pbpaste="gh rdm paste"
+  alias open="gh rdm open"
+  alias xdg-open="gh rdm open"
+fi
+
 # Ruby
 alias gemset="rbenv gemset"
 
