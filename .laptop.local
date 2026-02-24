@@ -104,6 +104,7 @@ cask 'kap'
 cask 'raycast'
 cask 'slack'
 cask 'spotify'
+cask 'stats'
 cask 'the-unarchiver'
 cask 'visual-studio-code'
 EOF
