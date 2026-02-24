@@ -1,0 +1,23 @@
+git_protocol: https
+# What editor gh should run when creating issues, pull requests, etc. If blank, will refer to environment.
+editor:
+# When to interactively prompt. This is a global config that cannot be overridden by hostname. Supported values: enabled, disabled
+prompt: enabled
+# A pager program to send command output to, e.g. "less". Set the value to "cat" to disable the pager.
+pager:
+# Aliases allow you to create nicknames for gh commands
+aliases:
+    co: pr checkout
+    pr edit-body: '!gh pr view --json body -q .body > temp_body.md; vim temp_body.md; gh pr edit --body-file temp_body.md; rm temp_body.md;'
+    watch: '!gh pr checks $1 --required --fail-fast --watch && ~/.bin/pr-notify good $1 || ~/.bin/pr-notify bad $1'
+    notify: '!gh pr checks $1 --fail-fast --watch && ~/.bin/pr-notify good $1 || ~/.bin/pr-notify bad $1'
+    yolo: '!gh copilot -p "$*" --allow-all-tools'
+    rdm-connect: '!gh rdm server 2>/dev/null & sleep 1 && gh cs ssh -- -R 127.0.0.1:7391:$(gh rdm socket)'
+# The path to a unix socket through which send HTTP connections. If blank, HTTP traffic will be handled by net/http.DefaultTransport.
+http_unix_socket:
+# What web browser gh should use when opening URLs. If blank, will refer to environment.
+browser: gh rdm open
+version: "1"
+extensions:
+    slack:
+        team: github
