@@ -1,0 +1,32 @@
+# Quick-resume a Copilot CLI session via fzf picker
+ghcr() {
+  local db="$HOME/.copilot/session-store.db"
+  if [[ ! -f "$db" ]]; then
+    echo "No session store found at $db" >&2
+    return 1
+  fi
+
+  local selection
+  selection=$(sqlite3 -separator '|' "$db" \
+    "SELECT id, COALESCE(NULLIF(summary,''), '(no summary)'), cwd,
+            CAST((julianday('now') - julianday(updated_at)) * 24 AS INTEGER) || 'h ago'
+     FROM sessions ORDER BY updated_at DESC LIMIT 50;" \
+    | awk -F'|' '{
+        n = split($3, parts, "/")
+        printf "%s|%-50s  %-25s  %s\n", $1, $2, parts[n], $4
+      }' \
+    | fzf --with-nth=2.. \
+          --delimiter='|' \
+          --header="Select a session to resume" \
+          --preview-window=hidden \
+          --height=40% \
+          --reverse \
+    | cut -d'|' -f1)
+
+  if [[ -z "$selection" ]]; then
+    echo "No session selected." >&2
+    return 0
+  fi
+
+  gh copilot --resume="$selection"
+}

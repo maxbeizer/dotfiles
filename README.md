@@ -27,6 +27,9 @@ Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbo
 ├── gemrc.local             # Gem defaults (skip ri/rdoc)
 ├── ripgreprc               # Ripgrep defaults (smart-case, max-columns, glob exclusions)
 ├── codespaces.local        # Codespaces-specific setup (linuxbrew, fzf, nvim, ctags)
+│
+├── zsh/functions/ghcr      # Interactive Copilot CLI session resume via fzf picker
+├── zsh/functions/ghcrl     # Resume most recent Copilot CLI session for current directory
 └── docs/CODESPACES.md      # Codespaces testing workflow for Vim/Neovim changes
 ```
 

@@ -1,0 +1,21 @@
+# Resume the most recent Copilot CLI session for this directory
+ghcrl() {
+  local db="$HOME/.copilot/session-store.db"
+  if [[ ! -f "$db" ]]; then
+    echo "No session store found at $db" >&2
+    return 1
+  fi
+
+  local session_id summary
+  read -r session_id summary < <(sqlite3 -separator '	' "$db" \
+    "SELECT id, COALESCE(NULLIF(summary,''), '(no summary)')
+     FROM sessions WHERE cwd = '$(pwd)' ORDER BY updated_at DESC LIMIT 1;")
+
+  if [[ -z "$session_id" ]]; then
+    echo "No sessions found for $(pwd)" >&2
+    return 1
+  fi
+
+  echo "Resuming: $summary"
+  gh copilot --resume="$session_id"
+}
