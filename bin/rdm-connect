@@ -1,0 +1,44 @@
+#!/bin/bash
+# rdm-connect — SSH into a codespace with gh-rdm clipboard/open forwarding
+# and tmux pane title set to the codespace name.
+#
+# Usage:
+#   rdm-connect           # interactive picker via fzf
+#   rdm-connect <name>    # connect directly to named codespace
+
+set -euo pipefail
+
+CS_NAME="${1:-}"
+
+if [ -z "$CS_NAME" ]; then
+  CS_LINE=$(gh cs list --json name,displayName,repository -q '.[] | "\(.name)\t\(.displayName)\t\(.repository)"' | fzf --with-nth=2.. --delimiter='\t')
+  CS_NAME=$(echo "$CS_LINE" | cut -f1)
+  CS_DISPLAY=$(echo "$CS_LINE" | cut -f2)
+else
+  CS_DISPLAY=$(gh cs list --json name,displayName -q ".[] | select(.name==\"$CS_NAME\") | .displayName" 2>/dev/null)
+  CS_DISPLAY="${CS_DISPLAY:-$CS_NAME}"
+fi
+
+if [ -z "$CS_NAME" ]; then
+  echo "No codespace selected." >&2
+  exit 1
+fi
+
+# Set tmux pane title if inside tmux
+if [ -n "${TMUX:-}" ]; then
+  tmux select-pane -T "🚀 $CS_DISPLAY"
+fi
+
+# Start rdm server for clipboard/open forwarding
+gh rdm server 2>/dev/null &
+RDM_PID=$!
+sleep 1
+
+# SSH into the codespace with rdm socket forwarding
+gh cs ssh -c "$CS_NAME" -- -R "127.0.0.1:7391:$(gh rdm socket)"
+
+# Cleanup: stop rdm server and reset pane title
+kill "$RDM_PID" 2>/dev/null || true
+if [ -n "${TMUX:-}" ]; then
+  tmux select-pane -T ''
+fi

@@ -21,3 +21,9 @@ set -g window-active-style 'bg=#002b36'
 set -g pane-active-border-style 'fg=#859900,bold'
 set -g pane-border-style 'fg=colour240'
 set -g pane-border-lines heavy
+
+# label each pane: shows pane title (codespace shells set this to their name)
+# fallback is pane_current_path for local panes
+set -g allow-passthrough on
+set -g pane-border-status top
+set -g pane-border-format ' #{?#{!=:#{pane_title},},#{pane_title},#{pane_current_path}} '

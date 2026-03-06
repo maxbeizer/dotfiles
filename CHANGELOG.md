@@ -7,6 +7,12 @@ All notable changes to this dotfiles-local repo are documented in this file.
 ### Added
 - Added `AGENTS.md` with an agent-friendly bootstrap and VM rehearsal workflow.
 - Added `bin/bootstrap-machine` for one-command local setup.
+- Added `bin/rdm-connect` script to replace `gh rdm-connect` alias. Connects to
+  a codespace with gh-rdm clipboard/open forwarding and auto-sets the tmux pane
+  border title to `🚀 <codespace-name>` so you always know which codespace each
+  pane is connected to. Supports interactive fzf picker or direct name argument.
+- Added tmux pane border labels in `tmux.conf.local` — shows codespace name
+  (via pane title) when SSH'd in, falls back to current path for local panes.
 
 ### Changed
 - Updated shell startup ergonomics and completion wiring in local overlays.

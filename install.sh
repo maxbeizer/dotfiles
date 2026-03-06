@@ -80,6 +80,13 @@ if [ "$CODESPACES" == "true" ]; then
 else
   fancy_echo "Not running in a codespace"
 
+  # Symlink local bin scripts to ~/.local/bin
+  fancy_echo "Linking bin scripts to ~/.local/bin"
+  mkdir -p "$HOME/.local/bin"
+  for f in "$(pwd)/bin/"*; do
+    ln -sf "$f" "$HOME/.local/bin/$(basename "$f")"
+  done
+
   # Ghostty terminal config
   if [ -d "$(pwd)/ghostty" ]; then
     fancy_echo "Linking Ghostty config"
