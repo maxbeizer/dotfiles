@@ -22,6 +22,7 @@ alias hlw="heroku local web"
 alias hs="heroku sudo"
 
 # GitHub CLI
+alias ghc="gh copilot"
 alias ghpr="gh pr create --fill"
 alias ghpv="gh pr view --web"
 alias ghpc="gh pr checkout"

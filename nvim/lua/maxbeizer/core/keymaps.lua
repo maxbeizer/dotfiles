@@ -20,6 +20,10 @@ map('n', '<C-t>', function()
   require('telescope.builtin').buffers()
 end)
 
+map('n', '\\', function()
+  require('telescope.builtin').live_grep()
+end)
+
 map('n', '<C-n>', function()
   local ok, api = pcall(require, 'nvim-tree.api')
   if ok then

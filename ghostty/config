@@ -6,6 +6,7 @@ palette = 8=#586e75
 # font-family = "Monaspace Krypton Var"
 # font-family = "Monaco"
 font-size = 16
+cursor-style = block
 window-inherit-font-size = false
 
 # behavior
