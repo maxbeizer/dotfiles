@@ -5,6 +5,8 @@ All notable changes to this dotfiles-local repo are documented in this file.
 ## [Unreleased]
 
 ### Added
+- Added `zsh/configs/post/cursor.zsh` to force a block (fat) cursor on every
+  new prompt line, overriding vi-mode's default beam cursor.
 - Added `AGENTS.md` with an agent-friendly bootstrap and VM rehearsal workflow.
 - Added `bin/bootstrap-machine` for one-command local setup.
 - Added `bin/rdm-connect` script to replace `gh rdm-connect` alias. Connects to
