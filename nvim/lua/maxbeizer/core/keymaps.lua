@@ -13,20 +13,4 @@ map('n', '<leader>bg', function()
   vim.o.background = vim.o.background == 'dark' and 'light' or 'dark'
 end)
 
-map('n', '<C-p>', function()
-  require('telescope.builtin').find_files()
-end)
-map('n', '<C-t>', function()
-  require('telescope.builtin').buffers()
-end)
-
-map('n', '\\', function()
-  require('telescope.builtin').live_grep()
-end)
-
-map('n', '<C-n>', function()
-  local ok, api = pcall(require, 'nvim-tree.api')
-  if ok then
-    api.tree.toggle()
-  end
-end)
+-- Telescope and nvim-tree keymaps are defined in their lazy.nvim `keys` specs

@@ -1,12 +1,14 @@
 return {
   {
     'williamboman/mason.nvim',
+    cmd = 'Mason',
     config = function()
       require('mason').setup()
     end,
   },
   {
     'williamboman/mason-lspconfig.nvim',
+    event = 'BufReadPost',
     dependencies = { 'williamboman/mason.nvim' },
     config = function()
       require('mason-lspconfig').setup({
@@ -16,6 +18,7 @@ return {
   },
   {
     'neovim/nvim-lspconfig',
+    event = 'BufReadPost',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
       'williamboman/mason-lspconfig.nvim',
@@ -86,6 +89,7 @@ return {
   },
   {
     'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
       'L3MON4D3/LuaSnip',

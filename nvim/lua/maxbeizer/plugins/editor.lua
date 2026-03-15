@@ -1,6 +1,7 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
+    event = 'BufReadPost',
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter').setup({
@@ -10,6 +11,12 @@ return {
   },
   {
     'nvim-telescope/telescope.nvim',
+    cmd = 'Telescope',
+    keys = {
+      { '<C-p>', function() require('telescope.builtin').find_files() end, desc = 'Find files' },
+      { '<C-t>', function() require('telescope.builtin').buffers() end, desc = 'Buffers' },
+      { '\\', function() require('telescope.builtin').live_grep() end, desc = 'Live grep' },
+    },
     dependencies = {
       'nvim-lua/plenary.nvim',
       {
@@ -28,6 +35,10 @@ return {
   },
   {
     'nvim-tree/nvim-tree.lua',
+    cmd = { 'NvimTreeToggle', 'NvimTreeFindFile' },
+    keys = {
+      { '<C-n>', '<cmd>NvimTreeToggle<CR>', desc = 'Toggle file tree' },
+    },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('nvim-tree').setup({
@@ -38,18 +49,21 @@ return {
   },
   {
     'numToStr/Comment.nvim',
+    event = 'BufReadPost',
     config = function()
       require('Comment').setup()
     end,
   },
   {
     'lewis6991/gitsigns.nvim',
+    event = 'BufReadPost',
     config = function()
       require('gitsigns').setup()
     end,
   },
   {
     'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     config = function()
       require('lualine').setup({
         options = {
@@ -74,6 +88,6 @@ return {
       { '<leader>u', vim.cmd.UndotreeToggle, desc = 'Toggle Undotree' },
     },
   },
-  { 'github/copilot.vim' },
-  { 'tpope/vim-abolish' },
+  { 'github/copilot.vim', event = 'InsertEnter' },
+  { 'tpope/vim-abolish', event = 'BufReadPost' },
 }
