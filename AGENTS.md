@@ -24,6 +24,13 @@ brew install rcm
 env RCRC="$HOME/dotfiles/rcrc" rcup
 ```
 
+## Copilot CLI hooks (cmux notifications)
+
+Global hooks live at `~/.copilot/hooks/hooks.json` with the notification script
+at `~/.copilot/hooks/cmux-notify.sh`. These fire cmux desktop notifications when
+the Copilot CLI agent needs user input (`ask_user` via `preToolUse`) or a session
+ends (`sessionEnd`).
+
 ## Verification checklist
 ```bash
 zsh -lic 'echo shell-ok'
