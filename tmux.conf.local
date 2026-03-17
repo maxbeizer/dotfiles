@@ -4,6 +4,9 @@ set -g prefix C-a
 bind C-a send-prefix
 unbind C-b
 
+# enable mouse support (click to focus panes, drag to resize, scroll)
+set -g mouse on
+
 # resize panes with prefix + Option+Arrow
 bind -r M-Up resize-pane -U 5
 bind -r M-Down resize-pane -D 5

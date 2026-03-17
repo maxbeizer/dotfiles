@@ -5,6 +5,8 @@ All notable changes to this dotfiles-local repo are documented in this file.
 ## [Unreleased]
 
 ### Added
+- Enabled tmux mouse support (`set -g mouse on`) for click-to-focus panes,
+  drag-to-resize, and mouse scroll.
 - Added `zsh/configs/post/cursor.zsh` to force a block (fat) cursor on every
   new prompt line, overriding vi-mode's default beam cursor.
 - Added `AGENTS.md` with an agent-friendly bootstrap and VM rehearsal workflow.
