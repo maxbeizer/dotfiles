@@ -37,6 +37,67 @@ if [ "$CODESPACES" = "true" ] && [ -z "$CODESPACE_NAME" ]; then
   fi
 fi
 
+# Bash-compatible Copilot CLI session helpers (zsh originals in zsh/functions/)
+if [ "$CODESPACES" = "true" ]; then
+  # Resume the most recent Copilot CLI session for this directory
+  ghcrl() {
+    local db="$HOME/.copilot/session-store.db"
+    if [ ! -f "$db" ]; then
+      echo "No session store found at $db" >&2
+      return 1
+    fi
+
+    local line session_id summary
+    line=$(sqlite3 -separator '	' "$db" \
+      "SELECT id, COALESCE(NULLIF(summary,''), '(no summary)')
+       FROM sessions WHERE cwd = '$(pwd)' ORDER BY updated_at DESC LIMIT 1;")
+
+    session_id=$(echo "$line" | cut -f1)
+    summary=$(echo "$line" | cut -f2-)
+
+    if [ -z "$session_id" ]; then
+      echo "No sessions found for $(pwd)" >&2
+      return 1
+    fi
+
+    echo "Resuming: $summary"
+    gh copilot --resume="$session_id"
+  }
+
+  # Quick-resume a Copilot CLI session via fzf picker
+  ghcr() {
+    local db="$HOME/.copilot/session-store.db"
+    if [ ! -f "$db" ]; then
+      echo "No session store found at $db" >&2
+      return 1
+    fi
+
+    local selection
+    selection=$(sqlite3 -separator '|' "$db" \
+      "SELECT id, COALESCE(NULLIF(summary,''), '(no summary)'), cwd,
+              CAST((julianday('now') - julianday(updated_at)) * 24 AS INTEGER) || 'h ago'
+       FROM sessions ORDER BY updated_at DESC LIMIT 50;" \
+      | awk -F'|' '{
+          n = split($3, parts, "/")
+          printf "%s|%-50s  %-25s  %s\n", $1, $2, parts[n], $4
+        }' \
+      | fzf --with-nth=2.. \
+            --delimiter='|' \
+            --header="Select a session to resume" \
+            --preview-window=hidden \
+            --height=40% \
+            --reverse \
+      | cut -d'|' -f1)
+
+    if [ -z "$selection" ]; then
+      echo "No session selected." >&2
+      return 0
+    fi
+
+    gh copilot --resume="$selection"
+  }
+fi
+
 # Show codespace name in prompt
 if [ -n "$CODESPACE_NAME" ]; then
   _cs_short=$(echo "$CODESPACE_NAME" | sed 's/-[a-z0-9]*$//')
