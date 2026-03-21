@@ -42,6 +42,6 @@ error_symbol = "[\\$](bold red)"
 [time]
 disabled = true
 
-[env_var.CODESPACE_NAME]
+[env_var.CODESPACE_SHORT_NAME]
 format = "[🚀 $env_value]($style) "
 style = "cyan"

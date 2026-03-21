@@ -49,6 +49,11 @@ if [ "$CODESPACES" = "true" ] && [ -z "$CODESPACE_NAME" ]; then
   fi
 fi
 
+# Short codespace name (strip random suffix) for prompt and tmux
+if [ -n "$CODESPACE_NAME" ]; then
+  export CODESPACE_SHORT_NAME=$(echo "$CODESPACE_NAME" | sed 's/-[a-z0-9]*$//')
+fi
+
 # Bash-compatible Copilot CLI session helpers (zsh originals in zsh/functions/)
 if [ "$CODESPACES" = "true" ]; then
   # Resume the most recent Copilot CLI session for this directory
