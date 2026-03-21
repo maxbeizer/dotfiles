@@ -1,12 +1,13 @@
 # Agent bootstrap guide
 
-Use this guide when an agent is setting up a machine with this dotfiles-local overlay.
+Use this guide when an agent is setting up a machine with these dotfiles.
 
 ## Goal
-Set up thoughtbot base dotfiles + local overrides, then verify shell ergonomics.
+Set up a self-contained dotfiles environment. No external base layer needed.
 
 ## One-command bootstrap (recommended)
 ```bash
+git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles-local
 ~/dotfiles-local/bin/bootstrap-machine
 ```
 
@@ -16,12 +17,19 @@ Useful flags:
 ~/dotfiles-local/bin/bootstrap-machine --skip-verify
 ```
 
-## Manual fallback
+## What install.sh does
+- Symlinks dotfiles (aliases, gitconfig, zshrc, tmux.conf, etc.) into `$HOME`
+- Links Starship config to `~/.config/starship.toml`
+- Sets up git SSH signing via 1Password (when `op-ssh-sign` is available)
+- Creates `~/.config/git/allowed_signers`
+- Links Neovim config to `~/.config/nvim/`
+- Links bin scripts to `~/.local/bin/`
+- Links Ghostty config to `~/.config/ghostty/`
+- In codespaces: wires up bash with Starship, zoxide, fzf, and aliases
+
+## Iterating on changes
 ```bash
-git clone https://github.com/thoughtbot/dotfiles.git ~/dotfiles
-git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles-local
-brew install rcm
-env RCRC="$HOME/dotfiles/rcrc" rcup
+dotup    # pull, reinstall, reload shell (works in bash and zsh)
 ```
 
 ## Copilot CLI hooks (cmux notifications)
@@ -31,33 +39,23 @@ at `~/.copilot/hooks/cmux-notify.sh`. These fire cmux desktop notifications when
 the Copilot CLI agent needs user input (`ask_user` via `preToolUse`) or a session
 ends (`sessionEnd`).
 
+## Theme switching
+```bash
+theme solarized   # Solarized Dark (default)
+theme mocha        # Catppuccin Mocha
+theme              # show current theme
+```
+Applies to Ghostty (restart required), tmux (live), and nvim (live via remote-send).
+
 ## Verification checklist
 ```bash
-zsh -lic 'echo shell-ok'
-rcup -v
-vim --version | head -n 1
+zsh -lic 'echo shell-ok'      # shell starts cleanly
+theme                          # shows current theme
+command -v starship            # prompt installed
+command -v zoxide              # directory jumper installed
 ```
 
-Expected: no startup errors and `rcup` exits cleanly.
-
-## Rehearse setup in a fresh macOS VM
-This is a good practice, not gauche.
-
-1. Create a VM in UTM, VirtualBuddy, or Parallels.
-2. Easiest path: let the VM app download macOS directly from Apple.
-3. Optional manual installer on host:
-   ```bash
-   softwareupdate --list-full-installers
-   softwareupdate --fetch-full-installer --full-installer-version <version>
-   ```
-4. In the fresh VM:
-   ```bash
-   git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles-local
-   ~/dotfiles-local/bin/bootstrap-machine
-   ```
-5. Save a clean snapshot before each rehearsal run.
-
-## Codespaces test loop for Vim/Neovim
+## Codespaces test loop for Neovim
 ```bash
 CODESPACES=true ./install.sh
 ./bin/codespaces-vim-lab doctor
@@ -65,4 +63,15 @@ CODESPACES=true ./install.sh
 ./bin/codespaces-vim-lab startup
 ```
 
-Use this loop before merging Neovim changes to validate behavior and startup time in a clean environment.
+## Key files
+| File | Purpose |
+|------|---------|
+| `install.sh` | Idempotent installer (local + codespace) |
+| `bin/bootstrap-machine` | Fresh machine setup |
+| `bin/theme` | Theme switcher (solarized ↔ mocha) |
+| `zshrc` | Shell config (prompt, PATH, tools) |
+| `aliases` | Shell aliases |
+| `gitconfig` | Git config (includes SSH signing) |
+| `tmux.conf` | Tmux config |
+| `starship.toml` | Starship prompt config |
+| `codespaces.local` | Bash extras for codespaces + `dotup` |

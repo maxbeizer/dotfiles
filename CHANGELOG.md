@@ -1,29 +1,58 @@
 # Changelog
 
-All notable changes to this dotfiles-local repo are documented in this file.
+All notable changes to this dotfiles repo are documented in this file.
 
 ## [Unreleased]
 
 ### Added
-- Tmux copy-mode bindings: mouse drag selects within pane boundaries and copies
-  to system clipboard on release via `pbcopy`. Also added vim-style `v` to
-  begin selection and `y` to yank in copy mode.
-- Enabled tmux mouse support (`set -g mouse on`) for click-to-focus panes,
-  drag-to-resize, and mouse scroll.
-- Added `zsh/configs/post/cursor.zsh` to force a block (fat) cursor on every
-  new prompt line, overriding vi-mode's default beam cursor.
-- Added `AGENTS.md` with an agent-friendly bootstrap and VM rehearsal workflow.
-- Added `bin/bootstrap-machine` for one-command local setup.
-- Added `bin/rdm-connect` script to replace `gh rdm-connect` alias. Connects to
-  a codespace with gh-rdm clipboard/open forwarding and auto-sets the tmux pane
-  border title to `🚀 <codespace-name>` so you always know which codespace each
-  pane is connected to. Supports interactive fzf picker or direct name argument.
-- Added tmux pane border labels in `tmux.conf.local` — shows codespace name
-  (via pane title) when SSH'd in, falls back to current path for local panes.
+- `bin/theme` — switch Ghostty, tmux, and nvim between Solarized Dark and
+  Catppuccin Mocha with a single command. Theme state persists in `~/.config/theme`.
+- `starship.toml` — Starship prompt config (git branch/status, command duration).
+  Falls back to hand-rolled prompt when Starship is not installed.
+- zoxide integration in zshrc (replaces z.sh for directory jumping).
+- LazyGit alias (`lg`).
+- `dotup` function — pulls latest dotfiles, re-runs install.sh, reloads shell.
+  Works in both bash (codespaces) and zsh (local).
+- 1Password SSH commit signing — `install.sh` detects `op-ssh-sign` at runtime
+  and enables/disables signing accordingly.
+- `catppuccin/nvim` plugin (lazy-loaded alongside NeoSolarized).
+- Bash integration for codespaces: Starship, zoxide, fzf sourced in `.bashrc`.
 
 ### Changed
-- Updated shell startup ergonomics and completion wiring in local overlays.
-- Disabled GPG commit signing by default in `gitconfig.local`.
-- Added modular Neovim architecture using lazy.nvim with split plugin and core modules.
-- Added `docs/CODESPACES.md` and `bin/codespaces-vim-lab` for iterative Codespaces Vim/Neovim testing.
-- Updated `install.sh` Codespaces flow to use thoughtbot `main` branch and lazy.nvim plugin sync.
+- **Self-contained**: removed dependency on `thoughtbot/dotfiles` and `rcm`.
+  All config files (gitconfig, tmux.conf, aliases, gitignore, gitmessage, zshrc)
+  are now maintained directly in this repo.
+- `install.sh` rewritten as idempotent symlink installer with `--dry-run` support.
+  Works for both local machines and codespaces — no separate code paths.
+- `bootstrap-machine` simplified: clones one repo, runs `install.sh`, verifies.
+  No longer requires Homebrew or rcm.
+- Renamed `*.local` overlay files to standalone names (e.g., `gitconfig.local` → `gitconfig`).
+
+### Removed
+- `thoughtbot/dotfiles` dependency (no more `~/dotfiles` base layer).
+- `rcm` dependency (replaced by simple symlinks in `install.sh`).
+- Vim config (`vimrc.local`, `vimrc.bundles.local`) — Neovim is the sole editor.
+- Rails/Ruby aliases (dm, dmr, rc, rss, rgm, rr, be, bundle).
+- Heroku aliases and autocomplete.
+- `git_template.local/` (ctags hooks).
+- `.laptop.local` (thoughtbot laptop script config).
+- `z.sh` sourcing (replaced by zoxide).
+- VS Code PATH entry.
+- Stale Heroku cache paths and old username references.
+
+## [Previous]
+
+### Added
+- Tmux copy-mode bindings: mouse drag selects within pane boundaries and copies
+  to system clipboard on release via `pbcopy`. Vim-style `v` to select, `y` to yank.
+- Enabled tmux mouse support for click-to-focus, drag-to-resize, and scroll.
+- `zsh/configs/post/cursor.zsh` to force block cursor on every prompt line.
+- `AGENTS.md` with agent-friendly bootstrap and VM rehearsal workflow.
+- `bin/bootstrap-machine` for one-command local setup.
+- `bin/rdm-connect` for codespace clipboard/open forwarding with tmux pane titles.
+- Tmux pane border labels showing codespace name or current path.
+
+### Changed
+- Updated shell startup ergonomics and completion wiring.
+- Added modular Neovim architecture using lazy.nvim.
+- Added `docs/CODESPACES.md` and `bin/codespaces-vim-lab` for Codespaces testing.
