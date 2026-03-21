@@ -1,0 +1,4 @@
+# Launch nvim with a server socket for theme switching (unique per shell)
+nvim() {
+  command nvim --listen "/tmp/nvim-$$.sock" "$@"
+}
