@@ -57,8 +57,13 @@ fi
 # --- Zsh configs directory ---
 fancy_echo "Linking zsh config directory"
 mkdir -p "$HOME/.zsh"
-[ -d "$DOTFILES_DIR/zsh/configs" ] && link_file "$DOTFILES_DIR/zsh/configs" "$HOME/.zsh/configs"
-[ -d "$DOTFILES_DIR/zsh/functions" ] && link_file "$DOTFILES_DIR/zsh/functions" "$HOME/.zsh/functions"
+for zdir in configs functions; do
+  if [ -d "$DOTFILES_DIR/zsh/$zdir" ]; then
+    # Remove existing dir/symlink to avoid nesting a symlink inside itself
+    rm -rf "$HOME/.zsh/$zdir"
+    link_file "$DOTFILES_DIR/zsh/$zdir" "$HOME/.zsh/$zdir"
+  fi
+done
 
 # --- Git SSH commit signing (1Password, when available) ---
 if [ -x "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" ]; then
