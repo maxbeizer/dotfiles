@@ -191,6 +191,27 @@ if [ "${CODESPACES:-}" = "true" ]; then
       sudo install /tmp/lazygit /usr/local/bin/lazygit 2>/dev/null && echo "  ✓ lazygit installed"
       rm -f /tmp/lazygit /tmp/lazygit.tar.gz
     fi
+    # bat (syntax-highlighted cat)
+    if ! command -v bat >/dev/null 2>&1; then
+      BAT_VERSION=$(curl -s "https://api.github.com/repos/sharkdp/bat/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+      curl -sLo /tmp/bat.deb "https://github.com/sharkdp/bat/releases/latest/download/bat_${BAT_VERSION}_amd64.deb"
+      sudo dpkg -i /tmp/bat.deb >/dev/null 2>&1 && echo "  ✓ bat installed"
+      rm -f /tmp/bat.deb
+    fi
+    # fd (fast find)
+    if ! command -v fd >/dev/null 2>&1; then
+      FD_VERSION=$(curl -s "https://api.github.com/repos/sharkdp/fd/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+      curl -sLo /tmp/fd.deb "https://github.com/sharkdp/fd/releases/latest/download/fd_${FD_VERSION}_amd64.deb"
+      sudo dpkg -i /tmp/fd.deb >/dev/null 2>&1 && echo "  ✓ fd installed"
+      rm -f /tmp/fd.deb
+    fi
+    # eza (modern ls)
+    if ! command -v eza >/dev/null 2>&1; then
+      curl -sLo /tmp/eza.tar.gz "https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz"
+      tar xzf /tmp/eza.tar.gz -C /tmp 2>/dev/null
+      sudo install /tmp/eza /usr/local/bin/eza 2>/dev/null && echo "  ✓ eza installed"
+      rm -f /tmp/eza /tmp/eza.tar.gz
+    fi
   fi
 
   # Neovim plugin sync
