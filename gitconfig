@@ -23,7 +23,14 @@
   ff = only
 [commit]
   template = ~/.gitmessage
-  gpgsign = false
+  gpgsign = true
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+  allowedSignersFile = ~/.config/git/allowed_signers
+[user]
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrEq8YlmAUVnpK/xXjnLclUTi/kxO5XA8iVPFIjEPac
 [fetch]
   prune = true
 [rebase]

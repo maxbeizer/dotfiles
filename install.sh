@@ -53,6 +53,14 @@ mkdir -p "$HOME/.zsh"
 [ -d "$DOTFILES_DIR/zsh/configs" ] && link_file "$DOTFILES_DIR/zsh/configs" "$HOME/.zsh/configs"
 [ -d "$DOTFILES_DIR/zsh/functions" ] && link_file "$DOTFILES_DIR/zsh/functions" "$HOME/.zsh/functions"
 
+# --- Git allowed signers (for SSH commit verification) ---
+fancy_echo "Setting up git allowed signers"
+mkdir -p "$HOME/.config/git"
+if [ ! -f "$HOME/.config/git/allowed_signers" ] || ! grep -q "max.beizer@gmail.com" "$HOME/.config/git/allowed_signers" 2>/dev/null; then
+  echo "max.beizer@gmail.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrEq8YlmAUVnpK/xXjnLclUTi/kxO5XA8iVPFIjEPac" >> "$HOME/.config/git/allowed_signers"
+  echo "  ✓ allowed_signers"
+fi
+
 # --- Neovim ---
 fancy_echo "Linking Neovim config"
 mkdir -p "$HOME/.config/nvim"
