@@ -7,7 +7,7 @@ brew "gh"
 brew "ripgrep"
 brew "fzf"
 
-# New tools
+# Modern CLI replacements
 brew "starship"
 brew "zoxide"
 brew "lazygit"
@@ -16,5 +16,28 @@ brew "eza"
 brew "fd"
 brew "btop"
 
-# Casks
+# Utilities
+brew "asdf"
+brew "coreutils"
+brew "entr"
+brew "jq"
+brew "httpie"
+brew "mycli"
+brew "pgcli"
+brew "azure-cli"
+brew "telnet"
+
+# Apps
 cask "ghostty"
+cask "1password"
+cask "arc"
+cask "firefox"
+cask "google-chrome"
+cask "raycast"
+cask "slack"
+cask "spotify"
+cask "stats"
+cask "elgato-stream-deck"
+cask "hiddenbar"
+cask "visual-studio-code"
+cask "the-unarchiver"
