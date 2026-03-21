@@ -1,6 +1,6 @@
 # appearance
 #
-theme = iTerm2 Solarized Dark
+theme = Solarized Dark Higher Contrast
 palette = 8=#586e75
 # theme = Solarized Dark - Patched
 # font-family = "Monaspace Krypton Var"
@@ -14,6 +14,7 @@ window-inherit-font-size = false
 command = /opt/homebrew/bin/zsh
 copy-on-select = clipboard
 link-url = true
+minimum-contrast = 1.5
 
 # pass alt+left/right through to tmux for pane resizing
 keybind = alt+left=unbind
