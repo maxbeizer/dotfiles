@@ -13,7 +13,7 @@
 #   Escape    - Cancel
 #
 
-set -eu
+set -e
 
 export PATH="$HOME/.local/bin:$HOME/.fzf/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 
@@ -23,11 +23,11 @@ case "$mode" in
   sessions)
     result=$(tmux list-sessions -F '#{session_name}' | \
       fzf --reverse \
-        --header='enter=switch  ctrl-n=new session  ctrl-x=kill session  esc=cancel' \
+        --header='enter=switch  ctrl-n=new  ctrl-x=kill' \
         --preview='tmux list-windows -t {} -F "  #{window_index}:#{window_name} (#{window_panes} panes) #{?window_active,◀,}" && echo "" && tmux capture-pane -t {}:1 -p 2>/dev/null | tail -15' \
         --preview-window=right:50% \
         --expect=ctrl-n,ctrl-x \
-      2>/dev/null) || exit 0
+      ) || exit 0
 
     key=$(echo "$result" | head -1)
     selection=$(echo "$result" | tail -1)
@@ -51,11 +51,10 @@ case "$mode" in
     session=$(tmux display-message -p '#{session_name}')
     result=$(tmux list-windows -t "$session" -F '#{window_index}:#{window_name} (#{window_panes} panes)#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,} #{?window_active,◀,}' | \
       fzf --reverse \
-        --header="[$session]  enter=switch  ctrl-n=new window  ctrl-x=kill window  esc=cancel" \
+        --header="[$session]  enter=switch  ctrl-n=new  ctrl-x=kill" \
         --preview='
           idx=$(echo {} | cut -d: -f1)
           session="'"$session"'"
-          # Show all panes in the window
           echo "── Panes ──"
           tmux list-panes -t "$session:$idx" -F "  pane #{pane_index}: #{pane_current_command} (#{pane_width}x#{pane_height})" 2>/dev/null
           echo ""
@@ -64,7 +63,7 @@ case "$mode" in
         ' \
         --preview-window=right:55% \
         --expect=ctrl-n,ctrl-x \
-      2>/dev/null) || exit 0
+      ) || exit 0
 
     key=$(echo "$result" | head -1)
     selection=$(echo "$result" | tail -1)
