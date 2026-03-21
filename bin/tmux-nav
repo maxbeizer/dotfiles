@@ -53,18 +53,16 @@ case "$mode" in
     ;;
 
   windows)
-    session=$(tmux display-message -p '#{session_name}')
-    result=$(tmux list-windows -t "$session" -F '#{window_index}:#{window_name} (#{window_panes} panes)#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,} #{?window_active,◀,}' | \
+    result=$(tmux list-windows -a -F '#{session_name}:#{window_index} #{window_name} (#{window_panes} panes)#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,} #{?window_active,◀,}' | \
       fzf --reverse \
-        --header="[$session]  enter=switch  ctrl-n=new  ctrl-x=kill" \
+        --header='All windows  enter=switch  ctrl-n=new  ctrl-x=kill' \
         --preview='
-          idx=$(echo {} | cut -d: -f1)
-          session="'"$session"'"
+          target=$(echo {} | cut -d" " -f1)
           echo "── Panes ──"
-          tmux list-panes -t "$session:$idx" -F "  pane #{pane_index}: #{pane_current_command} (#{pane_width}x#{pane_height})" 2>/dev/null
+          tmux list-panes -t "$target" -F "  pane #{pane_index}: #{pane_current_command} (#{pane_width}x#{pane_height})" 2>/dev/null
           echo ""
           echo "── Active pane ──"
-          tmux capture-pane -t "$session:$idx" -p 2>/dev/null | tail -25
+          tmux capture-pane -t "$target" -p 2>/dev/null | tail -25
         ' \
         --preview-window=right:55% \
         --expect=ctrl-n,ctrl-x \
@@ -72,17 +70,18 @@ case "$mode" in
 
     key=$(echo "$result" | head -1)
     selection=$(echo "$result" | tail -1)
-    win_idx=$(echo "$selection" | cut -d: -f1)
+    target=$(echo "$selection" | cut -d' ' -f1)
 
     case "$key" in
       ctrl-n)
+        session=$(echo "$target" | cut -d: -f1)
         tmux new-window -t "$session"
         ;;
       ctrl-x)
-        [ -n "$win_idx" ] && tmux kill-window -t "$session:$win_idx" 2>/dev/null
+        [ -n "$target" ] && tmux kill-window -t "$target" 2>/dev/null
         ;;
       *)
-        [ -n "$win_idx" ] && tmux select-window -t "$session:$win_idx"
+        [ -n "$target" ] && tmux switch-client -t "$target"
         ;;
     esac
     ;;
