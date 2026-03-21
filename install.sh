@@ -138,6 +138,15 @@ if [ "${CODESPACES:-}" = "true" ]; then
     fi
   fi
 
+  # Install fzf if not present
+  if [ "$DRY_RUN" -eq 0 ] && ! command -v fzf >/dev/null 2>&1; then
+    if [ ! -d "$HOME/.fzf" ]; then
+      git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" 2>/dev/null
+    fi
+    "$HOME/.fzf/install" --all --no-update-rc --no-bash --no-fish 2>/dev/null || true
+    echo "  ✓ fzf installed"
+  fi
+
   # Neovim plugin sync
   if command -v nvim >/dev/null 2>&1; then
     fancy_echo "Syncing Neovim plugins"
