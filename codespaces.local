@@ -4,9 +4,20 @@ dotup() {
   if [ ! -d "$dotdir" ]; then
     dotdir="$HOME/dotfiles-local"
   fi
+  if [ ! -d "$dotdir" ]; then
+    echo "✗ dotfiles directory not found at $dotdir" >&2
+    return 1
+  fi
   echo "Updating dotfiles from $dotdir..."
-  (cd "$dotdir" && git pull --quiet) &&
-  bash "$dotdir/install.sh" &&
+  if ! (cd "$dotdir" && git pull --quiet); then
+    echo "✗ git pull failed" >&2
+    return 1
+  fi
+  if ! bash "$dotdir/install.sh"; then
+    echo "✗ install.sh failed — check output above" >&2
+    return 1
+  fi
+  echo "✓ Reloading shell..."
   exec zsh -l
 }
 
