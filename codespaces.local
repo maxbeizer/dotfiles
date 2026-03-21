@@ -110,8 +110,4 @@ if [ "$CODESPACES" = "true" ]; then
   }
 fi
 
-# Show codespace name in prompt
-if [ -n "$CODESPACE_NAME" ]; then
-  _cs_short=$(echo "$CODESPACE_NAME" | sed 's/-[a-z0-9]*$//')
-  PS1="[\[\e[36m\]${_cs_short}\[\e[0m\]] ${PS1:-\w \$ }"
-fi
+
