@@ -129,6 +129,11 @@ source $HOME/.aliases
 source $HOME/.codespaces.local
 export EDITOR=vim
 
+# Load shell functions (g, mcd, envup, shallow-sync, etc.)
+for fn in $HOME/.zsh/functions/*; do
+  [ -f "$fn" ] && source "$fn"
+done
+
 # Starship prompt
 command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
 
