@@ -133,4 +133,20 @@ Commits are signed with SSH via 1Password when available. `install.sh` detects `
 | [LazyGit](https://github.com/jesseduffield/lazygit) | Git TUI | Optional |
 | [Television](https://github.com/alexpasmantier/television) | Fuzzy finder | Optional |
 | [Posting](https://github.com/darrenburns/posting) | API client | Optional |
+| [bat](https://github.com/sharkdp/bat) | `cat` with syntax highlighting | Optional |
+| [eza](https://github.com/eza-community/eza) | Modern `ls` | Optional |
+| [fd](https://github.com/sharkdp/fd) | Fast `find` | Optional |
+| [btop](https://github.com/aristocratos/btop) | System monitor | Optional |
 | [fzf-tab](https://github.com/Aloxaf/fzf-tab) | fzf tab completion | Optional (`~/code/fzf-tab`) |
+
+## After a fresh install
+
+After `install.sh` and `brew bundle`, open nvim and run:
+
+```vim
+:Lazy sync
+:TSInstall yaml markdown bash json lua ruby go javascript typescript
+```
+
+This installs nvim plugins and treesitter parsers (one-time setup). Requires
+`tree-sitter` CLI (included in Brewfile).

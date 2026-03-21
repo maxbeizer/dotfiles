@@ -33,6 +33,11 @@ return {
         defaults = {
           file_ignore_patterns = { '%.git/' },
         },
+        pickers = {
+          find_files = {
+            hidden = true,
+          },
+        },
       })
       pcall(telescope.load_extension, 'fzf')
     end,

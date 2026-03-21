@@ -15,6 +15,7 @@ brew "bat"
 brew "eza"
 brew "fd"
 brew "btop"
+brew "tree-sitter"
 
 # Utilities
 brew "asdf"
