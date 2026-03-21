@@ -41,6 +41,14 @@ if [ "${CODESPACES:-}" != "true" ] && command -v brew >/dev/null 2>&1; then
   fi
 fi
 
+# --- macOS defaults ---
+if [ "$(uname)" = "Darwin" ] && [ "$DRY_RUN" -eq 0 ]; then
+  fancy_echo "Setting macOS defaults"
+  defaults write -g InitialKeyRepeat -int 15
+  defaults write -g KeyRepeat -int 2
+  echo "  ✓ fast key repeat enabled"
+fi
+
 # --- Dotfiles to symlink into $HOME as dotfiles (.<name>) ---
 DOTFILES=(
   aliases

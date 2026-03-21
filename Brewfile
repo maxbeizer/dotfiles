@@ -26,6 +26,7 @@ brew "mycli"
 brew "pgcli"
 brew "azure-cli"
 brew "telnet"
+brew "tldr"
 
 # Apps
 cask "ghostty"
