@@ -26,7 +26,7 @@ set_ghostty() {
       sed -i.bak 's/^theme = .*/theme = iTerm2 Solarized Dark/' "$config"
       ;;
     mocha)
-      sed -i.bak 's/^theme = .*/theme = catppuccin-mocha/' "$config"
+      sed -i.bak 's/^theme = .*/theme = Catppuccin Mocha/' "$config"
       ;;
   esac
   rm -f "${config}.bak"
