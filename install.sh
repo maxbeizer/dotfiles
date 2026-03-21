@@ -37,6 +37,7 @@ DOTFILES=(
   gitignore
   gitmessage
   ripgreprc
+  starship.toml
   tmux.conf
   zshrc
   zshenv.local
@@ -46,6 +47,12 @@ fancy_echo "Linking dotfiles to \$HOME"
 for f in "${DOTFILES[@]}"; do
   [ -f "$DOTFILES_DIR/$f" ] && link_file "$DOTFILES_DIR/$f" "$HOME/.$f"
 done
+
+# Starship config goes to ~/.config/starship.toml (not dotfile)
+if [ -f "$DOTFILES_DIR/starship.toml" ]; then
+  mkdir -p "$HOME/.config"
+  link_file "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
+fi
 
 # --- Zsh configs directory ---
 fancy_echo "Linking zsh config directory"

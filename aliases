@@ -31,7 +31,8 @@ if [ "$CODESPACES" = "true" ] || [ -n "$SSH_CONNECTION" ]; then
   alias xdg-open="gh rdm open"
 fi
 
-# Other
+# LazyGit
+alias lg="lazygit"
 alias speedtest="networkQuality"
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias aliases="$EDITOR ~/.aliases"

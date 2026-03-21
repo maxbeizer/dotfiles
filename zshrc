@@ -47,32 +47,37 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 setopt NO_BEEP
 setopt HIST_IGNORE_SPACE
 
-# prompt
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}["
-ZSH_THEME_GIT_PROMPT_SUFFIX="]%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
+# prompt — use Starship if available, fall back to hand-rolled
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+else
+  # fallback prompt
+  ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}["
+  ZSH_THEME_GIT_PROMPT_SUFFIX="]%{$reset_color%}"
+  ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*%{$reset_color%}"
+  ZSH_THEME_GIT_PROMPT_CLEAN=""
 
-parse_git_branch() {
-  (command git symbolic-ref -q HEAD || command git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
-}
+  parse_git_branch() {
+    (command git symbolic-ref -q HEAD || command git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
+  }
 
-parse_git_dirty() {
-  if command git diff-index --quiet HEAD 2> /dev/null; then
-    echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
-  else
-    echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
-  fi
-}
+  parse_git_dirty() {
+    if command git diff-index --quiet HEAD 2> /dev/null; then
+      echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
+    else
+      echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+    fi
+  }
 
-git_custom_status() {
-  local git_where="$(parse_git_branch)"
-  [ -n "$git_where" ] && echo "$ZSH_THEME_GIT_PROMPT_PREFIX${git_where#(refs/heads/|tags/)}$ZSH_THEME_GIT_PROMPT_SUFFIX$(parse_git_dirty)"
-}
+  git_custom_status() {
+    local git_where="$(parse_git_branch)"
+    [ -n "$git_where" ] && echo "$ZSH_THEME_GIT_PROMPT_PREFIX${git_where#(refs/heads/|tags/)}$ZSH_THEME_GIT_PROMPT_SUFFIX$(parse_git_dirty)"
+  }
 
-PROMPT='
+  PROMPT='
 %{$fg[yellow]%}[%*]%{$reset_color%} %{$fg[cyan]%}%~% 
 $(git_custom_status) %(?.%{$fg[green]%}.%{$fg[red]%})%B$%b'
+fi
 
 HISTFILE=~/.histfile
 HISTSIZE=100000
@@ -97,7 +102,7 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 # fzf-tab (if installed)
 [ -f ~/code/fzf-tab/fzf-tab.plugin.zsh ] && source ~/code/fzf-tab/fzf-tab.plugin.zsh
 
-# zoxide (if installed)
+# zoxide (if installed — replaces z.sh)
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 
 # aliases
