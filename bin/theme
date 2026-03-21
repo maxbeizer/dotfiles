@@ -76,8 +76,8 @@ set_nvim() {
 
   local cmd
   case "$1" in
-    solarized) cmd="<Cmd>set background=dark<CR><Cmd>colorscheme NeoSolarized<CR>" ;;
-    mocha) cmd="<Cmd>set background=dark<CR><Cmd>colorscheme catppuccin-mocha<CR>" ;;
+    solarized) cmd="<Cmd>colorscheme NeoSolarized<CR>" ;;
+    mocha) cmd="<Cmd>lua require('lazy').load({plugins = {'catppuccin'}})<CR><Cmd>colorscheme catppuccin-mocha<CR>" ;;
   esac
 
   # macOS: sockets in $TMPDIR/nvim.*/  Linux: /tmp/nvim.*/
