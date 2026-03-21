@@ -3,6 +3,10 @@ if isdirectory('/opt/homebrew/bin')
   let $PATH = '/opt/homebrew/bin:' . $PATH
 endif
 
+" Enable filetype detection, plugins, and indent
+filetype plugin indent on
+syntax on
+
 " Bootstrap Lua config
 lua << LUAEOF
 local ok, maxbeizer = pcall(require, 'maxbeizer')
