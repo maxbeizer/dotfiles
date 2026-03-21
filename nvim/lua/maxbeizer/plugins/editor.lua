@@ -138,13 +138,6 @@ return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     event = 'BufReadPost',
-    config = function()
-      require('nvim-treesitter').setup()
-      -- Install parsers if missing
-      local ensure = { 'yaml', 'markdown', 'markdown_inline', 'lua', 'bash', 'json', 'ruby', 'go', 'javascript', 'typescript' }
-      for _, lang in ipairs(ensure) do
-        pcall(function() vim.cmd('TSInstall! ' .. lang) end)
-      end
-    end,
+    opts = {},
   },
 }
