@@ -138,13 +138,34 @@ if [ "${CODESPACES:-}" = "true" ]; then
     fi
   fi
 
-  # Install fzf if not present
-  if [ "$DRY_RUN" -eq 0 ] && ! command -v fzf >/dev/null 2>&1; then
-    if [ ! -d "$HOME/.fzf" ]; then
-      git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" 2>/dev/null
+  # Install CLI tools if not present
+  if [ "$DRY_RUN" -eq 0 ]; then
+    # Starship prompt
+    if ! command -v starship >/dev/null 2>&1; then
+      curl -sS https://starship.rs/install.sh | sh -s -- -y >/dev/null 2>&1
+      echo "  ✓ starship installed"
     fi
-    "$HOME/.fzf/install" --all --no-update-rc --no-bash --no-fish 2>/dev/null || true
-    echo "  ✓ fzf installed"
+    # zoxide (directory jumper)
+    if ! command -v zoxide >/dev/null 2>&1; then
+      curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh >/dev/null 2>&1
+      echo "  ✓ zoxide installed"
+    fi
+    # fzf
+    if ! command -v fzf >/dev/null 2>&1; then
+      if [ ! -d "$HOME/.fzf" ]; then
+        git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" 2>/dev/null
+      fi
+      "$HOME/.fzf/install" --all --no-update-rc --no-bash --no-fish 2>/dev/null || true
+      echo "  ✓ fzf installed"
+    fi
+    # lazygit
+    if ! command -v lazygit >/dev/null 2>&1; then
+      LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+      curl -sLo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+      tar xzf /tmp/lazygit.tar.gz -C /tmp lazygit 2>/dev/null
+      sudo install /tmp/lazygit /usr/local/bin/lazygit 2>/dev/null && echo "  ✓ lazygit installed"
+      rm -f /tmp/lazygit /tmp/lazygit.tar.gz
+    fi
   fi
 
   # Neovim plugin sync

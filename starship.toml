@@ -2,6 +2,7 @@
 # Docs: https://starship.rs/config/
 
 format = """
+$env_var\
 $directory\
 $git_branch\
 $git_status\
@@ -40,3 +41,7 @@ error_symbol = "[\\$](bold red)"
 
 [time]
 disabled = true
+
+[env_var.CODESPACE_NAME]
+format = "[🚀 $env_value]($style) "
+style = "cyan"
