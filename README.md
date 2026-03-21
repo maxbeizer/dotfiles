@@ -68,7 +68,27 @@ theme solarized   # or: theme mocha
 theme              # show current
 ```
 
-Ghostty requires a restart; tmux and nvim update live.
+Ghostty auto-reloads; tmux and nvim update live.
+
+## Tmux keybindings
+
+Prefix is `Ctrl-a`.
+
+| Keybinding | Action |
+|------------|--------|
+| `prefix S` | Session navigator (fzf, create/kill) |
+| `prefix W` | Window navigator (fzf, all sessions, sorted by recent) |
+| `prefix s` | Default session list (tree view) |
+| `prefix Ctrl-s` | **Save** all sessions (tmux-resurrect) |
+| `prefix Ctrl-r` | **Restore** sessions after reboot |
+| `prefix I` | Install/update tmux plugins (TPM) |
+| `prefix h/j/k/l` | Navigate panes (vim-style) |
+| `prefix M-Arrow` | Resize panes |
+
+### After a reboot
+1. Open a terminal
+2. `tmux`
+3. `Ctrl-a Ctrl-r` — everything comes back
 
 ## Key aliases
 
