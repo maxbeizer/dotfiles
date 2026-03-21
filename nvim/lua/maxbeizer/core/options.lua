@@ -11,6 +11,11 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.completeopt = 'menuone,noselect'
 
+-- Ensure homebrew binaries are on PATH (for tree-sitter, etc.)
+if vim.fn.isdirectory('/opt/homebrew/bin') == 1 and not vim.env.PATH:find('/opt/homebrew/bin') then
+  vim.env.PATH = '/opt/homebrew/bin:' .. vim.env.PATH
+end
+
 -- indentation defaults
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
