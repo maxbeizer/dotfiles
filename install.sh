@@ -29,6 +29,18 @@ link_file() {
   fi
 }
 
+# --- Homebrew packages (local only, skip in codespaces) ---
+if [ "${CODESPACES:-}" != "true" ] && command -v brew >/dev/null 2>&1; then
+  if [ -f "$DOTFILES_DIR/Brewfile" ]; then
+    fancy_echo "Installing Homebrew packages"
+    if [ "$DRY_RUN" -eq 0 ]; then
+      brew bundle --file="$DOTFILES_DIR/Brewfile" --no-lock --quiet
+    else
+      echo "  [dry-run] brew bundle --file=$DOTFILES_DIR/Brewfile"
+    fi
+  fi
+fi
+
 # --- Dotfiles to symlink into $HOME as dotfiles (.<name>) ---
 DOTFILES=(
   aliases
