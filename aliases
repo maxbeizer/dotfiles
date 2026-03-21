@@ -33,6 +33,10 @@ fi
 
 # LazyGit
 alias lg="lazygit"
+
+# Neovim with predictable server socket for theme switching
+alias nvim='nvim --listen /tmp/nvim-server.sock'
+
 alias speedtest="networkQuality"
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias aliases="$EDITOR ~/.aliases"

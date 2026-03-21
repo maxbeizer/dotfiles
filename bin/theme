@@ -82,7 +82,7 @@ set_nvim() {
 
   # macOS: sockets in $TMPDIR/nvim.*/  Linux: /tmp/nvim.*/
   local dir="${TMPDIR:-/tmp}"
-  for sock in "$dir"/nvim.*/*/nvim.*.0 "$dir"/nvim.*/0 /tmp/nvim.*/0; do
+  for sock in /tmp/nvim-server.sock "$dir"/nvim.*/*/nvim.*.0 "$dir"/nvim.*/0 /tmp/nvim.*/0; do
     if [ -S "$sock" ] 2>/dev/null; then
       nvim --server "$sock" --remote-send "$cmd" &>/dev/null &
     fi
