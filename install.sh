@@ -123,30 +123,20 @@ if [ "${CODESPACES:-}" = "true" ]; then
 
   # Bash integration (codespaces default shell)
   if [ "$DRY_RUN" -eq 0 ]; then
-    grep -q '\.aliases' "$HOME/.bashrc" 2>/dev/null || {
-      cat >> "$HOME/.bashrc" <<'BASHRC'
-source $HOME/.aliases
-source $HOME/.codespaces.local
-export EDITOR=vim
-
-# Load shell functions (g, mcd, envup, shallow-sync, etc.)
-for fn in $HOME/.zsh/functions/*; do
-  [ -f "$fn" ] && source "$fn"
-done
-
-# Starship prompt
-command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
-
-# zoxide
-command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
-
-# fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-BASHRC
+    _bashrc_ensure() {
+      grep -qF "$1" "$HOME/.bashrc" 2>/dev/null || echo "$1" >> "$HOME/.bashrc"
     }
+
+    _bashrc_ensure 'source $HOME/.aliases'
+    _bashrc_ensure 'source $HOME/.codespaces.local'
+    _bashrc_ensure 'export EDITOR=vim'
+    _bashrc_ensure 'for fn in $HOME/.zsh/functions/*; do [ -f "$fn" ] && source "$fn"; done'
+    _bashrc_ensure 'command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"'
+    _bashrc_ensure 'command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"'
+    _bashrc_ensure '[ -f ~/.fzf.bash ] && source ~/.fzf.bash'
+
     if [ -d "/workspaces/github/bin" ]; then
-      grep -q '/workspaces/github/bin' "$HOME/.bashrc" 2>/dev/null || \
-        echo "export PATH=\"\$PATH:/workspaces/github/bin\"" >> "$HOME/.bashrc"
+      _bashrc_ensure 'export PATH="$PATH:/workspaces/github/bin"'
     fi
     grep -q '\.bashrc' "$HOME/.bash_profile" 2>/dev/null || \
       echo "source \$HOME/.bashrc" >> "$HOME/.bash_profile"
