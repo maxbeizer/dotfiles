@@ -1,7 +1,4 @@
-set runtimepath^=~/.vim runtimepath+=~/.vim/after
-let &packpath=&runtimepath
-source ~/.vimrc
-
+" Bootstrap Lua config
 lua << LUAEOF
 local ok, maxbeizer = pcall(require, 'maxbeizer')
 if ok and maxbeizer.setup then
