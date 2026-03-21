@@ -16,6 +16,7 @@ $character"""
 [directory]
 truncation_length = 5
 truncate_to_repo = false
+fish_style_pwd_dir_length = 1
 
 [git_branch]
 format = "[$symbol$branch]($style) "
