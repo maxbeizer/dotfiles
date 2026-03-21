@@ -93,6 +93,27 @@ set_nvim() {
   done
 }
 
+set_posting() {
+  local config="${HOME}/.config/posting/config.yaml"
+  mkdir -p "$(dirname "$config")"
+
+  case "$1" in
+    solarized) local posting_theme="solarized-dark" ;;
+    mocha) local posting_theme="catppuccin-mocha" ;;
+  esac
+
+  if [ -f "$config" ]; then
+    if grep -q '^theme:' "$config"; then
+      sed -i.bak "s/^theme:.*/theme: \"$posting_theme\"/" "$config"
+      rm -f "${config}.bak"
+    else
+      echo "theme: \"$posting_theme\"" >> "$config"
+    fi
+  else
+    echo "theme: \"$posting_theme\"" > "$config"
+  fi
+}
+
 if [ $# -eq 0 ]; then
   echo "Current theme: $(current_theme)"
   exit 0
@@ -104,6 +125,7 @@ case "$1" in
     set_ghostty "$1"
     set_tmux "$1"
     set_nvim "$1"
+    set_posting "$1"
     echo "Switched to $1"
     ;;
   *)
