@@ -1,3 +1,15 @@
+# Pull latest dotfiles, re-run install, reload shell
+dotup() {
+  local dotdir="/workspaces/dotfiles"
+  if [ ! -d "$dotdir" ]; then
+    dotdir="$HOME/dotfiles-local"
+  fi
+  echo "Updating dotfiles from $dotdir..."
+  (cd "$dotdir" && git pull --quiet) &&
+  bash "$dotdir/install.sh" &&
+  exec bash -l
+}
+
 function codespace() {
   # Install linux brew
   if ! command -v brew &> /dev/null

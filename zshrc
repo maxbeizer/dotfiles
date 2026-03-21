@@ -107,3 +107,12 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
+
+# Pull latest dotfiles, re-run install, reload shell
+dotup() {
+  local dotdir="${DOTFILES_DIR:-$HOME/dotfiles-local}"
+  echo "Updating dotfiles from $dotdir..."
+  (cd "$dotdir" && git pull --quiet) &&
+  bash "$dotdir/install.sh" &&
+  exec zsh -l
+}
