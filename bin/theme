@@ -41,31 +41,31 @@ set_tmux() {
 
   case "$1" in
     solarized)
-      # pane backgrounds
-      tmux set -g window-style 'bg=#001a26'
+      # pane backgrounds (bigger gap between active/inactive)
+      tmux set -g window-style 'bg=#00141f'
       tmux set -g window-active-style 'bg=#002b36'
       # pane borders
       tmux set -g pane-active-border-style 'fg=#859900,bold'
       tmux set -g pane-border-style 'fg=#586e75'
       # status bar
-      tmux set -g status-style 'bg=#073642,fg=#839496'
-      tmux set -g window-status-format '#[fg=#586e75] #I:#W#{?window_bell_flag,🔔,#{?window_activity_flag,•,}} '
-      tmux set -g window-status-current-format '#[fg=#eee8d5,bg=#268bd2,bold] #I:#W '
+      tmux set -g status-style 'bg=#073642,fg=#93a1a1'
+      tmux set -g window-status-format '#[fg=#657b83] #I:#W#{?window_bell_flag,🔔,#{?window_activity_flag,•,}} '
+      tmux set -g window-status-current-format '#[fg=#eee8d5,bg=#268bd2,bold] #I:#W#{?window_zoomed_flag, 🔍,} '
       tmux set -g window-status-bell-style 'fg=#dc322f,bold'
       tmux set -g window-status-activity-style 'fg=#b58900'
       tmux set -g status-right '#[fg=#586e75]#{?window_zoomed_flag,🔍 ,}#{?#{==:#{pane_current_command},zsh},#(cd #{pane_current_path} && git branch --show-current 2>/dev/null),} #[fg=#268bd2,bold] #{session_name}'
       ;;
     mocha)
-      # pane backgrounds
-      tmux set -g window-style 'bg=#181825'
+      # pane backgrounds (bigger gap between active/inactive)
+      tmux set -g window-style 'bg=#11111b'
       tmux set -g window-active-style 'bg=#1e1e2e'
       # pane borders
       tmux set -g pane-active-border-style 'fg=#89b4fa,bold'
       tmux set -g pane-border-style 'fg=#585b70'
       # status bar
-      tmux set -g status-style 'bg=#181825,fg=#cdd6f4'
-      tmux set -g window-status-format '#[fg=#585b70] #I:#W#{?window_bell_flag,🔔,#{?window_activity_flag,•,}} '
-      tmux set -g window-status-current-format '#[fg=#1e1e2e,bg=#89b4fa,bold] #I:#W '
+      tmux set -g status-style 'bg=#11111b,fg=#cdd6f4'
+      tmux set -g window-status-format '#[fg=#7f849c] #I:#W#{?window_bell_flag,🔔,#{?window_activity_flag,•,}} '
+      tmux set -g window-status-current-format '#[fg=#1e1e2e,bg=#89b4fa,bold] #I:#W#{?window_zoomed_flag, 🔍,} '
       tmux set -g window-status-bell-style 'fg=#f38ba8,bold'
       tmux set -g window-status-activity-style 'fg=#f9e2af'
       tmux set -g status-right '#[fg=#585b70]#{?window_zoomed_flag,🔍 ,}#{?#{==:#{pane_current_command},zsh},#(cd #{pane_current_path} && git branch --show-current 2>/dev/null),} #[fg=#89b4fa,bold] #{session_name}'
