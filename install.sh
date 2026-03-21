@@ -1,96 +1,125 @@
 #!/bin/bash
+#
+# Self-contained dotfiles installer. Idempotent — safe to run repeatedly.
+# No external dependencies (no rcm, no thoughtbot/dotfiles).
+#
+# Usage:
+#   ./install.sh              # detect environment and install
+#   ./install.sh --dry-run    # show what would happen
+#
 
-exec > >(tee -i $HOME/dotfiles_install.log)
-exec 2>&1
-set -x
+set -eu
+
+DRY_RUN=0
+[[ "${1:-}" == "--dry-run" ]] && DRY_RUN=1
+
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 fancy_echo() {
-  local fmt="$1"; shift
-
-  # shellcheck disable=SC2059
-  printf "\n$fmt\n" "$@"
+  printf "\n%s\n" "$1"
 }
 
-get() {
-  curl -fLo $1 --create-dirs $2
+link_file() {
+  local src="$1" dst="$2"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    echo "  [dry-run] $src -> $dst"
+  else
+    ln -sf "$src" "$dst"
+    echo "  ✓ $(basename "$dst")"
+  fi
 }
 
-if [ "$CODESPACES" == "true" ]; then
-  fancy_echo "In codespaces! Installing dotfiles"
+# --- Dotfiles to symlink into $HOME as dotfiles (.<name>) ---
+DOTFILES=(
+  aliases
+  gemrc
+  gitconfig
+  gitignore
+  gitmessage
+  ripgreprc
+  tmux.conf
+  zshrc
+  zshenv.local
+)
+
+fancy_echo "Linking dotfiles to \$HOME"
+for f in "${DOTFILES[@]}"; do
+  [ -f "$DOTFILES_DIR/$f" ] && link_file "$DOTFILES_DIR/$f" "$HOME/.$f"
+done
+
+# --- Zsh configs directory ---
+fancy_echo "Linking zsh config directory"
+mkdir -p "$HOME/.zsh"
+[ -d "$DOTFILES_DIR/zsh/configs" ] && link_file "$DOTFILES_DIR/zsh/configs" "$HOME/.zsh/configs"
+[ -d "$DOTFILES_DIR/zsh/functions" ] && link_file "$DOTFILES_DIR/zsh/functions" "$HOME/.zsh/functions"
+
+# --- Neovim ---
+fancy_echo "Linking Neovim config"
+mkdir -p "$HOME/.config/nvim"
+[ -f "$DOTFILES_DIR/nvim.local" ] && link_file "$DOTFILES_DIR/nvim.local" "$HOME/.config/nvim/init.vim"
+if [ -d "$DOTFILES_DIR/nvim/lua" ]; then
+  rm -rf "$HOME/.config/nvim/lua"
+  if [ "$DRY_RUN" -eq 0 ]; then
+    cp -R "$DOTFILES_DIR/nvim/lua" "$HOME/.config/nvim/lua"
+  fi
+  echo "  ✓ nvim/lua"
+fi
+
+# --- Bin scripts ---
+fancy_echo "Linking bin scripts to ~/.local/bin"
+mkdir -p "$HOME/.local/bin"
+for f in "$DOTFILES_DIR/bin/"*; do
+  [ -f "$f" ] && link_file "$f" "$HOME/.local/bin/$(basename "$f")"
+done
+
+# --- Ghostty ---
+if [ -d "$DOTFILES_DIR/ghostty" ]; then
+  fancy_echo "Linking Ghostty config"
+  mkdir -p "$HOME/.config/ghostty"
+  link_file "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
+fi
+
+# --- Codespace-specific extras ---
+if [ "${CODESPACES:-}" = "true" ]; then
+  fancy_echo "Codespace extras"
 
   # gh/gh vendors a modern Node; prefer it over the ancient system one
   if [ -x "/workspaces/github/vendor/node/node" ]; then
     export PATH="/workspaces/github/vendor/node:/workspaces/github/vendor/node/bin:$PATH"
   fi
 
-  locals=( "tmux.conf.local" "vimrc.local" "vimrc.bundles.local" "aliases.local" "gitconfig.local" "ripgreprc" "codespaces.local")
-  for i in "${locals[@]}"
-  do
-    ln -sf $(pwd)/"$i" $HOME/."$i"
-  done
+  link_file "$DOTFILES_DIR/codespaces.local" "$HOME/.codespaces.local"
 
-  fancy_echo "Getting thoughtbot dotfiles"
-  get $HOME/.vimrc https://raw.githubusercontent.com/thoughtbot/dotfiles/main/vimrc
-  get $HOME/.vimrc.bundles https://raw.githubusercontent.com/thoughtbot/dotfiles/main/vimrc.bundles
-  get $HOME/.aliases https://raw.githubusercontent.com/thoughtbot/dotfiles/main/aliases
-  get $HOME/.gitconfig https://raw.githubusercontent.com/thoughtbot/dotfiles/main/gitconfig
-  get $HOME/.gitmessage https://raw.githubusercontent.com/thoughtbot/dotfiles/main/gitmessage
-  get $HOME/.gitignore https://raw.githubusercontent.com/thoughtbot/dotfiles/main/gitignore
-  get $HOME/.tmux.conf https://raw.githubusercontent.com/thoughtbot/dotfiles/main/tmux.conf
-
-  fancy_echo "Installing vim plugins"
-  if [ -e "$HOME"/.vim/autoload/plug.vim ]; then
-    vim -E -s +PlugUpgrade +qa
-  else
-    curl -fLo "$HOME"/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  fi
-  vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
-  reset -Q
-
-  [ -f /workspaces/github ] && export PATH="/workspaces/github/bin:$PATH"
-
-  fancy_echo "Setting up neovim"
-  mkdir -p "$HOME"/.config/nvim
-  cp "$(pwd)/nvim.local" "$HOME/.config/nvim/init.vim"
-  rm -rf "$HOME/.config/nvim/lua"
-  cp -R "$(pwd)/nvim/lua" "$HOME/.config/nvim/lua"
-  nvim --headless '+Lazy! sync' +qa
-
-  fancy_echo "Sourcing aliases"
-  echo "source "$HOME"/.aliases" >> "$HOME"/.bashrc
-  echo "alias g='git'" >> "$HOME"/.bashrc
-  echo "export EDITOR=vim" >> "$HOME"/.bashrc
-  echo "source "$HOME"/.codespaces.local" >> "$HOME"/.bashrc
-  echo "machine goproxy.githubapp.com login nobody password $GITHUB_TOKEN" >> $HOME/.netrc
-
-  fancy_echo "Adding copilot CLI"
-  npm config set "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN"
-  npm config set "@github:registry=https://npm.pkg.github.com/"
-  npm install -g @github/copilot
-
-  if [ -d "/workspaces/github/bin" ]; then
-    echo "export PATH="$PATH":/workspaces/github/bin" >> "$HOME"/.bashrc
+  # Neovim plugin sync
+  if command -v nvim >/dev/null 2>&1; then
+    fancy_echo "Syncing Neovim plugins"
+    [ "$DRY_RUN" -eq 0 ] && nvim --headless '+Lazy! sync' +qa 2>/dev/null || true
   fi
 
-  fancy_echo "Adding bashrc to .bash_profile"
-  echo "source $HOME/.bashrc" >> "$HOME"/.bash_profile
+  # Bash integration (codespaces default shell)
+  if [ "$DRY_RUN" -eq 0 ]; then
+    grep -q '\.aliases' "$HOME/.bashrc" 2>/dev/null || {
+      echo "source \$HOME/.aliases" >> "$HOME/.bashrc"
+      echo "source \$HOME/.codespaces.local" >> "$HOME/.bashrc"
+      echo "export EDITOR=vim" >> "$HOME/.bashrc"
+    }
+    if [ -d "/workspaces/github/bin" ]; then
+      grep -q '/workspaces/github/bin' "$HOME/.bashrc" 2>/dev/null || \
+        echo "export PATH=\"\$PATH:/workspaces/github/bin\"" >> "$HOME/.bashrc"
+    fi
+    grep -q '\.bashrc' "$HOME/.bash_profile" 2>/dev/null || \
+      echo "source \$HOME/.bashrc" >> "$HOME/.bash_profile"
+  fi
 
-  fancy_echo "All done"
-else
-  fancy_echo "Not running in a codespace"
-
-  # Symlink local bin scripts to ~/.local/bin
-  fancy_echo "Linking bin scripts to ~/.local/bin"
-  mkdir -p "$HOME/.local/bin"
-  for f in "$(pwd)/bin/"*; do
-    ln -sf "$f" "$HOME/.local/bin/$(basename "$f")"
-  done
-
-  # Ghostty terminal config
-  if [ -d "$(pwd)/ghostty" ]; then
-    fancy_echo "Linking Ghostty config"
-    mkdir -p "$HOME/.config/ghostty"
-    ln -sf "$(pwd)/ghostty/config" "$HOME/.config/ghostty/config"
+  # Copilot CLI
+  if [ -n "${GITHUB_TOKEN:-}" ]; then
+    fancy_echo "Installing Copilot CLI"
+    if [ "$DRY_RUN" -eq 0 ]; then
+      npm config set "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN"
+      npm config set "@github:registry=https://npm.pkg.github.com/"
+      npm install -g @github/copilot 2>/dev/null || true
+    fi
   fi
 fi
+
+fancy_echo "Done ✓"

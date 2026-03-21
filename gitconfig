@@ -1,0 +1,68 @@
+[user]
+  name = Max Beizer
+  email = max.beizer@gmail.com
+[github]
+  user = maxbeizer
+[init]
+  defaultBranch = main
+[push]
+  default = current
+[color]
+  ui = auto
+[core]
+  excludesfile = ~/.gitignore
+  autocrlf = input
+  whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+  editor = vim
+[credential]
+  helper = osxkeychain
+[diff]
+  tool = vimdiff
+  colorMoved = zebra
+[merge]
+  ff = only
+[commit]
+  template = ~/.gitmessage
+  gpgsign = false
+[fetch]
+  prune = true
+[rebase]
+  autosquash = true
+[rerere]
+  enabled = true
+[help]
+  autocorrect = 1
+[alias]
+  s = status -sb
+  aa = add --all
+  ap = add -p
+  ci = commit -v
+  cim = commit -m
+  co = checkout
+  cob = checkout -b
+  cp = cherry-pick
+  br = branch
+  branch-recent = branch --sort=-committerdate
+  brr = !sh -c 'git branch --sort=-committerdate | fzf | xargs git checkout'
+  pf = push --force-with-lease
+  fwl = push --force-with-lease
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
+  amend = commit --amend -C HEAD
+  oops = commit --amend -m
+  undo = reset --soft HEAD^
+  unstage = reset HEAD
+  mg = merge --no-ff --log
+  mgff = merge --ff-only
+  au = add --update
+  sth = stash
+  stp = stash pop
+  w = whatchanged
+  conflicts = diff --name-only --diff-filter=U
+  up = !sh -c 'git pull --rebase --prune && git log --pretty=format:\"%Cred%ae %Creset- %C(yellow)%s %Creset(%ar)\" HEAD@{1}..'
+  sync = "!f() { echo Syncing with master && git checkout master && git pull && git checkout - && git rebase master; }; f"
+  syncm = "!f() { echo Syncing with main && git checkout main && git pull && git checkout - && git rebase main; }; f"
+  standup = "!git log --since yesterday --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  today = "!git log --since='6am' --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  cleanup = !sh -c 'git branch --merged | grep -Ev "master" | grep -v "^*" | xargs git branch -d'
+  cleanupm = !sh -c 'git branch --merged | grep -Ev "main" | grep -v "^*" | xargs git branch -d'

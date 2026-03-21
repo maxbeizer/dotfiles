@@ -1,0 +1,37 @@
+# Unix
+alias ll="ls -al"
+alias ln="ln -v"
+alias mkdir="mkdir -p"
+alias e="$EDITOR"
+alias v="$VISUAL"
+alias path='echo -e ${PATH//:/\\n}'
+
+# Navigation
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias -- -="cd -"
+
+# Git
+alias g="git"
+alias gs="git status -b -s"
+
+# GitHub CLI
+alias ghc="gh copilot"
+alias ghpr="gh pr create --fill"
+alias ghpv="gh pr view --web"
+alias ghpc="gh pr checkout"
+alias ghrv="gh repo view --web"
+
+# gh-rdm (remote clipboard/open forwarding)
+if [ "$CODESPACES" = "true" ] || [ -n "$SSH_CONNECTION" ]; then
+  alias pbcopy="gh rdm copy"
+  alias pbpaste="gh rdm paste"
+  alias open="gh rdm open"
+  alias xdg-open="gh rdm open"
+fi
+
+# Other
+alias speedtest="networkQuality"
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+alias aliases="$EDITOR ~/.aliases"

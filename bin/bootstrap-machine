@@ -1,4 +1,11 @@
 #!/bin/sh
+#
+# Bootstrap a fresh machine with these dotfiles.
+# Self-contained — no rcm, no thoughtbot/dotfiles dependency.
+#
+# Usage:
+#   ~/dotfiles-local/bin/bootstrap-machine [--dry-run] [--skip-verify]
+#
 
 set -eu
 
@@ -13,11 +20,9 @@ while [ $# -gt 0 ]; do
       cat <<'EOF'
 Usage: bootstrap-machine [--dry-run] [--skip-verify]
 
-Bootstraps thoughtbot dotfiles + dotfiles-local overlay:
-  - ensures ~/dotfiles exists
-  - ensures ~/dotfiles-local exists
-  - installs rcm when missing
-  - runs rcup using ~/dotfiles/rcrc
+Bootstraps dotfiles on a fresh machine:
+  - clones dotfiles repo if needed
+  - runs install.sh to symlink everything
   - optionally verifies startup
 EOF
       exit 0
@@ -37,19 +42,11 @@ run() {
   fi
 }
 
-DOTFILES_URL="${DOTFILES_URL:-https://github.com/thoughtbot/dotfiles.git}"
-DOTFILES_LOCAL_URL="${DOTFILES_LOCAL_URL:-https://github.com/maxbeizer/dotfiles.git}"
-DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
-DOTFILES_LOCAL_DIR="${DOTFILES_LOCAL_DIR:-$HOME/dotfiles-local}"
-RCRC_PATH="$DOTFILES_DIR/rcrc"
+DOTFILES_URL="${DOTFILES_URL:-https://github.com/maxbeizer/dotfiles.git}"
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles-local}"
 
 if ! command -v git >/dev/null 2>&1; then
   echo "git is required." >&2
-  exit 1
-fi
-
-if ! command -v brew >/dev/null 2>&1; then
-  echo "Homebrew is required. Install from https://brew.sh/ and retry." >&2
   exit 1
 fi
 
@@ -57,27 +54,28 @@ if [ ! -d "$DOTFILES_DIR/.git" ]; then
   run git clone "$DOTFILES_URL" "$DOTFILES_DIR"
 fi
 
-if [ ! -d "$DOTFILES_LOCAL_DIR/.git" ]; then
-  run git clone "$DOTFILES_LOCAL_URL" "$DOTFILES_LOCAL_DIR"
+echo "Running install.sh..."
+if [ "$dry_run" -eq 1 ]; then
+  run "$DOTFILES_DIR/install.sh" --dry-run
+else
+  run "$DOTFILES_DIR/install.sh"
 fi
-
-if ! command -v rcup >/dev/null 2>&1; then
-  run brew install rcm
-fi
-
-if [ ! -f "$RCRC_PATH" ]; then
-  echo "Missing rcrc at $RCRC_PATH" >&2
-  exit 1
-fi
-
-run env RCRC="$RCRC_PATH" rcup
 
 if [ "$skip_verify" -eq 0 ]; then
   if [ "$dry_run" -eq 1 ]; then
     echo "+ zsh -lic 'echo shell-ok'"
-    echo "+ rcup -v"
   else
-    zsh -lic 'echo shell-ok' >/dev/null
+    echo "Verifying..."
+    if zsh -lic 'echo shell-ok' >/dev/null 2>&1; then
+      echo "  ✓ shell starts cleanly"
+    else
+      echo "  ✗ shell startup has errors" >&2
+    fi
+  fi
+fi
+
+echo ""
+echo "Bootstrap complete ✓"
     rcup -v >/dev/null
     echo "Verification passed."
   fi
