@@ -3,23 +3,14 @@
 
 format = """
 $env_var\
-$hostname\
 $directory\
 $git_branch\
 $git_status\
 $git_state\
 $git_metrics\
-$nodejs\
-$golang\
-$ruby\
 $cmd_duration\
 $line_break\
 $character"""
-
-[hostname]
-ssh_only = true
-format = "[$hostname]($style) "
-style = "bold cyan"
 
 [directory]
 truncation_length = 5
@@ -37,7 +28,6 @@ modified = "*"
 untracked = "?"
 staged = "+"
 deleted = "✗"
-stashed = "📦"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
@@ -56,22 +46,6 @@ style = "yellow"
 [character]
 success_symbol = "[\\$](bold green)"
 error_symbol = "[\\$](bold red)"
-
-[nodejs]
-format = "[$symbol($version)]($style) "
-symbol = "⬢ "
-detect_extensions = []
-
-[golang]
-format = "[$symbol($version)]($style) "
-symbol = "go "
-
-[ruby]
-format = "[$symbol($version)]($style) "
-symbol = "rb "
-
-[time]
-disabled = true
 
 [env_var.CODESPACE_SHORT_NAME]
 format = "\\[[$env_value]($style)\\] "
