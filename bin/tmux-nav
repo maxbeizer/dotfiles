@@ -53,7 +53,8 @@ case "$mode" in
     ;;
 
   windows)
-    result=$(tmux list-windows -a -F '#{session_name}:#{window_index} #{window_name} (#{window_panes} panes)#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,} #{?window_active,◀,}' | \
+    result=$(tmux list-windows -a -F '#{window_activity} #{session_name}:#{window_index} #{window_name} (#{window_panes} panes)#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,} #{?window_active,◀,}' | \
+      sort -rn | cut -d' ' -f2- | \
       fzf --reverse \
         --header='All windows  enter=switch  ctrl-n=new  ctrl-x=kill' \
         --preview='
