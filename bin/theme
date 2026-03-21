@@ -72,9 +72,13 @@ set_tmux() {
 }
 
 set_nvim() {
-  # Send command to all running nvim instances via their listen sockets
-  for sock in /tmp/nvim.*/0 ${TMPDIR:-/tmp}/nvim.*/0; do
-    [ -S "$sock" ] 2>/dev/null || continue
+  # Find all running nvim sockets (macOS uses $TMPDIR/nvim.user/*)
+  local sockets=()
+  while IFS= read -r sock; do
+    sockets+=("$sock")
+  done < <(find "${TMPDIR:-/tmp}" /tmp -path "*/nvim*" -type s 2>/dev/null | sort -u)
+
+  for sock in "${sockets[@]}"; do
     case "$1" in
       solarized)
         nvim --server "$sock" --remote-send "<Cmd>set background=dark<CR><Cmd>colorscheme NeoSolarized<CR>" 2>/dev/null || true
