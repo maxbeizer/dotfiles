@@ -108,6 +108,9 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
+# codespace extras (dotup, codespace helper, etc.)
+[[ -f ~/.codespaces.local ]] && source ~/.codespaces.local
+
 # Pull latest dotfiles, re-run install, reload shell
 dotup() {
   local dotdir="${DOTFILES_DIR:-$HOME/dotfiles-local}"

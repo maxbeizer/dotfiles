@@ -120,33 +120,28 @@ if [ "${CODESPACES:-}" = "true" ]; then
 
   link_file "$DOTFILES_DIR/codespaces.local" "$HOME/.codespaces.local"
 
+  # Set zsh as default shell in codespaces
+  if [ "$DRY_RUN" -eq 0 ] && command -v zsh >/dev/null 2>&1; then
+    if [ "$(basename "$SHELL")" != "zsh" ]; then
+      sudo chsh -s "$(which zsh)" "$(whoami)" 2>/dev/null || true
+      echo "  ✓ default shell set to zsh"
+    fi
+  fi
+
+  # Source codespaces.local from zshrc if not already
+  if [ "$DRY_RUN" -eq 0 ]; then
+    grep -qF 'codespaces.local' "$HOME/.zshrc" 2>/dev/null || \
+      echo '[ -f ~/.codespaces.local ] && source ~/.codespaces.local' >> "$HOME/.zshrc"
+    if [ -d "/workspaces/github/bin" ]; then
+      grep -qF '/workspaces/github/bin' "$HOME/.zshrc" 2>/dev/null || \
+        echo 'export PATH="$PATH:/workspaces/github/bin"' >> "$HOME/.zshrc"
+    fi
+  fi
+
   # Neovim plugin sync
   if command -v nvim >/dev/null 2>&1; then
     fancy_echo "Syncing Neovim plugins"
     [ "$DRY_RUN" -eq 0 ] && nvim --headless '+Lazy! sync' +qa 2>/dev/null || true
-  fi
-
-  # Bash integration (codespaces default shell)
-  if [ "$DRY_RUN" -eq 0 ]; then
-    _bashrc_ensure() {
-      grep -qF "$1" "$HOME/.bashrc" 2>/dev/null || echo "$1" >> "$HOME/.bashrc"
-    }
-
-    _bashrc_ensure 'source $HOME/.aliases'
-    _bashrc_ensure 'source $HOME/.codespaces.local'
-    _bashrc_ensure 'export EDITOR=vim'
-    _bashrc_ensure 'for fn in $HOME/.zsh/functions/*; do [ -f "$fn" ] && source "$fn"; done'
-    _bashrc_ensure 'command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"'
-    _bashrc_ensure 'command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"'
-    _bashrc_ensure '[ -f ~/.fzf.bash ] && source ~/.fzf.bash'
-    _bashrc_ensure 'set -o vi'
-    _bashrc_ensure 'bind '"'"'"\C-n": yank-last-arg'"'"''
-
-    if [ -d "/workspaces/github/bin" ]; then
-      _bashrc_ensure 'export PATH="$PATH:/workspaces/github/bin"'
-    fi
-    grep -q '\.bashrc' "$HOME/.bash_profile" 2>/dev/null || \
-      echo "source \$HOME/.bashrc" >> "$HOME/.bash_profile"
   fi
 
   # Copilot CLI
