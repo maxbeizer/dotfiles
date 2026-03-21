@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # tmux-nav: Interactive tmux session/window/pane navigator
 #
@@ -14,6 +14,8 @@
 #
 
 set -eu
+
+export PATH="$HOME/.local/bin:$HOME/.fzf/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 mode="${1:-sessions}"
 
@@ -47,7 +49,7 @@ case "$mode" in
 
   windows)
     session=$(tmux display-message -p '#{session_name}')
-    result=$(tmux list-windows -t "$session" -F '#{window_index}:#{window_name} (#{window_panes} panes) #{?window_active,◀,}' | \
+    result=$(tmux list-windows -t "$session" -F '#{window_index}:#{window_name} (#{window_panes} panes)#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,} #{?window_active,◀,}' | \
       fzf --reverse \
         --header="[$session]  enter=switch  ctrl-n=new window  ctrl-x=kill window  esc=cancel" \
         --preview='
