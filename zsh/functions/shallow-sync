@@ -1,0 +1,45 @@
+# Shallow-sync the current repo (fetch depth-1 + reset to remote HEAD)
+# Use --reclone to do a fresh shallow clone (reclaims disk space)
+#
+# Usage:
+#   cd ~/code/github/github && shallow-sync
+#   cd ~/code/github/github && shallow-sync --reclone
+
+shallow-sync() {
+  local reclone=false
+[[ "${1:-}" == "--reclone" ]] && reclone=true
+
+if [[ ! -d .git ]]; then
+  echo "Not a git repository." >&2
+  return 1
+fi
+
+local remote_url default_branch
+remote_url=$(git remote get-url origin 2>/dev/null) || {
+  echo "No 'origin' remote found." >&2
+  return 1
+}
+
+default_branch=$(git remote show origin 2>/dev/null | awk '/HEAD branch/ {print $NF}')
+default_branch=${default_branch:-main}
+
+echo "⟳ Shallow-syncing $(basename "$PWD") → $default_branch"
+
+if $reclone; then
+  echo "  Re-cloning .git (this reclaims disk space)..."
+  local tmpdir
+  tmpdir=$(mktemp -d)
+  git clone --depth 1 --branch "$default_branch" "$remote_url" "$tmpdir/repo" 2>&1 | tail -2
+  rm -rf .git
+  mv "$tmpdir/repo/.git" .git
+  rm -rf "$tmpdir"
+  git checkout -f "$default_branch" 2>/dev/null || true
+  echo "  ✓ .git size: $(du -sh .git | cut -f1)"
+else
+  git fetch --depth 1 origin "$default_branch" 2>&1 | tail -2
+  git reset --hard "origin/$default_branch" >/dev/null 2>&1
+  git reflog expire --expire=now --all 2>/dev/null
+  git gc --prune=now --quiet 2>/dev/null
+  echo "  ✓ Updated to $(git rev-parse --short HEAD)"
+fi
+}

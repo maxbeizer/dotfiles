@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# Revert to the old thoughtbot/dotfiles + rcm setup.
+# Run this if the new self-contained dotfiles break something.
+#
+# Usage: backout [--dry-run]
+#
+
+set -eu
+
+DRY_RUN=0
+[[ "${1:-}" == "--dry-run" ]] && DRY_RUN=1
+
+run() {
+  echo "  $*"
+  [ "$DRY_RUN" -eq 0 ] && "$@"
+}
+
+echo "Reverting to thoughtbot/dotfiles + rcm setup..."
+echo ""
+
+# Check preconditions
+if [ ! -d "$HOME/dotfiles-base" ] && [ ! -d "$HOME/dotfiles-base/.git" ]; then
+  echo "✗ No ~/dotfiles-base found."
+  echo "  This script expects you saved the old thoughtbot dotfiles there."
+  echo "  If you still have them elsewhere, move them to ~/dotfiles-base first."
+  exit 1
+fi
+
+if ! command -v rcup >/dev/null 2>&1; then
+  echo "✗ rcm not installed. Run: brew install rcm"
+  exit 1
+fi
+
+# Swap directories
+echo "Swapping directories..."
+if [ -d "$HOME/dotfiles" ]; then
+  run mv "$HOME/dotfiles" "$HOME/dotfiles-new"
+fi
+run mv "$HOME/dotfiles-base" "$HOME/dotfiles"
+if [ -d "$HOME/dotfiles-new" ]; then
+  run mv "$HOME/dotfiles-new" "$HOME/dotfiles-local"
+fi
+
+# Restore rcm symlinks
+echo "Restoring rcm symlinks..."
+run env RCRC="$HOME/dotfiles/rcrc" rcup
+
+echo ""
+echo "✓ Reverted to old setup."
+echo "  ~/dotfiles       = thoughtbot base (restored)"
+echo "  ~/dotfiles-local = new dotfiles (preserved on branch)"
+echo ""
+echo "To go back to the new setup, run:"
+echo "  mv ~/dotfiles ~/dotfiles-base && mv ~/dotfiles-local ~/dotfiles && ./dotfiles/install.sh"

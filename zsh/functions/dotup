@@ -1,0 +1,35 @@
+# Pull latest dotfiles, re-run install, reload shell
+# Works anywhere: codespaces, local machine, any repo location
+dotup() {
+  local dotdir=""
+  # Find dotfiles directory
+  if [ -d "/workspaces/dotfiles" ]; then
+    dotdir="/workspaces/dotfiles"
+  elif [ -d "$HOME/dotfiles" ]; then
+    dotdir="$HOME/dotfiles"
+  elif [ -d "$HOME/dotfiles-local" ]; then
+    dotdir="$HOME/dotfiles-local"
+  fi
+
+  # If not found, clone it
+  if [ -z "$dotdir" ]; then
+    dotdir="$HOME/dotfiles"
+    echo "Dotfiles not found — cloning to $dotdir..."
+    if ! git clone https://github.com/maxbeizer/dotfiles.git "$dotdir"; then
+      echo "✗ git clone failed" >&2
+      return 1
+    fi
+  fi
+
+  echo "Updating dotfiles from $dotdir..."
+  if ! (cd "$dotdir" && git pull --quiet); then
+    echo "✗ git pull failed" >&2
+    return 1
+  fi
+  if ! bash "$dotdir/install.sh"; then
+    echo "✗ install.sh failed — check output above" >&2
+    return 1
+  fi
+  echo "✓ Reloading shell..."
+  exec zsh -l
+}

@@ -1,147 +1,136 @@
-# dotfiles-local
+# dotfiles
 
-Personal dotfiles that extend thoughtbot's [laptop](https://github.com/thoughtbot/laptop) and [dotfiles](https://github.com/thoughtbot/dotfiles). Everything here is the `*.local` overlay — thoughtbot's dotfiles source these automatically via their `rcm` setup.
+Self-contained personal dotfiles. No external base layer — everything lives in this repo.
 
-## Repository structure
+## What's here
 
 ```
 .
-├── .laptop.local           # Laptop script extensions (brews, casks, asdf plugins, macOS defaults)
-├── install.sh              # Codespaces bootstrap (auto-detected via $CODESPACES)
-├── install-gh-extensions.sh# Installs gh CLI extensions (idempotent)
-├── bin/codespaces-vim-lab # Codespaces helper for Vim/Neovim doctor+refresh+timing
+├── install.sh                # Idempotent installer (local + codespaces)
+├── bin/
+│   ├── bootstrap-machine     # One-command fresh machine setup
+│   ├── theme                 # Switch between solarized dark ↔ catppuccin mocha
+│   ├── codespaces-vim-lab    # Codespaces helper for Vim/Neovim testing
+│   └── rdm-connect           # Connect to codespace with clipboard forwarding
 │
-├── aliases.local           # Shell aliases (Rails, Heroku, Ruby, Git)
-├── gitconfig.local         # Git identity, aliases, editor, diff tool
-├── git_template.local/     # Git hooks (commit, pre-commit, prepare-commit-message)
-├── zshrc.local             # Zsh prompt, history, PATH, plugins (fzf, fzf-tab, z, asdf)
-├── zshenv.local            # (empty — reserved for env vars loaded before .zshrc)
-├── ghostty/config          # Ghostty terminal config (keybindings, theme, font)
-├── tmux.conf.local         # Tmux: rebinds prefix to C-a
+├── aliases                   # Shell aliases (git, gh, misc)
+├── gitconfig                 # Git identity, aliases, SSH signing (1Password)
+├── gitignore                 # Global gitignore
+├── gitmessage                # Commit message template
+├── zshrc                     # Zsh config (Starship prompt, fzf, zoxide, PATH)
+├── zshenv.local              # Env vars loaded before zshrc
+├── zsh/
+│   ├── configs/post/         # Completion, cursor settings
+│   └── functions/            # ghcr, ghcrl (Copilot CLI session resume)
 │
-├── vimrc.local             # Vim settings, keybindings, plugin config (NERDTree, FZF, Fugitive, ALE)
-├── vimrc.bundles.local     # vim-plug plugins (NeoSolarized, fzf, Copilot, vim-plan, etc.)
-├── nvim.local              # Neovim init — sources ~/.vimrc then loads Lua plugins
-├── nvim/lua/               # Neovim Lua plugin configs (packer)
+├── tmux.conf                 # Tmux: C-a prefix, vim keys, mouse, pane labels
+├── starship.toml             # Starship prompt config
+├── ghostty/config            # Ghostty terminal (theme, font, keybinds)
 │
-├── gemrc.local             # Gem defaults (skip ri/rdoc)
-├── ripgreprc               # Ripgrep defaults (smart-case, max-columns, glob exclusions)
-├── codespaces.local        # Codespaces-specific setup (linuxbrew, fzf, nvim, ctags)
+├── nvim.local                # Neovim init (loads Lua modules)
+├── nvim/lua/                 # Neovim Lua config (lazy.nvim plugins)
 │
-├── zsh/functions/ghcr      # Interactive Copilot CLI session resume via fzf picker
-├── zsh/functions/ghcrl     # Resume most recent Copilot CLI session for current directory
-└── docs/CODESPACES.md      # Codespaces testing workflow for Vim/Neovim changes
+├── gemrc                     # Gem defaults (skip docs)
+├── ripgreprc                 # Ripgrep defaults
+├── codespaces.local          # Codespace-specific bash setup + dotup function
+└── install-gh-extensions.sh  # gh CLI extensions (idempotent)
 ```
 
 ## Fresh machine setup
 
-Recommended (uses the local bootstrap script):
-
 ```bash
-git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles-local
-~/dotfiles-local/bin/bootstrap-machine
-~/dotfiles-local/install-gh-extensions.sh
+git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles
+~/dotfiles/bin/bootstrap-machine
+~/dotfiles/install-gh-extensions.sh
 ```
 
-Alternative (run thoughtbot laptop + local overlay):
-
-```bash
-curl --remote-name https://raw.githubusercontent.com/thoughtbot/laptop/main/mac
-curl --remote-name https://raw.githubusercontent.com/maxbeizer/dotfiles/main/.laptop.local
-less mac
-sh mac 2>&1 | tee ~/laptop.log
-~/dotfiles-local/install-gh-extensions.sh
-```
-
-## Project hygiene
-
-- Track notable changes in [`CHANGELOG.md`](./CHANGELOG.md).
-- Use [`AGENTS.md`](./AGENTS.md) for repeatable agent setup and VM rehearsal notes.
-
-`.laptop.local` handles Homebrew packages, cask apps, Ruby gems, asdf language plugins, fzf setup, ripgrep config, and macOS keyboard repeat settings.
+`bootstrap-machine` clones the repo (if needed), runs `install.sh`, and verifies the shell starts cleanly. Supports `--dry-run` and `--skip-verify`.
 
 ## Codespaces
 
-When `$CODESPACES` is set, run:
+When `$CODESPACES` is set, `install.sh` also:
+- Wires up bash with aliases, Starship, zoxide, and fzf
+- Links codespaces.local for the `dotup` and `codespace` functions
+- Installs Copilot CLI (when `$GITHUB_TOKEN` is available)
+
+To iterate on config changes in a codespace:
 
 ```bash
-CODESPACES=true ./install.sh
+dotup    # pull, reinstall, reload shell
 ```
 
-This will:
+## Theme switching
 
-- Symlink local overlay files into `$HOME`
-- Download thoughtbot base dotfiles from `main`
-- Install/update vim-plug plugins
-- Install modular Neovim config and sync `lazy.nvim` plugins
-- Configure bash aliases, editor defaults, and Copilot CLI
-
-For iterative Vim/Neovim testing:
+Switch between Solarized Dark and Catppuccin Mocha across Ghostty, tmux, and nvim:
 
 ```bash
-./bin/codespaces-vim-lab doctor
-./bin/codespaces-vim-lab refresh
-./bin/codespaces-vim-lab startup
+theme solarized   # or: theme mocha
+theme              # show current
 ```
 
-See [`docs/CODESPACES.md`](./docs/CODESPACES.md) for the full workflow.
+Ghostty auto-reloads; tmux and nvim update live.
+
+## Tmux keybindings
+
+Prefix is `Ctrl-a`.
+
+| Keybinding | Action |
+|------------|--------|
+| `prefix S` | Session navigator (fzf, create/kill) |
+| `prefix W` | Window navigator (fzf, all sessions, sorted by recent) |
+| `prefix s` | Default session list (tree view) |
+| `prefix Ctrl-s` | **Save** all sessions (tmux-resurrect) |
+| `prefix Ctrl-r` | **Restore** sessions after reboot |
+| `prefix I` | Install/update tmux plugins (TPM) |
+| `prefix h/j/k/l` | Navigate panes (vim-style) |
+| `prefix M-Arrow` | Resize panes |
+
+### After a reboot
+1. Open a terminal
+2. `tmux`
+3. `Ctrl-a Ctrl-r` — everything comes back
 
 ## Key aliases
 
 | Alias | Command |
 |-------|---------|
+| `g` | `git` |
 | `gs` | `git status -b -s` |
-| `dm` | `bin/rails db:migrate` |
-| `rc` | `bin/rails c` |
-| `be` | `bundle exec` |
-| `h` | `heroku` |
+| `lg` | `lazygit` |
+| `ghpr` | `gh pr create --fill` |
+| `ghpv` | `gh pr view --web` |
 | `speedtest` | `networkQuality` |
 
-See `aliases.local` for the full list.
-
 ## Git aliases
-
-Defined in `gitconfig.local`. Highlights:
 
 | Alias | Description |
 |-------|-------------|
 | `git lg` | Pretty log graph |
-| `git ap` | `add -p` (interactive staging) |
+| `git ap` | Interactive staging |
 | `git syncm` | Checkout main, pull, rebase current branch |
 | `git fwl` | `push --force-with-lease` |
 | `git standup` | Yesterday's commits by you |
 | `git brr` | Checkout recent branch via fzf |
 | `git cleanupm` | Delete branches merged into main |
 
-## Vim / Neovim
+## Commit signing
 
-- **Leader**: `,`
-- **Colorscheme**: NeoSolarized (dark)
-- **File finder**: fzf (`Ctrl-P` files, `Ctrl-T` buffers)
-- **File tree**: NERDTree (`Ctrl-N`)
-- **Git**: Fugitive (`<leader>gs`, `<leader>gd`, etc.)
-- **Debugger shortcuts**: `<leader>b` inserts `binding.pry`, `<leader>i` inserts `IEx.pry`
-- Strips trailing whitespace on save for `.rb`, `.ex`, `.exs`, `.js`
+Commits are signed with SSH via 1Password when available. `install.sh` detects `op-ssh-sign` at runtime — on machines without 1Password, signing is disabled automatically.
 
-Plugins are managed by vim-plug in `vimrc.bundles.local`.
+## Tools
 
-## Dependencies
-
-- [thoughtbot/laptop](https://github.com/thoughtbot/laptop) — base setup script
-- [thoughtbot/dotfiles](https://github.com/thoughtbot/dotfiles) — base dotfiles (sourced via rcm)
-- [asdf](https://asdf-vm.com/) — runtime version manager (Ruby, Erlang, Elixir, Go, Node.js)
-- [fzf](https://github.com/junegunn/fzf) — fuzzy finder
-- [fzf-tab](https://github.com/Aloxaf/fzf-tab) — fzf-powered zsh tab completion (cloned to `~/code/fzf-tab`)
-- [z](https://github.com/rupa/z) — directory jumper (sourced from `~/z.sh`)
-
-## Verified commits without GPG
-
-Yes — you can use SSH commit signing instead of GPG.
-
-```bash
-git config --global gpg.format ssh
-git config --global user.signingkey ~/.ssh/id_ed25519.pub
-git config --global commit.gpgsign true
-```
-
-Then add the corresponding SSH signing key in GitHub settings under **SSH and GPG keys** as a **Signing key**.
+| Tool | Purpose | Required? |
+|------|---------|-----------|
+| zsh | Shell | Yes (local) |
+| tmux | Terminal multiplexer | Yes |
+| nvim | Editor | Yes |
+| gh | GitHub CLI | Yes |
+| copilot-cli | AI pair programming | Yes |
+| Ghostty | Terminal emulator | Local only |
+| [Starship](https://starship.rs/) | Prompt | Falls back to built-in |
+| [fzf](https://github.com/junegunn/fzf) | Fuzzy finder | Recommended |
+| [zoxide](https://github.com/ajeetdsouza/zoxide) | Directory jumper | Optional |
+| [LazyGit](https://github.com/jesseduffield/lazygit) | Git TUI | Optional |
+| [Television](https://github.com/alexpasmantier/television) | Fuzzy finder | Optional |
+| [Posting](https://github.com/darrenburns/posting) | API client | Optional |
+| [fzf-tab](https://github.com/Aloxaf/fzf-tab) | fzf tab completion | Optional (`~/code/fzf-tab`) |

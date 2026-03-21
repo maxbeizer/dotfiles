@@ -1,96 +1,238 @@
 #!/bin/bash
+#
+# Self-contained dotfiles installer. Idempotent — safe to run repeatedly.
+# No external dependencies (no rcm, no thoughtbot/dotfiles).
+#
+# Usage:
+#   ./install.sh              # detect environment and install
+#   ./install.sh --dry-run    # show what would happen
+#
 
-exec > >(tee -i $HOME/dotfiles_install.log)
-exec 2>&1
-set -x
+set -eu
+
+DRY_RUN=0
+[[ "${1:-}" == "--dry-run" ]] && DRY_RUN=1
+
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 fancy_echo() {
-  local fmt="$1"; shift
-
-  # shellcheck disable=SC2059
-  printf "\n$fmt\n" "$@"
+  printf "\n%s\n" "$1"
 }
 
-get() {
-  curl -fLo $1 --create-dirs $2
+link_file() {
+  local src="$1" dst="$2"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    echo "  [dry-run] $src -> $dst"
+  else
+    ln -sf "$src" "$dst"
+    echo "  ✓ $(basename "$dst")"
+  fi
 }
 
-if [ "$CODESPACES" == "true" ]; then
-  fancy_echo "In codespaces! Installing dotfiles"
+# --- Homebrew packages (local only, skip in codespaces) ---
+if [ "${CODESPACES:-}" != "true" ] && command -v brew >/dev/null 2>&1; then
+  if [ -f "$DOTFILES_DIR/Brewfile" ]; then
+    fancy_echo "Installing Homebrew packages (may prompt for password)"
+    if [ "$DRY_RUN" -eq 0 ]; then
+      brew bundle --file="$DOTFILES_DIR/Brewfile" --quiet
+    else
+      echo "  [dry-run] brew bundle --file=$DOTFILES_DIR/Brewfile"
+    fi
+  fi
+fi
+
+# --- macOS defaults ---
+if [ "$(uname)" = "Darwin" ] && [ "$DRY_RUN" -eq 0 ]; then
+  fancy_echo "Setting macOS defaults"
+  defaults write -g InitialKeyRepeat -int 15
+  defaults write -g KeyRepeat -int 2
+  echo "  ✓ fast key repeat enabled"
+fi
+
+# --- Dotfiles to symlink into $HOME as dotfiles (.<name>) ---
+DOTFILES=(
+  aliases
+  gemrc
+  gitconfig
+  gitignore
+  gitmessage
+  ripgreprc
+  starship.toml
+  tmux.conf
+  zshrc
+  zshenv
+)
+
+fancy_echo "Linking dotfiles to \$HOME"
+for f in "${DOTFILES[@]}"; do
+  [ -f "$DOTFILES_DIR/$f" ] && link_file "$DOTFILES_DIR/$f" "$HOME/.$f"
+done
+
+# Starship config goes to ~/.config/starship.toml (not dotfile)
+if [ -f "$DOTFILES_DIR/starship.toml" ]; then
+  mkdir -p "$HOME/.config"
+  link_file "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
+fi
+
+# --- Zsh configs directory ---
+fancy_echo "Linking zsh config directory"
+mkdir -p "$HOME/.zsh"
+for zdir in configs functions; do
+  if [ -d "$DOTFILES_DIR/zsh/$zdir" ]; then
+    # Remove existing dir/symlink to avoid nesting a symlink inside itself
+    rm -rf "$HOME/.zsh/$zdir"
+    link_file "$DOTFILES_DIR/zsh/$zdir" "$HOME/.zsh/$zdir"
+  fi
+done
+
+# --- Zsh plugins (syntax highlighting, autosuggestions) ---
+fancy_echo "Setting up zsh plugins"
+mkdir -p "$HOME/.zsh/plugins"
+if [ "$DRY_RUN" -eq 0 ]; then
+  for plugin in zsh-users/zsh-syntax-highlighting zsh-users/zsh-autosuggestions; do
+    name="${plugin#*/}"
+    if [ ! -d "$HOME/.zsh/plugins/$name" ]; then
+      git clone --depth 1 "https://github.com/$plugin.git" "$HOME/.zsh/plugins/$name" 2>/dev/null
+      echo "  ✓ $name"
+    fi
+  done
+fi
+
+# --- Git SSH commit signing (1Password, when available) ---
+if [ -x "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" ]; then
+  git config --global gpg.ssh.program "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+  git config --global commit.gpgsign true
+  echo "  ✓ 1Password SSH signing enabled"
+else
+  git config --global commit.gpgsign false
+  echo "  · no op-ssh-sign found — commit signing disabled"
+fi
+
+# --- Git allowed signers (for SSH commit verification) ---
+fancy_echo "Setting up git allowed signers"
+mkdir -p "$HOME/.config/git"
+if [ ! -f "$HOME/.config/git/allowed_signers" ] || ! grep -q "max.beizer@gmail.com" "$HOME/.config/git/allowed_signers" 2>/dev/null; then
+  echo "max.beizer@gmail.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrEq8YlmAUVnpK/xXjnLclUTi/kxO5XA8iVPFIjEPac" >> "$HOME/.config/git/allowed_signers"
+  echo "  ✓ allowed_signers"
+fi
+
+# --- Neovim ---
+fancy_echo "Linking Neovim config"
+mkdir -p "$HOME/.config/nvim"
+[ -f "$DOTFILES_DIR/nvim.local" ] && link_file "$DOTFILES_DIR/nvim.local" "$HOME/.config/nvim/init.vim"
+if [ -d "$DOTFILES_DIR/nvim/lua" ]; then
+  rm -rf "$HOME/.config/nvim/lua"
+  if [ "$DRY_RUN" -eq 0 ]; then
+    cp -R "$DOTFILES_DIR/nvim/lua" "$HOME/.config/nvim/lua"
+  fi
+  echo "  ✓ nvim/lua"
+fi
+
+# --- Bin scripts ---
+fancy_echo "Linking bin scripts to ~/.local/bin"
+mkdir -p "$HOME/.local/bin"
+for f in "$DOTFILES_DIR/bin/"*; do
+  [ -f "$f" ] && link_file "$f" "$HOME/.local/bin/$(basename "$f")"
+done
+
+# --- Ghostty ---
+if [ -d "$DOTFILES_DIR/ghostty" ]; then
+  fancy_echo "Linking Ghostty config"
+  mkdir -p "$HOME/.config/ghostty"
+  link_file "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
+fi
+
+# --- Codespace-specific extras ---
+if [ "${CODESPACES:-}" = "true" ]; then
+  fancy_echo "Codespace extras"
 
   # gh/gh vendors a modern Node; prefer it over the ancient system one
   if [ -x "/workspaces/github/vendor/node/node" ]; then
     export PATH="/workspaces/github/vendor/node:/workspaces/github/vendor/node/bin:$PATH"
   fi
 
-  locals=( "tmux.conf.local" "vimrc.local" "vimrc.bundles.local" "aliases.local" "gitconfig.local" "ripgreprc" "codespaces.local")
-  for i in "${locals[@]}"
-  do
-    ln -sf $(pwd)/"$i" $HOME/."$i"
-  done
+  link_file "$DOTFILES_DIR/codespaces.local" "$HOME/.codespaces.local"
 
-  fancy_echo "Getting thoughtbot dotfiles"
-  get $HOME/.vimrc https://raw.githubusercontent.com/thoughtbot/dotfiles/main/vimrc
-  get $HOME/.vimrc.bundles https://raw.githubusercontent.com/thoughtbot/dotfiles/main/vimrc.bundles
-  get $HOME/.aliases https://raw.githubusercontent.com/thoughtbot/dotfiles/main/aliases
-  get $HOME/.gitconfig https://raw.githubusercontent.com/thoughtbot/dotfiles/main/gitconfig
-  get $HOME/.gitmessage https://raw.githubusercontent.com/thoughtbot/dotfiles/main/gitmessage
-  get $HOME/.gitignore https://raw.githubusercontent.com/thoughtbot/dotfiles/main/gitignore
-  get $HOME/.tmux.conf https://raw.githubusercontent.com/thoughtbot/dotfiles/main/tmux.conf
-
-  fancy_echo "Installing vim plugins"
-  if [ -e "$HOME"/.vim/autoload/plug.vim ]; then
-    vim -E -s +PlugUpgrade +qa
-  else
-    curl -fLo "$HOME"/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  fi
-  vim -u "$HOME"/.vimrc.bundles +PlugUpdate +PlugClean! +qa
-  reset -Q
-
-  [ -f /workspaces/github ] && export PATH="/workspaces/github/bin:$PATH"
-
-  fancy_echo "Setting up neovim"
-  mkdir -p "$HOME"/.config/nvim
-  cp "$(pwd)/nvim.local" "$HOME/.config/nvim/init.vim"
-  rm -rf "$HOME/.config/nvim/lua"
-  cp -R "$(pwd)/nvim/lua" "$HOME/.config/nvim/lua"
-  nvim --headless '+Lazy! sync' +qa
-
-  fancy_echo "Sourcing aliases"
-  echo "source "$HOME"/.aliases" >> "$HOME"/.bashrc
-  echo "alias g='git'" >> "$HOME"/.bashrc
-  echo "export EDITOR=vim" >> "$HOME"/.bashrc
-  echo "source "$HOME"/.codespaces.local" >> "$HOME"/.bashrc
-  echo "machine goproxy.githubapp.com login nobody password $GITHUB_TOKEN" >> $HOME/.netrc
-
-  fancy_echo "Adding copilot CLI"
-  npm config set "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN"
-  npm config set "@github:registry=https://npm.pkg.github.com/"
-  npm install -g @github/copilot
-
-  if [ -d "/workspaces/github/bin" ]; then
-    echo "export PATH="$PATH":/workspaces/github/bin" >> "$HOME"/.bashrc
+  # Set zsh as default shell in codespaces
+  if [ "$DRY_RUN" -eq 0 ] && command -v zsh >/dev/null 2>&1; then
+    if [ "$(basename "$SHELL")" != "zsh" ]; then
+      sudo chsh -s "$(which zsh)" "$(whoami)" 2>/dev/null || true
+      echo "  ✓ default shell set to zsh"
+    fi
   fi
 
-  fancy_echo "Adding bashrc to .bash_profile"
-  echo "source $HOME/.bashrc" >> "$HOME"/.bash_profile
+  # Add /workspaces/github/bin to PATH via codespaces.local if needed
+  if [ "$DRY_RUN" -eq 0 ] && [ -d "/workspaces/github/bin" ]; then
+    grep -qF '/workspaces/github/bin' "$HOME/.codespaces.local" 2>/dev/null || \
+      echo 'export PATH="$PATH:/workspaces/github/bin"' >> "$HOME/.codespaces.local"
+  fi
 
-  fancy_echo "All done"
-else
-  fancy_echo "Not running in a codespace"
+  # Install CLI tools if not present
+  if [ "$DRY_RUN" -eq 0 ]; then
+    # Starship prompt
+    if ! command -v starship >/dev/null 2>&1; then
+      curl -sS https://starship.rs/install.sh | sh -s -- -y >/dev/null 2>&1
+      echo "  ✓ starship installed"
+    fi
+    # zoxide (directory jumper)
+    if ! command -v zoxide >/dev/null 2>&1; then
+      curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh >/dev/null 2>&1
+      echo "  ✓ zoxide installed"
+    fi
+    # fzf
+    if ! command -v fzf >/dev/null 2>&1; then
+      if [ ! -d "$HOME/.fzf" ]; then
+        git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" 2>/dev/null
+      fi
+      "$HOME/.fzf/install" --all --no-update-rc --no-bash --no-fish 2>/dev/null || true
+      echo "  ✓ fzf installed"
+    fi
+    # lazygit
+    if ! command -v lazygit >/dev/null 2>&1; then
+      LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+      curl -sLo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+      tar xzf /tmp/lazygit.tar.gz -C /tmp lazygit 2>/dev/null
+      sudo install /tmp/lazygit /usr/local/bin/lazygit 2>/dev/null && echo "  ✓ lazygit installed"
+      rm -f /tmp/lazygit /tmp/lazygit.tar.gz
+    fi
+    # bat (syntax-highlighted cat)
+    if ! command -v bat >/dev/null 2>&1; then
+      BAT_VERSION=$(curl -s "https://api.github.com/repos/sharkdp/bat/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+      curl -sLo /tmp/bat.deb "https://github.com/sharkdp/bat/releases/latest/download/bat_${BAT_VERSION}_amd64.deb"
+      sudo dpkg -i /tmp/bat.deb >/dev/null 2>&1 && echo "  ✓ bat installed"
+      rm -f /tmp/bat.deb
+    fi
+    # fd (fast find)
+    if ! command -v fd >/dev/null 2>&1; then
+      FD_VERSION=$(curl -s "https://api.github.com/repos/sharkdp/fd/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+      curl -sLo /tmp/fd.deb "https://github.com/sharkdp/fd/releases/latest/download/fd_${FD_VERSION}_amd64.deb"
+      sudo dpkg -i /tmp/fd.deb >/dev/null 2>&1 && echo "  ✓ fd installed"
+      rm -f /tmp/fd.deb
+    fi
+    # eza (modern ls)
+    if ! command -v eza >/dev/null 2>&1; then
+      curl -sLo /tmp/eza.tar.gz "https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz"
+      tar xzf /tmp/eza.tar.gz -C /tmp 2>/dev/null
+      sudo install /tmp/eza /usr/local/bin/eza 2>/dev/null && echo "  ✓ eza installed"
+      rm -f /tmp/eza /tmp/eza.tar.gz
+    fi
+  fi
 
-  # Symlink local bin scripts to ~/.local/bin
-  fancy_echo "Linking bin scripts to ~/.local/bin"
-  mkdir -p "$HOME/.local/bin"
-  for f in "$(pwd)/bin/"*; do
-    ln -sf "$f" "$HOME/.local/bin/$(basename "$f")"
-  done
+  # Neovim plugin sync
+  if command -v nvim >/dev/null 2>&1; then
+    fancy_echo "Syncing Neovim plugins"
+    [ "$DRY_RUN" -eq 0 ] && nvim --headless '+Lazy! sync' +qa 2>/dev/null || true
+  fi
 
-  # Ghostty terminal config
-  if [ -d "$(pwd)/ghostty" ]; then
-    fancy_echo "Linking Ghostty config"
-    mkdir -p "$HOME/.config/ghostty"
-    ln -sf "$(pwd)/ghostty/config" "$HOME/.config/ghostty/config"
+  # Copilot CLI
+  if [ -n "${GITHUB_TOKEN:-}" ]; then
+    fancy_echo "Installing Copilot CLI"
+    if [ "$DRY_RUN" -eq 0 ]; then
+      npm config set "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN"
+      npm config set "@github:registry=https://npm.pkg.github.com/"
+      npm install -g @github/copilot 2>/dev/null || true
+    fi
   fi
 fi
+
+fancy_echo "Done ✓"

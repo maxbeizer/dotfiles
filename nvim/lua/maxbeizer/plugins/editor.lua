@@ -77,9 +77,28 @@ return {
     'iCyMind/NeoSolarized',
     lazy = false,
     priority = 1000,
+  },
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    lazy = false,
+    priority = 1000,
     config = function()
+      -- Read theme from ~/.config/theme (set by bin/theme)
+      local theme_file = vim.fn.expand('~/.config/theme')
+      local theme = 'solarized'
+      local f = io.open(theme_file, 'r')
+      if f then
+        theme = f:read('*l') or 'solarized'
+        f:close()
+      end
+
       vim.opt.background = 'dark'
-      pcall(vim.cmd.colorscheme, 'NeoSolarized')
+      if theme == 'mocha' then
+        pcall(vim.cmd.colorscheme, 'catppuccin-mocha')
+      else
+        pcall(vim.cmd.colorscheme, 'NeoSolarized')
+      end
     end,
   },
   {
