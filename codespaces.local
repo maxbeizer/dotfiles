@@ -1,26 +1,3 @@
-# Pull latest dotfiles, re-run install, reload shell
-dotup() {
-  local dotdir="/workspaces/dotfiles"
-  if [ ! -d "$dotdir" ]; then
-    dotdir="$HOME/dotfiles-local"
-  fi
-  if [ ! -d "$dotdir" ]; then
-    echo "✗ dotfiles directory not found at $dotdir" >&2
-    return 1
-  fi
-  echo "Updating dotfiles from $dotdir..."
-  if ! (cd "$dotdir" && git pull --quiet); then
-    echo "✗ git pull failed" >&2
-    return 1
-  fi
-  if ! bash "$dotdir/install.sh"; then
-    echo "✗ install.sh failed — check output above" >&2
-    return 1
-  fi
-  echo "✓ Reloading shell..."
-  exec zsh -l
-}
-
 function codespace() {
   # Install linux brew
   if ! command -v brew &> /dev/null
