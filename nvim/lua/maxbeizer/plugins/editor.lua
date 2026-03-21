@@ -142,7 +142,7 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    event = 'BufReadPost',
+    lazy = false,
     opts = {},
   },
 }
