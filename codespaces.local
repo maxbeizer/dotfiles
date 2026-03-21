@@ -7,7 +7,8 @@ dotup() {
   echo "Updating dotfiles from $dotdir..."
   (cd "$dotdir" && git pull --quiet) &&
   bash "$dotdir/install.sh" &&
-  exec bash -l
+  echo "Reloading shell..." &&
+  source "$HOME/.bashrc"
 }
 
 function codespace() {
