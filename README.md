@@ -39,9 +39,9 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 ## Fresh machine setup
 
 ```bash
-git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles-local
-~/dotfiles-local/bin/bootstrap-machine
-~/dotfiles-local/install-gh-extensions.sh
+git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles
+~/dotfiles/bin/bootstrap-machine
+~/dotfiles/install-gh-extensions.sh
 ```
 
 `bootstrap-machine` clones the repo (if needed), runs `install.sh`, and verifies the shell starts cleanly. Supports `--dry-run` and `--skip-verify`.

@@ -5,8 +5,8 @@ Use this workflow to test Vim/Neovim changes safely before applying them on your
 ## 1) Start from this repository in Codespaces
 
 ```bash
-git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles-local
-cd ~/dotfiles-local
+git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles
+cd ~/dotfiles
 ```
 
 ## 2) Run Codespaces bootstrap
@@ -15,7 +15,7 @@ cd ~/dotfiles-local
 CODESPACES=true ./install.sh
 ```
 
-This wires local overlays, fetches thoughtbot base files, and configures Neovim.
+This wires local overlays, sets up plugins, and configures Neovim.
 
 ## 3) Use the lab helper
 

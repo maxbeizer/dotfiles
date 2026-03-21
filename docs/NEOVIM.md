@@ -4,11 +4,11 @@
 
 Neovim config lives in `nvim/` (modular Lua) with `nvim.local` as the
 entrypoint. It sources the legacy `~/.vimrc` first (preserving old keymaps
-and settings from `vimrc.local`), then bootstraps the Lua module system.
+and settings from `nvim.local`), then bootstraps the Lua module system.
 
 ```
 nvim.local                    → ~/.config/nvim/init.vim (entrypoint)
-  ├── sources ~/.vimrc        → legacy vim settings + vimrc.local
+  ├── sources ~/.vimrc        → Neovim init
   └── lua require('maxbeizer')
         └── nvim/lua/maxbeizer/
               ├── init.lua        → bootstrap lazy.nvim, load core + plugins
@@ -87,5 +87,5 @@ NeoSolarized, defaults to dark. Toggle with `,bg`.
 | `Ctrl-t`      | Buffers (telescope)       |
 | `Ctrl-n`      | Toggle file tree          |
 
-Legacy vim mappings from `vimrc.local` (pry, debugger, fugitive, etc.)
+Keymaps defined in nvim/lua/maxbeizer/core/keymaps.lua
 are preserved via `source ~/.vimrc` in the entrypoint.

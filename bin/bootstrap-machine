@@ -43,7 +43,7 @@ run() {
 }
 
 DOTFILES_URL="${DOTFILES_URL:-https://github.com/maxbeizer/dotfiles.git}"
-DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles-local}"
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
 
 if ! command -v git >/dev/null 2>&1; then
   echo "git is required." >&2
@@ -76,9 +76,3 @@ fi
 
 echo ""
 echo "Bootstrap complete ✓"
-    rcup -v >/dev/null
-    echo "Verification passed."
-  fi
-fi
-
-echo "Bootstrap complete."

@@ -49,7 +49,7 @@ set_tmux() {
       tmux set -g window-status-current-format '#[fg=#eee8d5,bg=#268bd2,bold] #I:#W '
       tmux set -g window-status-bell-style 'fg=#dc322f,bold'
       tmux set -g window-status-activity-style 'fg=#b58900'
-      tmux set -g status-right '#[fg=#586e75]#{?#{==:#{pane_current_command},zsh},#(cd #{pane_current_path} && git branch --show-current 2>/dev/null),} #[fg=#268bd2,bold] #{session_name}'
+      tmux set -g status-right '#[fg=#586e75]#{?window_zoomed_flag,🔍 ,}#{?#{==:#{pane_current_command},zsh},#(cd #{pane_current_path} && git branch --show-current 2>/dev/null),} #[fg=#268bd2,bold] #{session_name}'
       ;;
     mocha)
       # pane backgrounds
@@ -64,7 +64,7 @@ set_tmux() {
       tmux set -g window-status-current-format '#[fg=#1e1e2e,bg=#89b4fa,bold] #I:#W '
       tmux set -g window-status-bell-style 'fg=#f38ba8,bold'
       tmux set -g window-status-activity-style 'fg=#f9e2af'
-      tmux set -g status-right '#[fg=#585b70]#{?#{==:#{pane_current_command},zsh},#(cd #{pane_current_path} && git branch --show-current 2>/dev/null),} #[fg=#89b4fa,bold] #{session_name}'
+      tmux set -g status-right '#[fg=#585b70]#{?window_zoomed_flag,🔍 ,}#{?#{==:#{pane_current_command},zsh},#(cd #{pane_current_path} && git branch --show-current 2>/dev/null),} #[fg=#89b4fa,bold] #{session_name}'
       ;;
   esac
   # suppress errors for headless/no-server

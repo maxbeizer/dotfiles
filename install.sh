@@ -161,14 +161,10 @@ if [ "${CODESPACES:-}" = "true" ]; then
     fi
   fi
 
-  # Source codespaces.local from zshrc if not already
-  if [ "$DRY_RUN" -eq 0 ]; then
-    grep -qF 'codespaces.local' "$HOME/.zshrc" 2>/dev/null || \
-      echo '[ -f ~/.codespaces.local ] && source ~/.codespaces.local' >> "$HOME/.zshrc"
-    if [ -d "/workspaces/github/bin" ]; then
-      grep -qF '/workspaces/github/bin' "$HOME/.zshrc" 2>/dev/null || \
-        echo 'export PATH="$PATH:/workspaces/github/bin"' >> "$HOME/.zshrc"
-    fi
+  # Add /workspaces/github/bin to PATH via codespaces.local if needed
+  if [ "$DRY_RUN" -eq 0 ] && [ -d "/workspaces/github/bin" ]; then
+    grep -qF '/workspaces/github/bin' "$HOME/.codespaces.local" 2>/dev/null || \
+      echo 'export PATH="$PATH:/workspaces/github/bin"' >> "$HOME/.codespaces.local"
   fi
 
   # Install CLI tools if not present

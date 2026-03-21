@@ -5,15 +5,15 @@ dotup() {
   # Find dotfiles directory
   if [ -d "/workspaces/dotfiles" ]; then
     dotdir="/workspaces/dotfiles"
-  elif [ -d "$HOME/dotfiles-local" ]; then
-    dotdir="$HOME/dotfiles-local"
   elif [ -d "$HOME/dotfiles" ]; then
     dotdir="$HOME/dotfiles"
+  elif [ -d "$HOME/dotfiles-local" ]; then
+    dotdir="$HOME/dotfiles-local"
   fi
 
   # If not found, clone it
   if [ -z "$dotdir" ]; then
-    dotdir="$HOME/dotfiles-local"
+    dotdir="$HOME/dotfiles"
     echo "Dotfiles not found — cloning to $dotdir..."
     if ! git clone https://github.com/maxbeizer/dotfiles.git "$dotdir"; then
       echo "✗ git clone failed" >&2

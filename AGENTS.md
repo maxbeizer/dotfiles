@@ -7,14 +7,14 @@ Set up a self-contained dotfiles environment. No external base layer needed.
 
 ## One-command bootstrap (recommended)
 ```bash
-git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles-local
-~/dotfiles-local/bin/bootstrap-machine
+git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles
+~/dotfiles/bin/bootstrap-machine
 ```
 
 Useful flags:
 ```bash
-~/dotfiles-local/bin/bootstrap-machine --dry-run
-~/dotfiles-local/bin/bootstrap-machine --skip-verify
+~/dotfiles/bin/bootstrap-machine --dry-run
+~/dotfiles/bin/bootstrap-machine --skip-verify
 ```
 
 ## What install.sh does
