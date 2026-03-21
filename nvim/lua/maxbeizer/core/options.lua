@@ -11,6 +11,17 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.completeopt = 'menuone,noselect'
 
+-- indentation defaults
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.smartindent = true
+
+-- show indent guides
+vim.opt.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
 -- Ensure gh/gh vendored Node is on PATH for copilot.vim and LSPs
 local vendored_node = '/workspaces/github/vendor/node'
 if vim.fn.isdirectory(vendored_node) == 1 then

@@ -53,12 +53,13 @@ case "$mode" in
     ;;
 
   windows)
-    result=$(tmux list-windows -a -F '#{window_activity} #{session_name}:#{window_index} #{window_name} (#{window_panes} panes)#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,} #{?window_active,◀,}' | \
+    result=$(tmux list-windows -a -F '#{window_activity} #{session_name}:#{window_index}  #{window_name}#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,}#{?window_active, ◀,}' | \
       sort -rn | cut -d' ' -f2- | \
+      column -t -s'	' | \
       fzf --reverse \
         --header='All windows  enter=switch  ctrl-n=new  ctrl-x=kill' \
         --preview='
-          target=$(echo {} | cut -d" " -f1)
+          target=$(echo {} | awk "{print \$1}")
           echo "── Panes ──"
           tmux list-panes -t "$target" -F "  pane #{pane_index}: #{pane_current_command} (#{pane_width}x#{pane_height})" 2>/dev/null
           echo ""

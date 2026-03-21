@@ -29,7 +29,11 @@ return {
     },
     config = function()
       local telescope = require('telescope')
-      telescope.setup({})
+      telescope.setup({
+        defaults = {
+          file_ignore_patterns = { '%.git/' },
+        },
+      })
       pcall(telescope.load_extension, 'fzf')
     end,
   },
@@ -109,4 +113,15 @@ return {
   },
   { 'github/copilot.vim', event = 'InsertEnter' },
   { 'tpope/vim-abolish', event = 'BufReadPost' },
+  {
+    'ruifm/gitlinker.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    keys = {
+      { '<leader>go', function() require('gitlinker').get_buf_range_url('n') end, desc = 'Open on GitHub' },
+      { '<leader>go', function() require('gitlinker').get_buf_range_url('v') end, mode = 'v', desc = 'Open selection on GitHub' },
+    },
+    config = function()
+      require('gitlinker').setup({ mappings = nil })
+    end,
+  },
 }
