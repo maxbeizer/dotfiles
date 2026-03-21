@@ -27,7 +27,7 @@ set_ghostty() {
 
   case "$1" in
     solarized)
-      sed -i.bak 's/^theme = .*/theme = iTerm2 Solarized Dark/' "$real_config"
+      sed -i.bak 's/^theme = .*/theme = Solarized Dark Higher Contrast/' "$real_config"
       ;;
     mocha)
       sed -i.bak 's/^theme = .*/theme = Catppuccin Mocha/' "$real_config"
