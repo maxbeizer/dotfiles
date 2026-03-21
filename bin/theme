@@ -30,9 +30,6 @@ set_ghostty() {
       ;;
   esac
   rm -f "${config}.bak"
-
-  # Live reload (Ghostty watches config, USR1 forces it)
-  killall -USR1 ghostty 2>/dev/null || true
 }
 
 set_tmux() {
