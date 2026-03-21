@@ -2,16 +2,17 @@
 # Docs: https://starship.rs/config/
 
 format = """
-$time\
 $env_var\
 $directory\
 $git_branch\
 $git_status\
 $git_state\
 $git_metrics\
-$cmd_duration\
 $line_break\
 $character"""
+
+# Right side: time + cmd duration (keeps left side clean)
+right_format = """$cmd_duration$time"""
 
 [directory]
 truncation_length = 5
@@ -30,6 +31,9 @@ modified = "*"
 untracked = "?"
 staged = "+"
 deleted = "✗"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇡${ahead_count}⇣${behind_count}"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
@@ -49,12 +53,12 @@ style = "yellow"
 success_symbol = "[\\$](bold green)"
 error_symbol = "[\\$](bold red)"
 
+[time]
+disabled = false
+format = "[$time]($style)"
+style = "dimmed white"
+time_format = "%T"
+
 [env_var.CODESPACE_SHORT_NAME]
 format = "\\[[$env_value]($style)\\] "
 style = "cyan"
-
-[time]
-disabled = false
-format = "[$time]($style) "
-style = "yellow"
-time_format = "%T"
