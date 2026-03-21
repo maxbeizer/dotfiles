@@ -83,6 +83,12 @@ return {
     end,
   },
   {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    lazy = true,
+    priority = 1000,
+  },
+  {
     'mbbill/undotree',
     keys = {
       { '<leader>u', vim.cmd.UndotreeToggle, desc = 'Toggle Undotree' },

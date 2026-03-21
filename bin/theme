@@ -1,0 +1,87 @@
+#!/bin/bash
+#
+# Switch color theme across Ghostty, tmux, nvim, and Starship.
+# Idempotent — safe to run repeatedly.
+#
+# Usage:
+#   theme solarized    # Solarized Dark
+#   theme mocha        # Catppuccin Mocha
+#   theme              # show current theme
+#
+
+set -eu
+
+THEME_FILE="${HOME}/.config/theme"
+
+current_theme() {
+  cat "$THEME_FILE" 2>/dev/null || echo "solarized"
+}
+
+set_ghostty() {
+  local config="${HOME}/.config/ghostty/config"
+  [ -f "$config" ] || return 0
+
+  case "$1" in
+    solarized)
+      sed -i.bak 's/^theme = .*/theme = iTerm2 Solarized Dark/' "$config"
+      ;;
+    mocha)
+      sed -i.bak 's/^theme = .*/theme = catppuccin-mocha/' "$config"
+      ;;
+  esac
+  rm -f "${config}.bak"
+}
+
+set_tmux() {
+  command -v tmux >/dev/null 2>&1 || return 0
+
+  case "$1" in
+    solarized)
+      tmux set -g window-style 'bg=#001a26' 2>/dev/null || true
+      tmux set -g window-active-style 'bg=#002b36' 2>/dev/null || true
+      tmux set -g pane-active-border-style 'fg=#859900,bold' 2>/dev/null || true
+      tmux set -g pane-border-style 'fg=colour240' 2>/dev/null || true
+      ;;
+    mocha)
+      tmux set -g window-style 'bg=#1e1e2e' 2>/dev/null || true
+      tmux set -g window-active-style 'bg=#1e1e2e' 2>/dev/null || true
+      tmux set -g pane-active-border-style 'fg=#89b4fa,bold' 2>/dev/null || true
+      tmux set -g pane-border-style 'fg=#585b70' 2>/dev/null || true
+      ;;
+  esac
+}
+
+set_nvim() {
+  # Send command to all running nvim instances via their listen sockets
+  for sock in /tmp/nvim.*/0 ${TMPDIR:-/tmp}/nvim.*/0; do
+    [ -S "$sock" ] 2>/dev/null || continue
+    case "$1" in
+      solarized)
+        nvim --server "$sock" --remote-send "<Cmd>set background=dark<CR><Cmd>colorscheme NeoSolarized<CR>" 2>/dev/null || true
+        ;;
+      mocha)
+        nvim --server "$sock" --remote-send "<Cmd>set background=dark<CR><Cmd>colorscheme catppuccin-mocha<CR>" 2>/dev/null || true
+        ;;
+    esac
+  done
+}
+
+if [ $# -eq 0 ]; then
+  echo "Current theme: $(current_theme)"
+  exit 0
+fi
+
+case "$1" in
+  solarized|mocha)
+    echo "$1" > "$THEME_FILE"
+    set_ghostty "$1"
+    set_tmux "$1"
+    set_nvim "$1"
+    echo "Switched to $1"
+    echo "  Note: Restart Ghostty for terminal theme to take effect."
+    ;;
+  *)
+    echo "Usage: theme [solarized|mocha]" >&2
+    exit 1
+    ;;
+esac
