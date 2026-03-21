@@ -114,14 +114,13 @@ return {
   { 'github/copilot.vim', event = 'InsertEnter' },
   { 'tpope/vim-abolish', event = 'BufReadPost' },
   {
-    'ruifm/gitlinker.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    'linrongbin16/gitlinker.nvim',
     keys = {
-      { '<leader>go', function() require('gitlinker').get_buf_range_url('n') end, desc = 'Open on GitHub' },
-      { '<leader>go', function() require('gitlinker').get_buf_range_url('v') end, mode = 'v', desc = 'Open selection on GitHub' },
+      { '<leader>go', '<cmd>GitLink!<cr>', desc = 'Open on GitHub' },
+      { '<leader>go', '<cmd>GitLink!<cr>', mode = 'v', desc = 'Open selection on GitHub' },
     },
     config = function()
-      require('gitlinker').setup({ mappings = nil })
+      require('gitlinker').setup()
     end,
   },
 }
