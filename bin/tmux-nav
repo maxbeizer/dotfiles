@@ -24,7 +24,12 @@ case "$mode" in
     result=$(tmux list-sessions -F '#{session_name}' | \
       fzf --reverse \
         --header='enter=switch  ctrl-n=new  ctrl-x=kill' \
-        --preview='tmux list-windows -t {} -F "  #{window_index}:#{window_name} (#{window_panes} panes) #{?window_active,◀,}" && echo "" && tmux capture-pane -t {}:1 -p 2>/dev/null | tail -15' \
+        --preview='
+          tmux list-windows -t {} -F "  #{window_index}:#{window_name} (#{window_panes} panes)#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,} #{?window_active,◀,}" 2>/dev/null
+          echo ""
+          echo "── Active pane ──"
+          tmux capture-pane -t {}:1 -p 2>/dev/null | tail -15
+        ' \
         --preview-window=right:50% \
         --expect=ctrl-n,ctrl-x \
       ) || exit 0
