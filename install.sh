@@ -40,7 +40,7 @@ DOTFILES=(
   starship.toml
   tmux.conf
   zshrc
-  zshenv.local
+  zshenv
 )
 
 fancy_echo "Linking dotfiles to \$HOME"
