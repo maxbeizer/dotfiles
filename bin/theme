@@ -21,15 +21,19 @@ set_ghostty() {
   local config="${HOME}/.config/ghostty/config"
   [ -f "$config" ] || return 0
 
+  # Resolve symlink — sed -i can't edit symlinks
+  local real_config
+  real_config=$(readlink "$config" 2>/dev/null || echo "$config")
+
   case "$1" in
     solarized)
-      sed -i.bak 's/^theme = .*/theme = iTerm2 Solarized Dark/' "$config"
+      sed -i.bak 's/^theme = .*/theme = iTerm2 Solarized Dark/' "$real_config"
       ;;
     mocha)
-      sed -i.bak 's/^theme = .*/theme = Catppuccin Mocha/' "$config"
+      sed -i.bak 's/^theme = .*/theme = Catppuccin Mocha/' "$real_config"
       ;;
   esac
-  rm -f "${config}.bak"
+  rm -f "${real_config}.bak"
 }
 
 set_tmux() {
