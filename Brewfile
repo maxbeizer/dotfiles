@@ -27,6 +27,7 @@ brew "pgcli"
 brew "azure-cli"
 brew "telnet"
 brew "tldr"
+brew "posting"
 
 # Casks — on a fresh machine, uncomment or run:
 #   brew bundle --file=Brewfile
