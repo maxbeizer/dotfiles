@@ -26,7 +26,7 @@ set_ghostty() {
       sed -i.bak 's/^theme = .*/theme = iTerm2 Solarized Dark/' "$config"
       ;;
     mocha)
-      sed -i.bak 's/^theme = .*/theme = Catppuccin Macchiato/' "$config"
+      sed -i.bak 's/^theme = .*/theme = Catppuccin Mocha/' "$config"
       ;;
   esac
   rm -f "${config}.bak"
@@ -52,19 +52,19 @@ set_tmux() {
       tmux set -g status-right '#[fg=#586e75]#{?#{==:#{pane_current_command},zsh},#(cd #{pane_current_path} && git branch --show-current 2>/dev/null),} #[fg=#268bd2,bold] #{session_name}'
       ;;
     mocha)
-      # pane backgrounds (macchiato base/mantle)
-      tmux set -g window-style 'bg=#1e2030'
-      tmux set -g window-active-style 'bg=#24273a'
+      # pane backgrounds
+      tmux set -g window-style 'bg=#181825'
+      tmux set -g window-active-style 'bg=#1e1e2e'
       # pane borders
-      tmux set -g pane-active-border-style 'fg=#8aadf4,bold'
-      tmux set -g pane-border-style 'fg=#494d64'
+      tmux set -g pane-active-border-style 'fg=#89b4fa,bold'
+      tmux set -g pane-border-style 'fg=#585b70'
       # status bar
-      tmux set -g status-style 'bg=#1e2030,fg=#cad3f5'
-      tmux set -g window-status-format '#[fg=#494d64] #I:#W#{?window_bell_flag,🔔,#{?window_activity_flag,•,}} '
-      tmux set -g window-status-current-format '#[fg=#1e2030,bg=#8aadf4,bold] #I:#W '
-      tmux set -g window-status-bell-style 'fg=#ed8796,bold'
-      tmux set -g window-status-activity-style 'fg=#eed49f'
-      tmux set -g status-right '#[fg=#494d64]#{?#{==:#{pane_current_command},zsh},#(cd #{pane_current_path} && git branch --show-current 2>/dev/null),} #[fg=#8aadf4,bold] #{session_name}'
+      tmux set -g status-style 'bg=#181825,fg=#cdd6f4'
+      tmux set -g window-status-format '#[fg=#585b70] #I:#W#{?window_bell_flag,🔔,#{?window_activity_flag,•,}} '
+      tmux set -g window-status-current-format '#[fg=#1e1e2e,bg=#89b4fa,bold] #I:#W '
+      tmux set -g window-status-bell-style 'fg=#f38ba8,bold'
+      tmux set -g window-status-activity-style 'fg=#f9e2af'
+      tmux set -g status-right '#[fg=#585b70]#{?#{==:#{pane_current_command},zsh},#(cd #{pane_current_path} && git branch --show-current 2>/dev/null),} #[fg=#89b4fa,bold] #{session_name}'
       ;;
   esac
   # suppress errors for headless/no-server
@@ -77,7 +77,7 @@ set_nvim() {
   local cmd
   case "$1" in
     solarized) cmd="<Cmd>colorscheme NeoSolarized<CR>" ;;
-    mocha) cmd="<Cmd>lua require('lazy').load({plugins = {'catppuccin'}})<CR><Cmd>colorscheme catppuccin-macchiato<CR>" ;;
+    mocha) cmd="<Cmd>lua require('lazy').load({plugins = {'catppuccin'}})<CR><Cmd>colorscheme catppuccin-mocha<CR>" ;;
   esac
 
   # macOS: sockets in $TMPDIR/nvim.*/  Linux: /tmp/nvim.*/

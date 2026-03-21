@@ -95,7 +95,7 @@ return {
 
       vim.opt.background = 'dark'
       if theme == 'mocha' then
-        pcall(vim.cmd.colorscheme, 'catppuccin-macchiato')
+        pcall(vim.cmd.colorscheme, 'catppuccin-mocha')
       else
         pcall(vim.cmd.colorscheme, 'NeoSolarized')
       end
