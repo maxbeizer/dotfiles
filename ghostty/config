@@ -1,10 +1,6 @@
-# appearance
+# appearance — theme managed by `theme` command
 #
 theme = Solarized Dark Higher Contrast
-palette = 8=#586e75
-# theme = Solarized Dark - Patched
-# font-family = "Monaspace Krypton Var"
-# font-family = "Monaco"
 font-size = 16
 cursor-style = block
 window-inherit-font-size = false
