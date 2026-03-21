@@ -4,7 +4,7 @@
 
 # Exclude glob list
 --glob
-!git/*
+!.git/*
 
 # Because who cares about case!?
 --smart-case

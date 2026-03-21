@@ -123,4 +123,27 @@ return {
       require('gitlinker').setup()
     end,
   },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
+    event = 'BufReadPost',
+    config = function()
+      require('ibl').setup({
+        indent = { char = '│' },
+        scope = { enabled = true, show_start = false, show_end = false },
+      })
+    end,
+  },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    event = 'BufReadPost',
+    config = function()
+      require('nvim-treesitter.configs').setup({
+        ensure_installed = { 'yaml', 'markdown', 'markdown_inline', 'lua', 'bash', 'json', 'ruby', 'go', 'javascript', 'typescript' },
+        highlight = { enable = true },
+        indent = { enable = true },
+      })
+    end,
+  },
 }
