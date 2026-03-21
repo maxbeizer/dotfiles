@@ -134,6 +134,7 @@ if [ "${CODESPACES:-}" = "true" ]; then
     _bashrc_ensure 'command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"'
     _bashrc_ensure 'command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"'
     _bashrc_ensure '[ -f ~/.fzf.bash ] && source ~/.fzf.bash'
+    _bashrc_ensure 'bind '"'"'"\C-n": yank-last-arg'"'"''
 
     if [ -d "/workspaces/github/bin" ]; then
       _bashrc_ensure 'export PATH="$PATH:/workspaces/github/bin"'
