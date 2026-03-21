@@ -34,8 +34,8 @@ fi
 # LazyGit
 alias lg="lazygit"
 
-# Neovim with predictable server socket for theme switching
-alias nvim='nvim --listen /tmp/nvim-server.sock'
+# Neovim with server socket for theme switching (unique per shell)
+nvim() { command nvim --listen "/tmp/nvim-$$.sock" "$@"; }
 
 # Modern CLI replacements (when available)
 command -v bat >/dev/null 2>&1 && alias cat="bat --plain"
