@@ -53,10 +53,10 @@ case "$mode" in
     ;;
 
   windows)
-    result=$(tmux list-windows -a -F '#{window_activity}	#{session_name}:#{window_index}	#{window_name}	#{?window_bell_flag,🔔 ,}#{?window_activity_flag,• ,}#{?window_active,◀ ,}	#{session_name}' | \
+    result=$(tmux list-windows -a -F '#{window_activity}	#{session_name}:#{window_index}	#{window_name}#{?window_bell_flag, 🔔,}#{?window_activity_flag, •,}	#{?window_active,◀ ,}	#{session_name}' | \
       sort -rn | \
       awk -F'	' '{
-        printf "%s\t%-18s %s %s\n", $2, $3, $4, $5
+        printf "%s\t%-22s %s %s\n", $2, $3, $4, $5
       }' | \
       fzf --reverse \
         --header='enter=switch  ctrl-n=new  ctrl-x=kill' \
