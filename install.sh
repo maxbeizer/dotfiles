@@ -165,6 +165,12 @@ if [ "${CODESPACES:-}" = "true" ]; then
       echo 'export PATH="$PATH:/workspaces/github/bin"' >> "$HOME/.codespaces.local"
   fi
 
+  # Install gh CLI extensions (rdm, etc.)
+  if [ "$DRY_RUN" -eq 0 ] && [ -f "$DOTFILES_DIR/install-gh-extensions.sh" ]; then
+    fancy_echo "Installing gh CLI extensions"
+    bash "$DOTFILES_DIR/install-gh-extensions.sh"
+  fi
+
   # Install CLI tools if not present
   if [ "$DRY_RUN" -eq 0 ]; then
     # Starship prompt
