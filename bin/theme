@@ -30,6 +30,9 @@ set_ghostty() {
       ;;
   esac
   rm -f "${config}.bak"
+
+  # Live reload (Ghostty watches config, USR1 forces it)
+  killall -USR1 ghostty 2>/dev/null || true
 }
 
 set_tmux() {
@@ -100,7 +103,6 @@ case "$1" in
     set_tmux "$1"
     set_nvim "$1"
     echo "Switched to $1"
-    echo "  Note: Restart Ghostty for terminal theme to take effect."
     ;;
   *)
     echo "Usage: theme [solarized|mocha]" >&2
