@@ -1,0 +1,83 @@
+#!/bin/bash
+#
+# tmux-nav: Interactive tmux session/window/pane navigator
+#
+# Usage: tmux-nav [sessions|windows]
+#   sessions  - Browse sessions, preview windows+panes
+#   windows   - Browse windows in current session, preview pane content
+#
+# Keybindings (shown in header):
+#   Enter     - Switch to selected
+#   Ctrl-N    - New window/session
+#   Ctrl-X    - Kill selected
+#   Escape    - Cancel
+#
+
+set -eu
+
+mode="${1:-sessions}"
+
+case "$mode" in
+  sessions)
+    result=$(tmux list-sessions -F '#{session_name}' | \
+      fzf --reverse \
+        --header='enter=switch  ctrl-n=new session  ctrl-x=kill session  esc=cancel' \
+        --preview='tmux list-windows -t {} -F "  #{window_index}:#{window_name} (#{window_panes} panes) #{?window_active,◀,}" && echo "" && tmux capture-pane -t {}:1 -p 2>/dev/null | tail -15' \
+        --preview-window=right:50% \
+        --expect=ctrl-n,ctrl-x \
+      2>/dev/null) || exit 0
+
+    key=$(echo "$result" | head -1)
+    selection=$(echo "$result" | tail -1)
+
+    case "$key" in
+      ctrl-n)
+        # Prompt for new session name
+        read -p "New session name: " name
+        [ -n "$name" ] && tmux new-session -d -s "$name" && tmux switch-client -t "$name"
+        ;;
+      ctrl-x)
+        [ -n "$selection" ] && tmux kill-session -t "$selection" 2>/dev/null
+        ;;
+      *)
+        [ -n "$selection" ] && tmux switch-client -t "$selection"
+        ;;
+    esac
+    ;;
+
+  windows)
+    session=$(tmux display-message -p '#{session_name}')
+    result=$(tmux list-windows -t "$session" -F '#{window_index}:#{window_name} (#{window_panes} panes) #{?window_active,◀,}' | \
+      fzf --reverse \
+        --header="[$session]  enter=switch  ctrl-n=new window  ctrl-x=kill window  esc=cancel" \
+        --preview='
+          idx=$(echo {} | cut -d: -f1)
+          session="'"$session"'"
+          # Show all panes in the window
+          echo "── Panes ──"
+          tmux list-panes -t "$session:$idx" -F "  pane #{pane_index}: #{pane_current_command} (#{pane_width}x#{pane_height})" 2>/dev/null
+          echo ""
+          echo "── Active pane ──"
+          tmux capture-pane -t "$session:$idx" -p 2>/dev/null | tail -25
+        ' \
+        --preview-window=right:55% \
+        --expect=ctrl-n,ctrl-x \
+      2>/dev/null) || exit 0
+
+    key=$(echo "$result" | head -1)
+    selection=$(echo "$result" | tail -1)
+    win_idx=$(echo "$selection" | cut -d: -f1)
+
+    case "$key" in
+      ctrl-n)
+        tmux new-window -t "$session"
+        ;;
+      ctrl-x)
+        [ -n "$win_idx" ] && tmux kill-window -t "$session:$win_idx" 2>/dev/null
+        ;;
+      *)
+        [ -n "$win_idx" ] && tmux select-window -t "$session:$win_idx"
+        ;;
+    esac
+    ;;
+esac
