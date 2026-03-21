@@ -53,16 +53,17 @@ case "$mode" in
     ;;
 
   windows)
-    result=$(tmux list-windows -a -F '#{window_activity}	#{session_name}	#{window_index}	#{window_name}	#{?window_bell_flag,🔔,}#{?window_activity_flag,•,}	#{?window_active,◀,}' | \
+    result=$(tmux list-windows -a -F '#{window_activity}	#{session_name}:#{window_index}	#{window_name}	#{?window_bell_flag,🔔 ,}#{?window_activity_flag,• ,}#{?window_active,◀ ,}	#{session_name}' | \
       sort -rn | \
       awk -F'	' '{
-        printf "%-14s  %s:%s  %-16s %s %s\n", $2, $2, $3, $4, $5, $6
+        printf "%s\t%-18s %s %s\n", $2, $3, $4, $5
       }' | \
-      fzf --reverse --ansi \
-        --header='All windows  enter=switch  ctrl-n=new  ctrl-x=kill' \
+      fzf --reverse \
+        --header='enter=switch  ctrl-n=new  ctrl-x=kill' \
         --with-nth=2.. \
+        --delimiter='	' \
         --preview='
-          target=$(echo {} | awk "{print \$2}")
+          target=$(echo {} | cut -f1)
           echo "── Panes ──"
           tmux list-panes -t "$target" -F "  #{pane_index}: #{pane_current_command}  #{pane_current_path}" 2>/dev/null
           echo ""
@@ -75,7 +76,7 @@ case "$mode" in
 
     key=$(echo "$result" | head -1)
     selection=$(echo "$result" | tail -1)
-    target=$(echo "$selection" | awk '{print $2}')
+    target=$(echo "$selection" | cut -f1)
 
     case "$key" in
       ctrl-n)
