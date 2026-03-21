@@ -1,3 +1,8 @@
+" Ensure homebrew is on PATH before any plugins load
+if isdirectory('/opt/homebrew/bin')
+  let $PATH = '/opt/homebrew/bin:' . $PATH
+endif
+
 " Bootstrap Lua config
 lua << LUAEOF
 local ok, maxbeizer = pcall(require, 'maxbeizer')
