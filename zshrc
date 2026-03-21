@@ -46,6 +46,8 @@ setopt prompt_subst
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 setopt NO_BEEP
 setopt HIST_IGNORE_SPACE
+setopt CORRECT
+setopt EXTENDED_GLOB
 
 # prompt — use Starship if available, fall back to hand-rolled
 if command -v starship >/dev/null 2>&1; then
@@ -104,6 +106,14 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # zoxide (if installed — replaces z.sh)
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+
+# zsh-autosuggestions (if installed)
+[ -f ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
+  source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# zsh-syntax-highlighting (must be last)
+[ -f ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
+  source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases

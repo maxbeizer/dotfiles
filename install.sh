@@ -65,6 +65,19 @@ for zdir in configs functions; do
   fi
 done
 
+# --- Zsh plugins (syntax highlighting, autosuggestions) ---
+fancy_echo "Setting up zsh plugins"
+mkdir -p "$HOME/.zsh/plugins"
+if [ "$DRY_RUN" -eq 0 ]; then
+  for plugin in zsh-users/zsh-syntax-highlighting zsh-users/zsh-autosuggestions; do
+    name="${plugin#*/}"
+    if [ ! -d "$HOME/.zsh/plugins/$name" ]; then
+      git clone --depth 1 "https://github.com/$plugin.git" "$HOME/.zsh/plugins/$name" 2>/dev/null
+      echo "  ✓ $name"
+    fi
+  done
+fi
+
 # --- Git SSH commit signing (1Password, when available) ---
 if [ -x "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" ]; then
   git config --global gpg.ssh.program "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
