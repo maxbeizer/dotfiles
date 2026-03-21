@@ -122,9 +122,7 @@ mkdir -p "$HOME/.config/nvim"
 [ -f "$DOTFILES_DIR/nvim.local" ] && link_file "$DOTFILES_DIR/nvim.local" "$HOME/.config/nvim/init.vim"
 if [ -d "$DOTFILES_DIR/nvim/lua" ]; then
   rm -rf "$HOME/.config/nvim/lua"
-  if [ "$DRY_RUN" -eq 0 ]; then
-    cp -R "$DOTFILES_DIR/nvim/lua" "$HOME/.config/nvim/lua"
-  fi
+  link_file "$DOTFILES_DIR/nvim/lua" "$HOME/.config/nvim/lua"
   echo "  ✓ nvim/lua"
 fi
 
