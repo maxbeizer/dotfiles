@@ -53,6 +53,16 @@ mkdir -p "$HOME/.zsh"
 [ -d "$DOTFILES_DIR/zsh/configs" ] && link_file "$DOTFILES_DIR/zsh/configs" "$HOME/.zsh/configs"
 [ -d "$DOTFILES_DIR/zsh/functions" ] && link_file "$DOTFILES_DIR/zsh/functions" "$HOME/.zsh/functions"
 
+# --- Git SSH commit signing (1Password, when available) ---
+if [ -x "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" ]; then
+  git config --global gpg.ssh.program "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+  git config --global commit.gpgsign true
+  echo "  ✓ 1Password SSH signing enabled"
+else
+  git config --global commit.gpgsign false
+  echo "  · no op-ssh-sign found — commit signing disabled"
+fi
+
 # --- Git allowed signers (for SSH commit verification) ---
 fancy_echo "Setting up git allowed signers"
 mkdir -p "$HOME/.config/git"
