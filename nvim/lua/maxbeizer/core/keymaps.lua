@@ -8,6 +8,7 @@ map('n', '<leader>Y', [['_Y]])
 map('n', '<leader>rtw', [[:%s/\s\+$//e<CR>]])
 map('n', '<leader>vs', [[:vs <C-r>=expand('%:p:h')<CR>/]])
 map('n', '<leader><space>', '<C-^>')
+map('n', '<space><space>', '<C-^>', { desc = 'Toggle last buffer' })
 
 map('n', '<leader>bg', function()
   vim.o.background = vim.o.background == 'dark' and 'light' or 'dark'
