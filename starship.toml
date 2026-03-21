@@ -43,5 +43,5 @@ error_symbol = "[\\$](bold red)"
 disabled = true
 
 [env_var.CODESPACE_SHORT_NAME]
-format = "[🚀 $env_value]($style) "
+format = "\\[[$env_value]($style)\\] "
 style = "cyan"
