@@ -28,17 +28,21 @@ brew "azure-cli"
 brew "telnet"
 brew "tldr"
 
-# Apps
-cask "ghostty"
-cask "1password"
-cask "arc"
-cask "firefox"
-cask "google-chrome"
-cask "raycast"
-cask "slack"
-cask "spotify"
-cask "stats"
-cask "elgato-stream-deck"
-cask "hiddenbar"
-cask "visual-studio-code"
-cask "the-unarchiver"
+# Casks — on a fresh machine, uncomment or run:
+#   brew bundle --file=Brewfile
+# with these uncommented. Skipped by default because most are
+# already installed outside of brew on existing machines.
+#
+# cask "ghostty"
+# cask "1password"
+# cask "arc"
+# cask "firefox"
+# cask "google-chrome"
+# cask "raycast"
+# cask "slack"
+# cask "spotify"
+# cask "stats"
+# cask "elgato-stream-deck"
+# cask "hiddenbar"
+# cask "visual-studio-code"
+# cask "the-unarchiver"

@@ -32,9 +32,9 @@ link_file() {
 # --- Homebrew packages (local only, skip in codespaces) ---
 if [ "${CODESPACES:-}" != "true" ] && command -v brew >/dev/null 2>&1; then
   if [ -f "$DOTFILES_DIR/Brewfile" ]; then
-    fancy_echo "Installing Homebrew packages"
+    fancy_echo "Installing Homebrew packages (may prompt for password)"
     if [ "$DRY_RUN" -eq 0 ]; then
-      brew bundle --file="$DOTFILES_DIR/Brewfile" --no-lock --quiet
+      brew bundle --file="$DOTFILES_DIR/Brewfile" --quiet
     else
       echo "  [dry-run] brew bundle --file=$DOTFILES_DIR/Brewfile"
     fi
