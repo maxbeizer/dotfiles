@@ -124,9 +124,20 @@ if [ "${CODESPACES:-}" = "true" ]; then
   # Bash integration (codespaces default shell)
   if [ "$DRY_RUN" -eq 0 ]; then
     grep -q '\.aliases' "$HOME/.bashrc" 2>/dev/null || {
-      echo "source \$HOME/.aliases" >> "$HOME/.bashrc"
-      echo "source \$HOME/.codespaces.local" >> "$HOME/.bashrc"
-      echo "export EDITOR=vim" >> "$HOME/.bashrc"
+      cat >> "$HOME/.bashrc" <<'BASHRC'
+source $HOME/.aliases
+source $HOME/.codespaces.local
+export EDITOR=vim
+
+# Starship prompt
+command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
+
+# zoxide
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
+
+# fzf
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+BASHRC
     }
     if [ -d "/workspaces/github/bin" ]; then
       grep -q '/workspaces/github/bin' "$HOME/.bashrc" 2>/dev/null || \
