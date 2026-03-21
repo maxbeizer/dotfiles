@@ -72,22 +72,20 @@ set_tmux() {
 }
 
 set_nvim() {
-  # Find all running nvim sockets (macOS uses $TMPDIR/nvim.user/*)
-  local sockets=()
-  while IFS= read -r sock; do
-    sockets+=("$sock")
-  done < <(find "${TMPDIR:-/tmp}" /tmp -path "*/nvim*" -type s 2>/dev/null | sort -u)
+  command -v nvim >/dev/null 2>&1 || return 0
 
-  for sock in "${sockets[@]}"; do
-    case "$1" in
-      solarized)
-        nvim --server "$sock" --remote-send "<Cmd>set background=dark<CR><Cmd>colorscheme NeoSolarized<CR>" 2>/dev/null || true
-        ;;
-      mocha)
-        nvim --server "$sock" --remote-send "<Cmd>set background=dark<CR><Cmd>colorscheme catppuccin-mocha<CR>" 2>/dev/null || true
-        ;;
-    esac
+  local cmd
+  case "$1" in
+    solarized) cmd="<Cmd>set background=dark<CR><Cmd>colorscheme NeoSolarized<CR>" ;;
+    mocha) cmd="<Cmd>set background=dark<CR><Cmd>colorscheme catppuccin-mocha<CR>" ;;
+  esac
+
+  # macOS: sockets in $TMPDIR/nvim.*/  Linux: /tmp/nvim.*/
+  local dir="${TMPDIR:-/tmp}"
+  for sock in "$dir"/nvim.*/*/nvim.*.0 "$dir"/nvim.*/0 /tmp/nvim.*/0; do
+    [ -S "$sock" ] 2>/dev/null && nvim --server "$sock" --remote-send "$cmd" 2>/dev/null &
   done
+  wait 2>/dev/null
 }
 
 if [ $# -eq 0 ]; then
