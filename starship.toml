@@ -2,6 +2,7 @@
 # Docs: https://starship.rs/config/
 
 format = """
+$time\
 $env_var\
 $directory\
 $git_branch\
@@ -50,3 +51,9 @@ error_symbol = "[\\$](bold red)"
 [env_var.CODESPACE_SHORT_NAME]
 format = "\\[[$env_value]($style)\\] "
 style = "cyan"
+
+[time]
+disabled = false
+format = "[$time]($style) "
+style = "yellow"
+time_format = "%T"
