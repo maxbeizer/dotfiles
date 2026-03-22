@@ -5,6 +5,31 @@ All notable changes to this dotfiles repo are documented in this file.
 ## [Unreleased]
 
 ### Added
+- `sesh` integration — tmux session manager with zoxide project discovery.
+  Named sessions configured in `sesh/sesh.toml`. Replaces tmuxinator for
+  most workflows.
+- `television` cable channels for fuzzy picking: sesh sessions, gh-issues,
+  gh-prs, gh-notifications, processes, tldr, brew-packages, channels.
+  Configs live in `television/cable/` and are symlinked by `install.sh`.
+- `glow` added to Brewfile for markdown rendering in tv previews.
+- `EDITOR`/`VISUAL` set to `nvim` in zshrc.
+- Starship git_status: `stashed = "≡${count}"` — shows stash count instead
+  of confusing bare `$`.
+- tmux: `bind-key x kill-pane` (skip confirmation), `detach-on-destroy off`
+  (stay in tmux when closing a session).
+- `bin/theme` now also switches television theme (catppuccin ↔ solarized-dark).
+
+### Changed
+- `prefix S` now opens sesh + television session picker (was tmux-nav sessions).
+- `prefix W` removed (sessions consolidated into prefix S).
+- `install.sh` now symlinks sesh and television cable configs.
+
+### Removed
+- tmuxinator configs for ghae, flags, memex (replaced by sesh).
+
+## [Previous]
+
+### Added
 - `bin/theme` — switch Ghostty, tmux, and nvim between Solarized Dark and
   Catppuccin Mocha with a single command. Theme state persists in `~/.config/theme`.
 - `starship.toml` — Starship prompt config (git branch/status, command duration).

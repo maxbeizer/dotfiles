@@ -23,9 +23,11 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 │   ├── configs/post/         # Completion, cursor settings
 │   └── functions/            # ghcr, ghcrl (Copilot CLI session resume)
 │
-├── tmux.conf                 # Tmux: C-a prefix, vim keys, mouse, pane labels
+├── tmux.conf                 # Tmux: C-a prefix, vim keys, mouse, sesh sessions
 ├── starship.toml             # Starship prompt config
 ├── ghostty/config            # Ghostty terminal (theme, font, keybinds)
+├── sesh/sesh.toml            # sesh session manager config
+├── television/cable/         # Television custom cable channels
 │
 ├── nvim.local                # Neovim init (loads Lua modules)
 ├── nvim/lua/                 # Neovim Lua config (lazy.nvim plugins)
@@ -61,7 +63,7 @@ dotup    # pull, reinstall, reload shell
 
 ## Theme switching
 
-Switch between Solarized Dark and Catppuccin Mocha across Ghostty, tmux, and nvim:
+Switch between Solarized Dark and Catppuccin Mocha across Ghostty, tmux, nvim, and television:
 
 ```bash
 theme solarized   # or: theme mocha
@@ -70,15 +72,46 @@ theme              # show current
 
 Ghostty auto-reloads; tmux and nvim update live.
 
+## Session management (sesh + television)
+
+`sesh` manages tmux sessions with automatic project discovery via zoxide.
+`television` provides the fuzzy picker UI with previews.
+
+| Keybinding | Action |
+|------------|--------|
+| `prefix S` | Session picker (sesh + television: fuzzy search, preview, connect) |
+| `prefix s` | Default tmux session list (tree view) |
+
+### Television channels
+
+Custom cable channels live in `television/cable/` and are symlinked to `~/.config/television/cable/`:
+
+| Channel | Command | Description |
+|---------|---------|-------------|
+| `tv sesh` | Session picker | Tmux sessions + zoxide + configured projects |
+| `tv gh-issues` | Issue browser | Open issues with metadata + markdown preview |
+| `tv gh-prs` | PR browser | Open PRs with metadata + markdown preview |
+| `tv gh-notifications` | Notification triage | Preview, open in browser, mark as read |
+| `tv processes` | Process manager | Sort by CPU, kill with ctrl-k |
+| `tv tldr` | TLDR pages | Browse command help with preview |
+| `tv brew-packages` | Brew packages | Installed formulas + casks, upgrade/uninstall |
+| `tv channels` | Channel picker | Browse and launch tv channels |
+
+### sesh configuration
+
+Session config lives in `sesh/sesh.toml`. Named sessions connect to specific repos;
+everything else is discovered via zoxide history. `dir_length = 2` keeps session
+names short (e.g., `github/memex` instead of the full path).
+
 ## Tmux keybindings
 
 Prefix is `Ctrl-a`.
 
 | Keybinding | Action |
 |------------|--------|
-| `prefix S` | Session navigator (fzf, create/kill) |
-| `prefix W` | Window navigator (fzf, all sessions, sorted by recent) |
+| `prefix S` | Session picker (sesh + television) |
 | `prefix s` | Default session list (tree view) |
+| `prefix x` | Kill pane (no confirmation) |
 | `prefix Ctrl-s` | **Save** all sessions (tmux-resurrect) |
 | `prefix Ctrl-r` | **Restore** sessions after reboot |
 | `prefix I` | Install/update tmux plugins (TPM) |
@@ -131,7 +164,9 @@ Commits are signed with SSH via 1Password when available. `install.sh` detects `
 | [fzf](https://github.com/junegunn/fzf) | Fuzzy finder | Recommended |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | Directory jumper | Optional |
 | [LazyGit](https://github.com/jesseduffield/lazygit) | Git TUI | Optional |
-| [Television](https://github.com/alexpasmantier/television) | Fuzzy finder | Optional |
+| [Television](https://github.com/alexpasmantier/television) | Fuzzy picker (sessions, issues, PRs, etc.) | Recommended |
+| [sesh](https://github.com/joshmedeski/sesh) | Tmux session manager | Recommended |
+| [glow](https://github.com/charmbracelet/glow) | Markdown renderer | Optional |
 | [Posting](https://github.com/darrenburns/posting) | API client | Optional |
 | [bat](https://github.com/sharkdp/bat) | `cat` with syntax highlighting | Optional |
 | [eza](https://github.com/eza-community/eza) | Modern `ls` | Optional |

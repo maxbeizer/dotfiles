@@ -25,6 +25,8 @@ Useful flags:
 - Links Neovim config to `~/.config/nvim/`
 - Links bin scripts to `~/.local/bin/`
 - Links Ghostty config to `~/.config/ghostty/`
+- Links sesh config to `~/.config/sesh/`
+- Links television cable channels to `~/.config/television/cable/`
 - In codespaces: wires up bash with Starship, zoxide, fzf, and aliases
 
 ## Iterating on changes
@@ -45,7 +47,7 @@ theme solarized   # Solarized Dark (default)
 theme mocha        # Catppuccin Mocha
 theme              # show current theme
 ```
-Applies to Ghostty (restart required), tmux (live), and nvim (live via remote-send).
+Applies to Ghostty (restart required), tmux (live), nvim (live via remote-send), and television.
 
 ## Verification checklist
 ```bash
@@ -74,4 +76,6 @@ CODESPACES=true ./install.sh
 | `gitconfig` | Git config (includes SSH signing) |
 | `tmux.conf` | Tmux config |
 | `starship.toml` | Starship prompt config |
+| `sesh/sesh.toml` | sesh session manager config |
+| `television/cable/` | Television custom cable channels |
 | `codespaces.local` | Bash extras for codespaces + `dotup` |

@@ -1,9 +1,38 @@
 # sesh configuration
 # Docs: https://github.com/joshmedeski/sesh
 
+dir_length = 2
+
 [default_session]
-# startup_command = ""
+startup_command = "ll"
+preview_command = "eza --all --git --icons --color=always {}"
 
 [[session]]
 name = "dotfiles"
 path = "~/dotfiles"
+
+[[session]]
+name = "tome"
+path = "~/code/1-1-Repo-maxbeizer"
+
+[[session]]
+name = "dotcom"
+path = "~/code/github/github"
+
+[[session]]
+name = "memex"
+path = "~/code/github/memex"
+
+[[session]]
+name = "life"
+path = "~/code/life"
+
+[[session]]
+name = "afraid_not"
+path = "~/code/afraid_not"
+
+[[session]]
+name = "tmux config"
+path = "~/c/dotfiles"
+startup_command = "nvim tmux.conf"
+preview_command = "bat --color=always ~/c/dotfiles/tmux.conf"
