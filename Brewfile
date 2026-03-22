@@ -14,6 +14,7 @@ brew "lazygit"
 brew "bat"
 brew "eza"
 brew "fd"
+brew "television"
 brew "btop"
 brew "tree-sitter"
 

@@ -25,12 +25,13 @@ symbol = ""
 style = "green"
 
 [git_status]
-format = '([$all_status$ahead_behind]($style) )'
+format = '([$all_status]($style))([$ahead_behind]($style) )'
 style = "red"
 modified = "*"
 untracked = "?"
 staged = "+"
 deleted = "✗"
+stashed = "≡${count}"
 ahead = "⇡${count}"
 behind = "⇣${count}"
 diverged = "⇡${ahead_count}⇣${behind_count}"
