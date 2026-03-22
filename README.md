@@ -9,6 +9,7 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 ├── install.sh                # Idempotent installer (local + codespaces)
 ├── bin/
 │   ├── bootstrap-machine     # One-command fresh machine setup
+│   ├── sesh-picker           # Session picker with 🔔 bell indicators
 │   ├── theme                 # Switch between solarized dark ↔ catppuccin mocha
 │   ├── codespaces-vim-lab    # Codespaces helper for Vim/Neovim testing
 │   └── rdm-connect           # Connect to codespace with clipboard forwarding
@@ -72,30 +73,35 @@ theme              # show current
 
 Ghostty auto-reloads; tmux and nvim update live.
 
-## Session management (sesh + television)
+## Session management (sesh + fzf)
 
 `sesh` manages tmux sessions with automatic project discovery via zoxide.
-`television` provides the fuzzy picker UI with previews.
+`fzf` provides the fuzzy picker with previews. Sessions with pending bells (🔔) float to the top.
 
-| Keybinding | Action |
-|------------|--------|
-| `prefix S` | Session picker (sesh + television: fuzzy search, preview, connect) |
-| `prefix s` | Default tmux session list (tree view) |
+### Daily workflow
 
-### Television channels
+```bash
+# After a reboot or fresh terminal:
+tome                    # Start your main session directly
+# Then use prefix S to pick/create more sessions
 
-Custom cable channels live in `television/cable/` and are symlinked to `~/.config/television/cable/`:
+# Inside tmux:
+prefix S                # Session picker (fuzzy search, preview, 🔔 indicators)
+prefix s                # Default tmux session list (tree view)
+prefix Ctrl-s           # Save all sessions (tmux-resurrect)
+prefix Ctrl-r           # Restore sessions after reboot
+```
 
-| Channel | Command | Description |
-|---------|---------|-------------|
-| `tv sesh` | Session picker | Tmux sessions + zoxide + configured projects |
-| `tv gh-issues` | Issue browser | Open issues with metadata + markdown preview |
-| `tv gh-prs` | PR browser | Open PRs with metadata + markdown preview |
-| `tv gh-notifications` | Notification triage | Preview, open in browser, mark as read |
-| `tv processes` | Process manager | Sort by CPU, kill with ctrl-k |
-| `tv tldr` | TLDR pages | Browse command help with preview |
-| `tv brew-packages` | Brew packages | Installed formulas + casks, upgrade/uninstall |
-| `tv channels` | Channel picker | Browse and launch tv channels |
+### Session picker keybindings (prefix S)
+
+| Key | Action |
+|-----|--------|
+| `Enter` | Connect to selected session |
+| `ctrl-d` | Remove selected session and reload list |
+| Type to filter | Fuzzy search across all sessions |
+
+Sessions with a 🔔 (bell/notification) are sorted to the top — useful for spotting
+when Copilot CLI or a background process needs attention.
 
 ### sesh configuration
 
@@ -103,13 +109,65 @@ Session config lives in `sesh/sesh.toml`. Named sessions connect to specific rep
 everything else is discovered via zoxide history. `dir_length = 2` keeps session
 names short (e.g., `github/memex` instead of the full path).
 
+To add a project to the session list, either:
+- Add a `[[session]]` entry in `sesh/sesh.toml` for pinned projects
+- Visit the directory with `z` or `cd` — zoxide adds it automatically
+- Seed directories in bulk: `for d in ~/code/myorg/*; do zoxide add "$d"; done`
+
+### After a reboot
+
+1. Open Ghostty
+2. `tome` — starts your main session
+3. `prefix S` — pick additional sessions as needed
+4. Or: `tmux` → `prefix Ctrl-r` — resurrect restores everything
+
+## Television channels
+
+[Television](https://github.com/alexpasmantier/television) is a fuzzy picker with
+preview panels and custom actions. Custom cable channels live in `television/cable/`
+and are symlinked to `~/.config/television/cable/` by `install.sh`.
+
+Run channels from any terminal with `tv <channel>`, or use `tv channels` to browse.
+
+| Channel | Command | Description |
+|---------|---------|-------------|
+| `tv gh-issues` | Issue browser | Open issues with metadata + markdown preview |
+| `tv gh-prs` | PR browser | Open PRs with diff stats + markdown preview |
+| `tv gh-notifications` | Notification triage | Preview, open, mark read, done, unsubscribe |
+| `tv processes` | Process manager | Sort by CPU, ctrl-k to send SIGTERM |
+| `tv tldr` | TLDR pages | Browse command help with preview |
+| `tv brew-packages` | Brew packages | Installed formulas + casks, upgrade/uninstall |
+| `tv channels` | Channel picker | Browse and launch tv channels |
+
+### Notification triage (tv gh-notifications)
+
+Mirrors GitHub web UI keybindings:
+
+| Key | Action |
+|-----|--------|
+| `ctrl-o` | Open in browser |
+| `ctrl-d` | Mark as read |
+| `ctrl-e` | Done (dismiss) |
+| `ctrl-m` | Unsubscribe |
+| `ctrl-x` | Action picker (see all actions) |
+
+### Shell integration (ctrl-t)
+
+Television also integrates with your shell. Press `ctrl-t` while typing a command
+to fuzzy-pick arguments. Channel triggers are configured in `~/.config/television/config.toml`:
+
+- `git checkout` + `ctrl-t` → pick from branches
+- `cd` + `ctrl-t` → pick from directories
+- `nvim` + `ctrl-t` → pick from git repos
+- `git add` + `ctrl-t` → pick from changed files
+
 ## Tmux keybindings
 
 Prefix is `Ctrl-a`.
 
 | Keybinding | Action |
 |------------|--------|
-| `prefix S` | Session picker (sesh + television) |
+| `prefix S` | Session picker (sesh + fzf with 🔔 indicators) |
 | `prefix s` | Default session list (tree view) |
 | `prefix x` | Kill pane (no confirmation) |
 | `prefix Ctrl-s` | **Save** all sessions (tmux-resurrect) |
@@ -120,13 +178,15 @@ Prefix is `Ctrl-a`.
 
 ### After a reboot
 1. Open a terminal
-2. `tmux`
-3. `Ctrl-a Ctrl-r` — everything comes back
+2. `tome` — starts your main session
+3. `prefix S` — pick additional sessions
+4. Or: `tmux` → `prefix Ctrl-r` — resurrect restores everything
 
 ## Key aliases
 
 | Alias | Command |
 |-------|---------|
+| `tome` | Start tome tmux session via sesh |
 | `g` | `git` |
 | `gs` | `git status -b -s` |
 | `lg` | `lazygit` |

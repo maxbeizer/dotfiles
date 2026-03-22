@@ -1,0 +1,29 @@
+[metadata]
+name = "my-prs"
+description = "All my open pull requests across GitHub"
+requirements = ["gh"]
+
+[source]
+command = "gh search prs --author=@me --state=open --limit 100 --json title,number,repository --jq '.[] | \"#\" + (.number|tostring) + \"  \" + .repository.nameWithOwner + \"  \" + .title'"
+
+[preview]
+command = "(gh pr view {split:#:1|split:  :0} -R {split:  :1} --json title,state,author,baseRefName,headRefName,number,additions,deletions,changedFiles,comments --jq '\"title:\\t\" + .title + \"\\nstate:\\t\" + .state + \"\\nauthor:\\t\" + .author.login + \"\\nnumber:\\t\" + (.number|tostring) + \"\\nbranch:\\t\" + .baseRefName + \" ← \" + .headRefName + \"\\nchanges:\\t\" + (.changedFiles|tostring) + \" files +\" + (.additions|tostring) + \" -\" + (.deletions|tostring) + \"\\ncomments:\\t\" + (.comments|length|tostring) + \"\\nrepo:\\t{split:  :1}\" + \"\\n\\n---\\n\"'; gh pr view {split:#:1|split:  :0} -R {split:  :1} --json body --jq '.body // \"\"' | bat -l md --color=always -p) 2>/dev/null"
+
+[keybindings]
+ctrl-o = "actions:open"
+ctrl-k = "actions:checkout"
+
+[actions.open]
+description = "Open PR in browser"
+command = "gh pr view {split:#:1|split:  :0} -R {split:  :1} --web"
+mode = "fork"
+
+[actions.checkout]
+description = "Checkout PR branch locally"
+command = "gh pr checkout {split:#:1|split:  :0} -R {split:  :1}"
+mode = "execute"
+
+[actions.merge]
+description = "Merge the PR"
+command = "gh pr merge {split:#:1|split:  :0} -R {split:  :1}"
+mode = "execute"

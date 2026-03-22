@@ -1,0 +1,35 @@
+[metadata]
+name = "codespaces"
+description = "Manage GitHub Codespaces"
+requirements = ["gh"]
+
+[source]
+command = "gh cs list --json name,displayName,state,repository --jq '.[] | .displayName + \"  \" + .state + \"  \" + .repository + \"  \" + .name'"
+
+[preview]
+command = "gh cs list --json name,displayName,state,repository,gitStatus,machineName,lastUsedAt,createdAt --jq '.[] | select(.name == \"{split:  :-1}\") | \"name:\\t\" + .displayName + \"\\nid:\\t\" + .name + \"\\nstate:\\t\" + .state + \"\\nrepo:\\t\" + .repository + \"\\nmachine:\\t\" + .machineName + \"\\ncreated:\\t\" + .createdAt + \"\\nlast used:\\t\" + .lastUsedAt + \"\\ngit status:\\t\" + (.gitStatus|tostring)'"
+
+[keybindings]
+ctrl-o = "actions:open"
+ctrl-s = "actions:ssh"
+ctrl-d = ["actions:stop", "reload_source"]
+
+[actions.open]
+description = "Open codespace in browser"
+command = "gh cs code -c {split:  :-1} --web"
+mode = "fork"
+
+[actions.ssh]
+description = "SSH into codespace"
+command = "gh cs ssh -c {split:  :-1}"
+mode = "execute"
+
+[actions.stop]
+description = "Stop the codespace"
+command = "gh cs stop -c {split:  :-1}"
+mode = "fork"
+
+[actions.delete]
+description = "Delete the codespace"
+command = "gh cs delete -c {split:  :-1}"
+mode = "fork"

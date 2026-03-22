@@ -34,6 +34,53 @@ Useful flags:
 dotup    # pull, reinstall, reload shell (works in bash and zsh)
 ```
 
+## Documentation conventions
+
+When making notable changes to dotfiles, update:
+1. `CHANGELOG.md` — add entry under `[Unreleased]` with Added/Changed/Removed sections
+2. `README.md` — update relevant sections (keybindings, aliases, tools, file tree)
+3. `AGENTS.md` — update key files table and any affected bootstrap/workflow docs
+
+Notable changes include: new tools/integrations, keybinding changes, new aliases,
+config file additions, and workflow changes. Minor tweaks (typos, comment updates)
+don't need changelog entries.
+
+## Session management (sesh)
+
+sesh manages tmux sessions with zoxide-based project discovery.
+
+### Starting from scratch
+```bash
+tome                    # Start main session directly
+# Then: prefix S to pick/create more sessions
+```
+
+### Session picker (prefix S)
+Uses `bin/sesh-picker` — shows all tmux sessions (with 🔔 bell indicators sorted
+to the top), zoxide directories, and configured sessions from `sesh/sesh.toml`.
+- `Enter` to connect, `ctrl-d` to remove a session
+- Sessions with pending bells (e.g., Copilot CLI finished) appear first
+
+### After a reboot
+```bash
+tome                    # or: tmux → prefix Ctrl-r to resurrect
+```
+
+### Seeding zoxide for new directories
+```bash
+for d in ~/code/myorg/*; do zoxide add "$d"; done
+```
+
+## Television channels
+
+Custom cable channels in `television/cable/` provide fuzzy pickers with previews:
+- `tv gh-notifications` — triage notifications (ctrl-e=done, ctrl-m=unsubscribe)
+- `tv gh-issues` / `tv gh-prs` — browse with metadata + markdown preview
+- `tv processes` — find/manage processes by CPU usage
+- `tv tldr` — browse command help pages
+- `tv brew-packages` — manage Homebrew packages
+- `tv channels` — meta-channel to browse all channels
+
 ## Copilot CLI hooks (cmux notifications)
 
 Global hooks live at `~/.copilot/hooks/hooks.json` with the notification script
@@ -70,12 +117,14 @@ CODESPACES=true ./install.sh
 |------|---------|
 | `install.sh` | Idempotent installer (local + codespace) |
 | `bin/bootstrap-machine` | Fresh machine setup |
+| `bin/sesh-picker` | Session picker with 🔔 bell indicators |
 | `bin/theme` | Theme switcher (solarized ↔ mocha) |
 | `zshrc` | Shell config (prompt, PATH, tools) |
-| `aliases` | Shell aliases |
+| `aliases` | Shell aliases (including `tome`) |
 | `gitconfig` | Git config (includes SSH signing) |
-| `tmux.conf` | Tmux config |
+| `tmux.conf` | Tmux config (sesh picker, resurrect, vim keys) |
 | `starship.toml` | Starship prompt config |
 | `sesh/sesh.toml` | sesh session manager config |
 | `television/cable/` | Television custom cable channels |
 | `codespaces.local` | Bash extras for codespaces + `dotup` |
+| `CHANGELOG.md` | Document notable changes here |
