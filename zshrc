@@ -3,6 +3,9 @@ for function in ~/.zsh/functions/*; do
   source $function
 done
 
+export EDITOR="nvim"
+export VISUAL="$EDITOR"
+
 # extra files in ~/.zsh/configs/pre, ~/.zsh/configs, and ~/.zsh/configs/post
 _load_settings() {
   _dir="$1"
