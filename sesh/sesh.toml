@@ -33,6 +33,6 @@ path = "~/code/afraid_not"
 
 [[session]]
 name = "tmux config"
-path = "~/c/dotfiles"
+path = "~/dotfiles"
 startup_command = "nvim tmux.conf"
-preview_command = "bat --color=always ~/c/dotfiles/tmux.conf"
+preview_command = "bat --color=always ~/dotfiles/tmux.conf"
