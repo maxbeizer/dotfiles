@@ -20,8 +20,8 @@ command = "gh cs code -c {split:  :-1} --web"
 mode = "fork"
 
 [actions.ssh]
-description = "SSH into codespace"
-command = "gh cs ssh -c {split:  :-1}"
+description = "SSH into codespace (with clipboard forwarding)"
+command = "rdm-connect {split:  :-1}"
 mode = "execute"
 
 [actions.stop]

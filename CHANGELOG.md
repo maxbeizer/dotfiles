@@ -8,8 +8,19 @@ All notable changes to this dotfiles repo are documented in this file.
 - `sesh` integration — tmux session manager with zoxide project discovery.
   Named sessions configured in `sesh/sesh.toml`. Replaces tmuxinator for
   most workflows.
-- `television` cable channels for fuzzy picking: sesh sessions, gh-issues,
-  gh-prs, gh-notifications, processes, tldr, brew-packages, channels.
+- `bin/sesh-picker` — session picker with 🔔 bell indicators sorted to the
+  top, preview via `sesh preview`, ctrl-d to remove sessions.
+- `tome` alias — start main tmux session directly from a fresh terminal.
+- `television` cable channels for fuzzy picking:
+  - `gh-issues` / `gh-prs` — browse with metadata + markdown preview (bat)
+  - `gh-notifications` — triage with done (ctrl-e), unsubscribe (ctrl-m),
+    mark read (ctrl-d), open (ctrl-o). Matches GitHub web UI keybindings.
+  - `my-prs` — all open PRs across repos (like github.com/pulls)
+  - `codespaces` — manage codespaces with friendly names, SSH via rdm-connect
+  - `processes` — sort by CPU, ctrl-k to send SIGTERM
+  - `tldr` — browse command help pages with preview
+  - `brew-packages` — installed formulas + casks, upgrade/uninstall
+  - `channels` — meta-channel to browse all channels
   Configs live in `television/cable/` and are symlinked by `install.sh`.
 - `glow` added to Brewfile for markdown rendering in tv previews.
 - `EDITOR`/`VISUAL` set to `nvim` in zshrc.
@@ -20,12 +31,13 @@ All notable changes to this dotfiles repo are documented in this file.
 - `bin/theme` now also switches television theme (catppuccin ↔ solarized-dark).
 
 ### Changed
-- `prefix S` now opens sesh + television session picker (was tmux-nav sessions).
+- `prefix S` now opens `bin/sesh-picker` (sesh + fzf with bell indicators).
 - `prefix W` removed (sessions consolidated into prefix S).
 - `install.sh` now symlinks sesh and television cable configs.
 
 ### Removed
-- tmuxinator configs for ghae, flags, memex (replaced by sesh).
+- tmuxinator configs for ghae, flags, memex, dotcom, tome (replaced by sesh).
+- `bin/tmux-nav` sessions mode (replaced by `bin/sesh-picker`).
 
 ## [Previous]
 
