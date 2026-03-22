@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#
+# sesh-picker: Session picker with bell indicators
+#
+export PATH="/opt/homebrew/bin:$PATH"
+
+list_sessions() {
+  # Bell sessions first, then other tmux sessions, then zoxide/config
+  tmux list-sessions -F '#{?session_alerts,🔔 ,}#{session_name}' 2>/dev/null | grep '^🔔' | sort
+  tmux list-sessions -F '#{?session_alerts,🔔 ,}#{session_name}' 2>/dev/null | grep -v '^🔔'
+  sesh list -z -c
+}
+
+strip_bell() {
+  sed 's/^🔔 //'
+}
+
+pick=$(list_sessions | fzf --reverse --ansi \
+  --preview 'sesh preview "$(echo {} | sed "s/^🔔 //")"' \
+  --header 'enter=connect  ctrl-d=kill' \
+  --bind "ctrl-d:execute-silent(tmux kill-session -t \$(echo {} | sed 's/^🔔 //'))+reload(tmux list-sessions -F '#{?session_alerts,🔔 ,}#{session_name}' 2>/dev/null; sesh list -z -c)")
+
+[ -n "$pick" ] && sesh connect "$(echo "$pick" | strip_bell)"
