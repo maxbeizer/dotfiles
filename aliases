@@ -42,3 +42,6 @@ command -v fd >/dev/null 2>&1 && alias find="fd"
 alias speedtest="networkQuality"
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias aliases="$EDITOR ~/.aliases"
+
+# Start tmux with sesh picker (skip the empty session 0)
+alias ts='tmux new-session -d -s _tmp 2>/dev/null; sesh connect "$(sesh list -t -z -c | fzf --reverse --preview '\''sesh preview {}'\'' --header '\''enter=connect  ctrl-d=kill'\'' --bind '\''ctrl-d:execute-silent(tmux kill-session -t {})+reload(sesh list -t -z -c)'\'')" && tmux kill-session -t _tmp 2>/dev/null'
