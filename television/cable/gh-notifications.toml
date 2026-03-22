@@ -11,7 +11,9 @@ command = "TYPE={split:  :1}; REPO={split:  :2}; THREAD=$(gh api notifications/t
 
 [keybindings]
 ctrl-o = "actions:open"
-ctrl-d = "actions:mark-read"
+ctrl-d = ["actions:mark-read", "reload_source"]
+ctrl-e = ["actions:done", "reload_source"]
+ctrl-m = ["actions:unsubscribe", "reload_source"]
 
 [actions.open]
 description = "Open in browser"
@@ -21,4 +23,14 @@ mode = "fork"
 [actions.mark-read]
 description = "Mark notification as read"
 command = "gh api -X PATCH notifications/threads/{split:  :0} --silent"
+mode = "fork"
+
+[actions.done]
+description = "Mark as done (dismiss)"
+command = "gh api -X DELETE notifications/threads/{split:  :0} --silent"
+mode = "fork"
+
+[actions.unsubscribe]
+description = "Unsubscribe from thread"
+command = "gh api -X PUT notifications/threads/{split:  :0}/subscription -f ignored=true --silent"
 mode = "fork"
