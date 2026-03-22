@@ -4,10 +4,10 @@ description = "Manage GitHub Codespaces"
 requirements = ["gh"]
 
 [source]
-command = "gh cs list --json name,displayName,state,repository --jq '.[] | .displayName + \"  \" + .state + \"  \" + .repository + \"  \" + .name'"
+command = "gh cs list --json name,displayName,state,repository,gitStatus --jq '.[] | .displayName + \"  \" + .state + \"  \" + .gitStatus.ref + \"  \" + .repository + \"  \" + .name'"
 
 [preview]
-command = "gh cs list --json name,displayName,state,repository,gitStatus,machineName,lastUsedAt,createdAt --jq '.[] | select(.name == \"{split:  :-1}\") | \"name:\\t\" + .displayName + \"\\nid:\\t\" + .name + \"\\nstate:\\t\" + .state + \"\\nrepo:\\t\" + .repository + \"\\nmachine:\\t\" + .machineName + \"\\ncreated:\\t\" + .createdAt + \"\\nlast used:\\t\" + .lastUsedAt + \"\\ngit status:\\t\" + (.gitStatus|tostring)'"
+command = "gh cs list --json name,displayName,state,repository,gitStatus,machineName,lastUsedAt,createdAt --jq '.[] | select(.name == \"{split:  :-1}\") | \"name:\\t\" + .displayName + \"\\nbranch:\\t\" + .gitStatus.ref + \"\\nstate:\\t\" + .state + \"\\nrepo:\\t\" + .repository + \"\\nmachine:\\t\" + .machineName + \"\\ncreated:\\t\" + .createdAt + \"\\nlast used:\\t\" + .lastUsedAt + \"\\nid:\\t\" + .name + \"\\nahead:\\t\" + (.gitStatus.ahead|tostring) + \"\\nbehind:\\t\" + (.gitStatus.behind|tostring) + \"\\nuncommitted:\\t\" + (.gitStatus.hasUncommittedChanges|tostring) + \"\\nunpushed:\\t\" + (.gitStatus.hasUnpushedChanges|tostring)'"
 
 [keybindings]
 ctrl-o = "actions:open"
