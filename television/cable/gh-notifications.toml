@@ -1,0 +1,24 @@
+[metadata]
+name = "gh-notifications"
+description = "Triage GitHub notifications"
+requirements = ["gh"]
+
+[source]
+command = "gh api notifications --jq '.[] | .id + \"  \" + .subject.type + \"  \" + .repository.full_name + \"  \" + .subject.title'"
+
+[preview]
+command = "TYPE={split:  :1}; REPO={split:  :2}; THREAD=$(gh api notifications/threads/{split:  :0} 2>/dev/null); REASON=$(echo $THREAD | jq -r '.reason'); NUM=$(echo $THREAD | jq -r '.subject.url' | grep -oE '[0-9]+$'); if [ \"$TYPE\" = Issue ]; then (gh issue view $NUM -R $REPO --json title,state,author,number --jq '\"title:\\t\" + .title + \"\\nstate:\\t\" + .state + \"\\nauthor:\\t\" + .author.login + \"\\nnumber:\\t\" + (.number|tostring)'; echo \"repo:\\t$REPO\"; echo \"reason:\\t$REASON\"; echo ''; echo '---'; echo ''; gh issue view $NUM -R $REPO --json body --jq '.body // \"\"' | bat -l md --color=always -p) 2>/dev/null; elif [ \"$TYPE\" = PullRequest ]; then (gh pr view $NUM -R $REPO --json title,state,author,number,baseRefName,headRefName --jq '\"title:\\t\" + .title + \"\\nstate:\\t\" + .state + \"\\nauthor:\\t\" + .author.login + \"\\nbranch:\\t\" + .baseRefName + \" ← \" + .headRefName'; echo \"repo:\\t$REPO\"; echo \"reason:\\t$REASON\"; echo ''; echo '---'; echo ''; gh pr view $NUM -R $REPO --json body --jq '.body // \"\"' | bat -l md --color=always -p) 2>/dev/null; else gh api notifications/threads/{split:  :0} --jq '\"title:\\t\" + .subject.title + \"\\ntype:\\t\" + .subject.type + \"\\nrepo:\\t\" + .repository.full_name + \"\\nreason:\\t\" + .reason' 2>/dev/null; fi"
+
+[keybindings]
+ctrl-o = "actions:open"
+ctrl-d = "actions:mark-read"
+
+[actions.open]
+description = "Open in browser"
+command = "gh api notifications/threads/{split:  :0} --jq '.subject.url' | sed 's|api.github.com/repos|github.com|; s|/pulls/|/pull/|' | xargs open"
+mode = "fork"
+
+[actions.mark-read]
+description = "Mark notification as read"
+command = "gh api -X PATCH notifications/threads/{split:  :0} --silent"
+mode = "fork"

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Switch color theme across Ghostty, tmux, nvim, and Starship.
+# Switch color theme across Ghostty, tmux, nvim, television, and Starship.
 # Idempotent — safe to run repeatedly.
 #
 # Usage:
@@ -114,6 +114,21 @@ set_posting() {
   fi
 }
 
+set_television() {
+  local config="${HOME}/.config/television/config.toml"
+  [ -f "$config" ] || return 0
+
+  case "$1" in
+    solarized) local tv_theme="solarized-dark" ;;
+    mocha) local tv_theme="catppuccin" ;;
+  esac
+
+  if grep -q '^theme = ' "$config"; then
+    sed -i.bak "s/^theme = .*/theme = \"$tv_theme\"/" "$config"
+    rm -f "${config}.bak"
+  fi
+}
+
 if [ $# -eq 0 ]; then
   echo "Current theme: $(current_theme)"
   exit 0
@@ -126,6 +141,7 @@ case "$1" in
     set_tmux "$1"
     set_nvim "$1"
     set_posting "$1"
+    set_television "$1"
     echo "Switched to $1"
     ;;
   *)

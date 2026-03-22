@@ -1,0 +1,29 @@
+[metadata]
+name = "gh-issues"
+description = "List GitHub issues for the current repo"
+requirements = ["gh"]
+
+[source]
+command = "gh issue list --state open --limit 100 --json number,title,author,labels --jq '.[] | \"#\" + (.number | tostring) + \"  \" + .title + \"  @\" + .author.login'"
+
+[preview]
+command = "(gh issue view {split:#:1|split:  :0} --json title,state,author,number,comments,labels,assignees --jq '\"title:\\t\" + .title + \"\\nstate:\\t\" + .state + \"\\nauthor:\\t\" + .author.login + \"\\nnumber:\\t\" + (.number|tostring) + \"\\ncomments:\\t\" + (.comments|length|tostring) + (if (.labels|length) > 0 then \"\\nlabels:\\t\" + ([.labels[].name] | join(\", \")) else \"\" end) + (if (.assignees|length) > 0 then \"\\nassignees:\\t\" + ([.assignees[].login] | join(\", \")) else \"\" end) + \"\\n\\n---\\n\"'; gh issue view {split:#:1|split:  :0} --json body --jq '.body // \"\"' | bat -l md --color=always -p) 2>/dev/null"
+
+[keybindings]
+ctrl-o = "actions:open"
+ctrl-d = "actions:close"
+
+[actions.open]
+description = "Open the issue in the browser"
+command = "gh issue view {split:#:1|split:  :0} --web"
+mode = "fork"
+
+[actions.close]
+description = "Close the selected issue"
+command = "gh issue close {split:#:1|split:  :0}"
+mode = "fork"
+
+[actions.comment]
+description = "Add a comment to the selected issue"
+command = "gh issue comment {split:#:1|split:  :0}"
+mode = "execute"

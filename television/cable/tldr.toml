@@ -1,0 +1,21 @@
+[metadata]
+name = "tldr"
+description = "Browse and preview TLDR help pages for command-line tools"
+requirements = ["tldr"]
+
+[source]
+command = "tldr --list 2>/dev/null | tail -n +2"
+
+[preview]
+command = "tldr '{}'"
+
+[ui]
+layout = "portrait"
+
+[keybindings]
+ctrl-e = "actions:open"
+
+[actions.open]
+description = "Open the selected TLDR page"
+command = "tldr '{}'"
+mode = "execute"

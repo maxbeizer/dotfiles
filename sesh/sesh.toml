@@ -1,0 +1,9 @@
+# sesh configuration
+# Docs: https://github.com/joshmedeski/sesh
+
+[default_session]
+# startup_command = ""
+
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"

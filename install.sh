@@ -140,6 +140,22 @@ if [ -d "$DOTFILES_DIR/ghostty" ]; then
   link_file "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
 fi
 
+# --- Sesh ---
+if [ -d "$DOTFILES_DIR/sesh" ]; then
+  fancy_echo "Linking sesh config"
+  mkdir -p "$HOME/.config/sesh"
+  link_file "$DOTFILES_DIR/sesh/sesh.toml" "$HOME/.config/sesh/sesh.toml"
+fi
+
+# --- Television cable channels ---
+if [ -d "$DOTFILES_DIR/television/cable" ]; then
+  fancy_echo "Linking television cable channels"
+  mkdir -p "$HOME/.config/television/cable"
+  for f in "$DOTFILES_DIR/television/cable/"*.toml; do
+    [ -f "$f" ] && link_file "$f" "$HOME/.config/television/cable/$(basename "$f")"
+  done
+fi
+
 # --- Codespace-specific extras ---
 if [ "${CODESPACES:-}" = "true" ]; then
   fancy_echo "Codespace extras"

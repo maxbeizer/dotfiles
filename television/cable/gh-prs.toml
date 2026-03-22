@@ -1,0 +1,34 @@
+[metadata]
+name = "gh-prs"
+description = "List GitHub PRs for the current repo"
+requirements = ["gh"]
+
+[source]
+command = "gh pr list --state open --limit 100 --json number,title,author,headRefName --jq '.[] | \"#\" + (.number | tostring) + \"  \" + .title + \"  @\" + .author.login + \"  \" + .headRefName'"
+
+[preview]
+command = "(gh pr view {split:#:1|split:  :0} --json title,state,author,baseRefName,headRefName,number,additions,deletions,changedFiles,comments --jq '\"title:\\t\" + .title + \"\\nstate:\\t\" + .state + \"\\nauthor:\\t\" + .author.login + \"\\nnumber:\\t\" + (.number|tostring) + \"\\nbranch:\\t\" + .baseRefName + \" ← \" + .headRefName + \"\\nchanges:\\t\" + (.changedFiles|tostring) + \" files +\" + (.additions|tostring) + \" -\" + (.deletions|tostring) + \"\\ncomments:\\t\" + (.comments|length|tostring) + \"\\n\\n---\\n\"'; gh pr view {split:#:1|split:  :0} --json body --jq '.body // \"\"' | bat -l md --color=always -p) 2>/dev/null"
+
+[keybindings]
+ctrl-o = "actions:open"
+ctrl-k = "actions:checkout"
+
+[actions.open]
+description = "Open the PR in the browser"
+command = "gh pr view {split:#:1|split:  :0} --web"
+mode = "fork"
+
+[actions.checkout]
+description = "Checkout the PR branch locally"
+command = "gh pr checkout {split:#:1|split:  :0}"
+mode = "execute"
+
+[actions.merge]
+description = "Merge the selected PR"
+command = "gh pr merge {split:#:1|split:  :0}"
+mode = "execute"
+
+[actions.diff]
+description = "View the PR diff"
+command = "gh pr diff {split:#:1|split:  :0} | less"
+mode = "execute"

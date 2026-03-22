@@ -1,0 +1,18 @@
+[metadata]
+name = "processes"
+description = "Find and manage running processes"
+
+[source]
+command = "ps -Areo pid,pcpu,pmem,user,comm | tail -n +2"
+output = "{}"
+
+[preview]
+command = "ps -p {split: :0} -o pid,ppid,pcpu,pmem,stat,lstart,time,command 2>/dev/null"
+
+[keybindings]
+ctrl-k = "actions:kill"
+
+[actions.kill]
+description = "Kill the selected process (SIGTERM)"
+command = "kill {split: :0}"
+mode = "fork"
