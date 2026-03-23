@@ -4,6 +4,26 @@ All notable changes to this dotfiles repo are documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Elixir LSP support — `elixir-ls` auto-installed via Mason and unconditionally
+  enabled (Mason manages the binary). Treesitter grammars for `elixir`, `heex`,
+  and `erlang` added to `ensure_installed`.
+
+### Fixed
+- Treesitter — removed duplicate plugin spec in `editor.lua` that was overriding
+  `ensure_installed` with empty opts. Rewrote config for new nvim-treesitter API
+  (nvim 0.11+) which no longer supports `ensure_installed` in `setup()`. Parsers
+  are now auto-installed by comparing against `get_installed()`. Added `FileType`
+  autocmd to enable treesitter highlighting for all filetypes with an installed
+  parser (nvim 0.11 only auto-enables it for lua, help, and query).
+- LSP — disabled mason-lspconfig `automatic_enable` to prevent duplicate server
+  launches (elixir-ls was starting twice).
+
+### Fixed
+- `tv gh-notifications` — rebind unsubscribe from `ctrl-m` to `ctrl-g`. `ctrl-m`
+  is interpreted as Enter in terminals, and `ctrl-u` is a built-in tv keybinding
+  (clear input line), so neither worked for custom actions.
+
 ### Changed
 - `bin/sesh-picker` — 🔔 indicators now check `window_bell_flag` per-window
   instead of `session_alerts`, so activity (terminal output) no longer triggers
@@ -23,7 +43,7 @@ All notable changes to this dotfiles repo are documented in this file.
 - `tome` alias — start main tmux session directly from a fresh terminal.
 - `television` cable channels for fuzzy picking:
   - `gh-issues` / `gh-prs` — browse with metadata + markdown preview (bat)
-  - `gh-notifications` — triage with done (ctrl-e), unsubscribe (ctrl-m),
+  - `gh-notifications` — triage with done (ctrl-e), unsubscribe (ctrl-g),
     mark read (ctrl-d), open (ctrl-o). Matches GitHub web UI keybindings.
   - `my-prs` — all open PRs across repos (like github.com/pulls)
   - `codespaces` — manage codespaces with friendly names, SSH via rdm-connect

@@ -12,7 +12,8 @@ return {
     dependencies = { 'williamboman/mason.nvim' },
     config = function()
       require('mason-lspconfig').setup({
-        ensure_installed = { 'lua_ls', 'ts_ls', 'gopls' },
+        ensure_installed = { 'lua_ls', 'ts_ls', 'gopls', 'elixirls' },
+        automatic_enable = false,
       })
     end,
   },
@@ -48,6 +49,9 @@ return {
       if vim.fn.executable('gopls') == 1 then
         table.insert(enable, 'gopls')
       end
+
+      vim.lsp.config('elixirls', { capabilities = capabilities })
+      table.insert(enable, 'elixirls')
 
       if vim.fn.executable('solargraph') == 1 or vim.fn.executable('bin/solargraph') == 1 then
         vim.lsp.config('solargraph', { capabilities = capabilities })

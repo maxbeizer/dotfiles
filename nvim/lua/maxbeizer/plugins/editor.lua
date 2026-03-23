@@ -1,11 +1,32 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    event = 'BufReadPost',
+    lazy = false,
     build = ':TSUpdate',
     config = function()
-      require('nvim-treesitter').setup({
-        ensure_installed = { 'lua', 'vim', 'vimdoc', 'ruby', 'javascript', 'typescript', 'go', 'json', 'markdown' },
+      require('nvim-treesitter').setup()
+
+      local ensure = { 'lua', 'vim', 'vimdoc', 'ruby', 'javascript', 'typescript', 'go', 'json', 'markdown', 'elixir', 'heex', 'erlang' }
+      local installed = require('nvim-treesitter').get_installed()
+      local installed_set = {}
+      for _, lang in ipairs(installed) do
+        installed_set[lang] = true
+      end
+      local missing = {}
+      for _, lang in ipairs(ensure) do
+        if not installed_set[lang] then
+          table.insert(missing, lang)
+        end
+      end
+      if #missing > 0 then
+        require('nvim-treesitter').install(missing)
+      end
+
+      -- Enable treesitter highlighting for all filetypes with an installed parser
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
       })
     end,
   },
@@ -138,11 +159,5 @@ return {
         scope = { enabled = true, show_start = false, show_end = false },
       })
     end,
-  },
-  {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    lazy = false,
-    opts = {},
   },
 }
