@@ -8,6 +8,7 @@ All notable changes to this dotfiles repo are documented in this file.
 - `bin/sesh-picker` — 🔔 indicators now check `window_bell_flag` per-window
   instead of `session_alerts`, so activity (terminal output) no longer triggers
   false bells. Only actual terminal bells (e.g., Copilot waiting for input) show 🔔.
+  Sessions are now sorted by most recently visited (via `session_last_attached`).
 - Copilot CLI hooks — switched `ask_user` detection from `postToolUse` to
   `preToolUse` so the bell fires when Copilot *starts* waiting, not after
   the user has already answered. Hooks now also send a tmux terminal bell
