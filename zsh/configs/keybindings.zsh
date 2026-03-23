@@ -11,6 +11,9 @@ bindkey "^Y" accept-and-hold
 bindkey "^N" insert-last-word
 bindkey "^Q" push-line-or-edit
 
+# reverse search (ctrl-r) — fzf overrides this when available
+bindkey "^R" history-incremental-search-backward
+
 # edit current command in $EDITOR (ctrl-x ctrl-e)
 autoload -U edit-command-line
 zle -N edit-command-line
