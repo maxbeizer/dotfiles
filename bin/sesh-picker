@@ -10,16 +10,16 @@ export PATH="/opt/homebrew/bin:$PATH"
 SELF="$(realpath "$0")"
 
 list_sessions() {
-  # Bell sessions first (bell only, not activity), then other tmux sessions
+  # Bell sessions first, then other tmux sessions (most recently visited first)
   local bell_sessions=() other_sessions=()
-  while IFS= read -r session; do
+  while IFS=' ' read -r _ts session; do
     has_bell=$(tmux list-windows -t "$session" -F '#{window_bell_flag}' 2>/dev/null | grep -c 1)
     if [ "$has_bell" -gt 0 ]; then
       bell_sessions+=("🔔 $session")
     else
       other_sessions+=("$session")
     fi
-  done < <(tmux list-sessions -F '#{session_name}' 2>/dev/null)
+  done < <(tmux list-sessions -F '#{session_last_attached} #{session_name}' 2>/dev/null | sort -rn)
   printf '%s\n' "${bell_sessions[@]}" "${other_sessions[@]}"
   sesh list -z -c
 }
