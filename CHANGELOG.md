@@ -5,6 +5,10 @@ All notable changes to this dotfiles repo are documented in this file.
 ## [Unreleased]
 
 ### Added
+- Copilot CLI skills managed via dotfiles — `grill-me`, `mikado`, and
+  `agent-orchestration` now live in `copilot/skills/` and are symlinked to
+  `~/.copilot/skills/` by `install.sh`. New skills added to this directory are
+  automatically linked on next install.
 - Elixir LSP support — `elixir-ls` auto-installed via Mason and unconditionally
   enabled (Mason manages the binary). Treesitter grammars for `elixir`, `heex`,
   and `erlang` added to `ensure_installed`.

@@ -36,6 +36,10 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 ├── gemrc                     # Gem defaults (skip docs)
 ├── ripgreprc                 # Ripgrep defaults
 ├── codespaces.local          # Codespace-specific bash setup + dotup function
+├── copilot/skills/           # Copilot CLI skills (symlinked to ~/.copilot/skills/)
+│   ├── grill-me/             # Stress-test plans via relentless interviewing
+│   ├── mikado/               # Mikado Method for structured refactoring
+│   └── agent-orchestration/  # Parallel agent workstreams
 └── install-gh-extensions.sh  # gh CLI extensions (idempotent)
 ```
 
@@ -148,7 +152,7 @@ Mirrors GitHub web UI keybindings:
 | `ctrl-o` | Open in browser |
 | `ctrl-d` | Mark as read |
 | `ctrl-e` | Done (dismiss) |
-| `ctrl-m` | Unsubscribe |
+| `ctrl-g` | Unsubscribe |
 | `ctrl-x` | Action picker (see all actions) |
 
 ### Shell integration (ctrl-t)

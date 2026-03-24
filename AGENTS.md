@@ -74,7 +74,7 @@ for d in ~/code/myorg/*; do zoxide add "$d"; done
 ## Television channels
 
 Custom cable channels in `television/cable/` provide fuzzy pickers with previews:
-- `tv gh-notifications` — triage notifications (ctrl-e=done, ctrl-m=unsubscribe)
+- `tv gh-notifications` — triage notifications (ctrl-e=done, ctrl-g=unsubscribe)
 - `tv gh-issues` / `tv gh-prs` — browse with metadata + markdown preview
 - `tv processes` — find/manage processes by CPU usage
 - `tv tldr` — browse command help pages
@@ -127,4 +127,5 @@ CODESPACES=true ./install.sh
 | `sesh/sesh.toml` | sesh session manager config |
 | `television/cable/` | Television custom cable channels |
 | `codespaces.local` | Bash extras for codespaces + `dotup` |
+| `copilot/skills/` | Copilot CLI skills (symlinked to `~/.copilot/skills/`) |
 | `CHANGELOG.md` | Document notable changes here |

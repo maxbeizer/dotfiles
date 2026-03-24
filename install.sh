@@ -253,6 +253,22 @@ if [ "${CODESPACES:-}" = "true" ]; then
       npm install -g @github/copilot 2>/dev/null || true
     fi
   fi
+
+  # Copilot CLI skills
+  if [ -d "$DOTFILES_DIR/copilot/skills" ]; then
+    fancy_echo "Linking Copilot CLI skills"
+    mkdir -p "$HOME/.copilot/skills"
+    for skill_dir in "$DOTFILES_DIR/copilot/skills"/*/; do
+      [ -d "$skill_dir" ] || continue
+      skill_name=$(basename "$skill_dir")
+      target="$HOME/.copilot/skills/$skill_name"
+      if [ "$DRY_RUN" -eq 0 ]; then
+        rm -rf "$target"
+        ln -sf "$skill_dir" "$target"
+      fi
+      fancy_echo "  $skill_name → $target"
+    done
+  fi
 fi
 
 fancy_echo "Done ✓"
