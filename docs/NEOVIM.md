@@ -65,7 +65,7 @@ All codespace-only behavior is **conditional** and safe to run locally:
 
 ## Colorscheme
 
-NeoSolarized, defaults to dark. Toggle with `,bg`.
+Catppuccin Mocha by default; falls back to NeoSolarized (dark) when `~/.config/theme` is set to `solarized`. Toggle background with `,bg`.
 
 ## Key mappings (Neovim-specific)
 

@@ -1,6 +1,6 @@
 # appearance — theme managed by `theme` command
 #
-theme = Solarized Dark Higher Contrast
+theme = Catppuccin Mocha
 font-size = 16
 cursor-style = block
 window-inherit-font-size = false

@@ -90,8 +90,8 @@ ends (`sessionEnd`).
 
 ## Theme switching
 ```bash
-theme solarized   # Solarized Dark (default)
-theme mocha        # Catppuccin Mocha
+theme mocha        # Catppuccin Mocha (default)
+theme solarized    # Solarized Dark
 theme              # show current theme
 ```
 Applies to Ghostty (restart required), tmux (live), nvim (live via remote-send), and television.

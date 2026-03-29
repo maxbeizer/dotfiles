@@ -1,10 +1,21 @@
 # Changelog
 
-All notable changes to this dotfiles repo are documented in this file.
+Notable changes to this dotfiles repo, newest first.
 
-## [Unreleased]
+## 2026-03-29
+
+### Changed
+- Default theme switched from Solarized Dark to Catppuccin Mocha. Solarized
+  remains available via `theme solarized`. Affects `bin/theme` fallback,
+  `tmux.conf` baseline colors, and Neovim colorscheme default.
+
+## 2026-03-24
 
 ### Added
+- Git aliases `gone` and `tidy` for branch cleanup. `gone` deletes local
+  branches whose upstream tracking branch no longer exists (squash-merged PRs).
+  `tidy` combines both merged-branch cleanup and gone-upstream cleanup in one
+  command — fetch, prune, delete merged, delete gone, done.
 - Copilot CLI skills managed via dotfiles — `grill-me`, `mikado`, and
   `agent-orchestration` now live in `copilot/skills/` and are symlinked to
   `~/.copilot/skills/` by `install.sh`. New skills added to this directory are
@@ -22,11 +33,11 @@ All notable changes to this dotfiles repo are documented in this file.
   parser (nvim 0.11 only auto-enables it for lua, help, and query).
 - LSP — disabled mason-lspconfig `automatic_enable` to prevent duplicate server
   launches (elixir-ls was starting twice).
-
-### Fixed
 - `tv gh-notifications` — rebind unsubscribe from `ctrl-m` to `ctrl-g`. `ctrl-m`
   is interpreted as Enter in terminals, and `ctrl-u` is a built-in tv keybinding
   (clear input line), so neither worked for custom actions.
+
+## 2026-03-22
 
 ### Changed
 - `bin/sesh-picker` — 🔔 indicators now check `window_bell_flag` per-window
@@ -73,7 +84,7 @@ All notable changes to this dotfiles repo are documented in this file.
 - tmuxinator configs for ghae, flags, memex, dotcom, tome (replaced by sesh).
 - `bin/tmux-nav` sessions mode (replaced by `bin/sesh-picker`).
 
-## [Previous]
+## 2026-03-21
 
 ### Added
 - `bin/theme` — switch Ghostty, tmux, and nvim between Solarized Dark and
@@ -111,7 +122,7 @@ All notable changes to this dotfiles repo are documented in this file.
 - VS Code PATH entry.
 - Stale Heroku cache paths and old username references.
 
-## [Previous]
+## 2026-03-21 (earlier)
 
 ### Added
 - Tmux copy-mode bindings: mouse drag selects within pane boundaries and copies

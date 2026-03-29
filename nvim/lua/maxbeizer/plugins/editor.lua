@@ -116,18 +116,18 @@ return {
     config = function()
       -- Read theme from ~/.config/theme (set by bin/theme)
       local theme_file = vim.fn.expand('~/.config/theme')
-      local theme = 'solarized'
+      local theme = 'mocha'
       local f = io.open(theme_file, 'r')
       if f then
-        theme = f:read('*l') or 'solarized'
+        theme = f:read('*l') or 'mocha'
         f:close()
       end
 
       vim.opt.background = 'dark'
-      if theme == 'mocha' then
-        pcall(vim.cmd.colorscheme, 'catppuccin-mocha')
-      else
+      if theme == 'solarized' then
         pcall(vim.cmd.colorscheme, 'NeoSolarized')
+      else
+        pcall(vim.cmd.colorscheme, 'catppuccin-mocha')
       end
     end,
   },

@@ -68,10 +68,11 @@ dotup    # pull, reinstall, reload shell
 
 ## Theme switching
 
-Switch between Solarized Dark and Catppuccin Mocha across Ghostty, tmux, nvim, and television:
+Switch between Catppuccin Mocha (default) and Solarized Dark across Ghostty, tmux, nvim, and television:
 
 ```bash
-theme solarized   # or: theme mocha
+theme mocha        # default
+theme solarized    # fallback
 theme              # show current
 ```
 
