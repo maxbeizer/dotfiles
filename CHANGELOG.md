@@ -4,6 +4,13 @@ Notable changes to this dotfiles repo, newest first.
 
 ## 2026-03-29
 
+### Added
+- sesh: `prefix L` quick-toggles last session (`sesh last`) — like `cd -` for tmux
+- sesh: `prefix R` jumps to project root via `sesh root`
+- sesh: `ctrl-g` in picker prompts for a git URL to `sesh clone` into a session
+- sesh: picker now shows nerd font icons (`--icons`) and hides attached/duplicate
+  sessions for a cleaner list
+
 ### Changed
 - Default theme switched from Solarized Dark to Catppuccin Mocha. Solarized
   remains available via `theme solarized`. Affects `bin/theme` fallback,

@@ -2,6 +2,9 @@
 #
 # sesh-picker: Session picker with bell indicators (bell-only, not activity)
 #
+# Wraps sesh's built-in picker with bell-awareness: sessions with pending
+# tmux bells (e.g. Copilot CLI finished) are sorted to the top with 🔔.
+#
 # Usage: sesh-picker [--list]
 #   --list  Print session list and exit (used by fzf reload)
 #
@@ -21,7 +24,8 @@ list_sessions() {
     fi
   done < <(tmux list-sessions -F '#{session_last_attached} #{session_name}' 2>/dev/null | sort -rn)
   printf '%s\n' "${bell_sessions[@]}" "${other_sessions[@]}"
-  sesh list -z -c
+  # append zoxide + configured sessions (with icons, hiding dupes and attached)
+  sesh list -z -c -i -H -d
 }
 
 if [ "${1-}" = "--list" ]; then
@@ -35,7 +39,14 @@ strip_bell() {
 
 pick=$(list_sessions | fzf --reverse --ansi \
   --preview 'sesh preview "$(echo {} | sed "s/^🔔 //")"' \
-  --header 'enter=connect  ctrl-d=kill' \
-  --bind "ctrl-d:execute-silent(tmux kill-session -t \$(echo {} | sed 's/^🔔 //'))+reload($SELF --list)")
+  --header 'enter=connect  ctrl-d=kill  ctrl-g=clone' \
+  --bind "ctrl-d:execute-silent(tmux kill-session -t \$(echo {} | sed 's/^🔔 //'))+reload($SELF --list)" \
+  --bind "ctrl-g:abort+execute(echo '__CLONE__')")
 
-[ -n "$pick" ] && sesh connect "$(echo "$pick" | strip_bell)"
+if [ "$pick" = "__CLONE__" ]; then
+  # prompt for a git URL to clone and connect
+  url=$(echo "" | fzf --reverse --print-query --prompt="repo url> " --header "paste a git URL to clone" | head -1)
+  [ -n "$url" ] && sesh clone "$url"
+elif [ -n "$pick" ]; then
+  sesh connect "$(echo "$pick" | strip_bell)"
+fi

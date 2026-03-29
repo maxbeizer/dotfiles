@@ -23,6 +23,7 @@ startup_command = "tv codespaces"
 [[session]]
 name = "memex"
 path = "~/code/github/memex"
+startup_command = "git fetch --quiet && git log --oneline -5"
 
 [[session]]
 name = "life"
