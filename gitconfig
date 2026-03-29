@@ -73,3 +73,5 @@
   today = "!git log --since='6am' --author `git config user.email` --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
   cleanup = !sh -c 'git branch --merged | grep -Ev "master" | grep -v "^*" | xargs git branch -d'
   cleanupm = !sh -c 'git branch --merged | grep -Ev "main" | grep -v "^*" | xargs git branch -d'
+  gone = !git fetch --prune && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
+  tidy = "!git fetch --prune && git branch --merged | grep -Ev \"^\\\\*|main|master\" | xargs -r git branch -d 2>/dev/null; git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D 2>/dev/null; echo \"All tidy!\""
