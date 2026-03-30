@@ -277,3 +277,6 @@ if [ "${CODESPACES:-}" = "true" ]; then
 fi
 
 fancy_echo "Done ✓"
+
+# Signal that dotfiles install is complete (used by codespace shell wait loop)
+touch "$HOME/.dotfiles_ready"

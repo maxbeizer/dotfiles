@@ -1,3 +1,12 @@
+# Wait for dotfiles install to finish before loading shell config
+if [[ "${CODESPACES:-}" == "true" ]] && [[ ! -f "$HOME/.dotfiles_ready" ]]; then
+  printf "⏳ Dotfiles still installing"
+  while [[ ! -f "$HOME/.dotfiles_ready" ]]; do printf "."; sleep 1; done
+  echo ""
+  echo "✅ Ready"
+  exec "$SHELL" -l
+fi
+
 function codespace() {
   # Install linux brew
   if ! command -v brew &> /dev/null
