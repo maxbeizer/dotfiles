@@ -10,6 +10,7 @@ command = "gh cs list --json name,displayName,state,repository,gitStatus --jq '.
 command = "gh cs list --json name,displayName,state,repository,gitStatus,machineName,lastUsedAt,createdAt --jq '.[] | select(.name == \"{split:  :-1}\") | \"name:\\t\" + .displayName + \"\\nbranch:\\t\" + .gitStatus.ref + \"\\nstate:\\t\" + .state + \"\\nrepo:\\t\" + .repository + \"\\nmachine:\\t\" + .machineName + \"\\ncreated:\\t\" + .createdAt + \"\\nlast used:\\t\" + .lastUsedAt + \"\\nid:\\t\" + .name + \"\\nahead:\\t\" + (.gitStatus.ahead|tostring) + \"\\nbehind:\\t\" + (.gitStatus.behind|tostring) + \"\\nuncommitted:\\t\" + (.gitStatus.hasUncommittedChanges|tostring) + \"\\nunpushed:\\t\" + (.gitStatus.hasUnpushedChanges|tostring)'"
 
 [keybindings]
+enter = "actions:ssh"
 ctrl-o = "actions:open"
 ctrl-s = "actions:ssh"
 ctrl-d = ["actions:stop", "reload_source"]

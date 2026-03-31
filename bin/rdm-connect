@@ -3,7 +3,7 @@
 # and tmux pane title set to the codespace name.
 #
 # Usage:
-#   rdm-connect           # interactive picker via fzf
+#   rdm-connect           # interactive picker via tv codespaces
 #   rdm-connect <name>    # connect directly to named codespace
 
 set -euo pipefail
@@ -11,9 +11,9 @@ set -euo pipefail
 CS_NAME="${1:-}"
 
 if [ -z "$CS_NAME" ]; then
-  CS_LINE=$(gh cs list --json name,displayName,repository -q '.[] | "\(.name)\t\(.displayName)\t\(.repository)"' | fzf --with-nth=2.. --delimiter='\t')
-  CS_NAME=$(echo "$CS_LINE" | cut -f1)
-  CS_DISPLAY=$(echo "$CS_LINE" | cut -f2)
+  # Launch tv codespaces — Enter triggers rdm-connect with the codespace name
+  tv codespaces
+  exit $?
 else
   CS_DISPLAY=$(gh cs list --json name,displayName -q ".[] | select(.name==\"$CS_NAME\") | .displayName" 2>/dev/null)
   CS_DISPLAY="${CS_DISPLAY:-$CS_NAME}"

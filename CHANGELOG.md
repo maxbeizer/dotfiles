@@ -2,6 +2,13 @@
 
 Notable changes to this dotfiles repo, newest first.
 
+## 2026-03-31
+
+### Changed
+- `rdm-connect` now uses the `tv codespaces` channel instead of fzf, showing
+  branch, repo, and state inline with a rich preview pane
+- `tv codespaces`: Enter now SSHes into the selected codespace (same as ctrl-s)
+
 ## 2026-03-29
 
 ### Added
