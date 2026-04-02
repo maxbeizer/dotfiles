@@ -10,6 +10,10 @@
 
 set -eu
 
+# Ensure the ready sentinel is created even if the script fails partway through,
+# so the codespace shell wait loop (codespaces.local) doesn't spin forever.
+trap 'touch "$HOME/.dotfiles_ready"' EXIT
+
 DRY_RUN=0
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=1
 

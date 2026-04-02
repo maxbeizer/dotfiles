@@ -1,9 +1,19 @@
 # Wait for dotfiles install to finish before loading shell config
 if [[ "${CODESPACES:-}" == "true" ]] && [[ ! -f "$HOME/.dotfiles_ready" ]]; then
   printf "⏳ Dotfiles still installing"
-  while [[ ! -f "$HOME/.dotfiles_ready" ]]; do printf "."; sleep 1; done
+  elapsed=0
+  timeout=300
+  while [[ ! -f "$HOME/.dotfiles_ready" ]] && (( elapsed < timeout )); do
+    printf "."
+    sleep 1
+    (( elapsed++ ))
+  done
   echo ""
-  echo "✅ Ready"
+  if (( elapsed >= timeout )); then
+    echo "⚠️  Timed out waiting for dotfiles install (${timeout}s). Continuing anyway."
+  else
+    echo "✅ Ready"
+  fi
   exec "$SHELL" -l
 fi
 

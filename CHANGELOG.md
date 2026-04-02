@@ -2,6 +2,13 @@
 
 Notable changes to this dotfiles repo, newest first.
 
+## [Unreleased]
+
+### Fixed
+- Codespace shell wait loop no longer hangs forever if `install.sh` fails
+  partway through — added an EXIT trap to always create `.dotfiles_ready`,
+  and a 5-minute timeout to the wait loop
+
 ## 2026-03-31
 
 ### Changed
