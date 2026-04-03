@@ -37,6 +37,7 @@ return {
       { '<C-p>', function() require('telescope.builtin').find_files() end, desc = 'Find files' },
       { '<C-t>', function() require('telescope.builtin').buffers() end, desc = 'Buffers' },
       { '\\', function() require('telescope.builtin').live_grep() end, desc = 'Live grep' },
+      { '<C-\\>', function() require('telescope.builtin').live_grep() end, desc = 'Live grep' },
     },
     dependencies = {
       'nvim-lua/plenary.nvim',

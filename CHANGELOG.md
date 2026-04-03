@@ -5,6 +5,7 @@ Notable changes to this dotfiles repo, newest first.
 ## 2026-04-03
 
 ### Added
+- `<C-\>` keybinding in Neovim to open Telescope live grep for full project search
 - `deploy-gh-test`: script to cross-compile and deploy the `gh-test` extension
   to a running github/github codespace, including `gh test shim --rails` setup
 - `gh new-cs` alias now automatically runs `deploy-gh-test` after codespace creation
