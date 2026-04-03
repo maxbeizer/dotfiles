@@ -2,7 +2,12 @@
 
 Notable changes to this dotfiles repo, newest first.
 
-## [Unreleased]
+## 2026-04-03
+
+### Added
+- `deploy-gh-test`: script to cross-compile and deploy the `gh-test` extension
+  to a running github/github codespace, including `gh test shim --rails` setup
+- `gh new-cs` alias now automatically runs `deploy-gh-test` after codespace creation
 
 ### Fixed
 - Codespace shell wait loop no longer hangs forever if `install.sh` fails

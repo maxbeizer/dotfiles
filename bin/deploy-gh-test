@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+#
+# Deploy gh-test extension to a running codespace.
+#
+# Usage:
+#   deploy-gh-test              # auto-detects first available codespace
+#   deploy-gh-test primary      # deploy to codespace with display name "primary"
+#   deploy-gh-test <full-name>  # deploy to codespace by full name
+#
+set -euo pipefail
+
+GH_TEST_DIR="${GH_TEST_DIR:-$HOME/code/github/gh-test}"
+DISPLAY_NAME="${1:-}"
+
+if [[ ! -f "$GH_TEST_DIR/Makefile" ]]; then
+  echo "Error: gh-test repo not found at $GH_TEST_DIR"
+  echo "Set GH_TEST_DIR or clone gh-test alongside this repo."
+  exit 1
+fi
+
+# Resolve codespace name
+if [[ -z "$DISPLAY_NAME" ]]; then
+  CODESPACE=$(gh cs list --json name,state -q '.[] | select(.state=="Available") | .name' 2>/dev/null | head -1)
+  if [[ -z "$CODESPACE" ]]; then
+    echo "Error: No available codespace found."
+    exit 1
+  fi
+  echo "Auto-detected codespace: $CODESPACE"
+else
+  # Try resolving display name to full name
+  CODESPACE=$(gh cs list --json name,displayName,state \
+    -q ".[] | select((.displayName == \"$DISPLAY_NAME\" or .name == \"$DISPLAY_NAME\") and .state == \"Available\") | .name" \
+    2>/dev/null | head -1)
+  if [[ -z "$CODESPACE" ]]; then
+    echo "Error: No available codespace matching '$DISPLAY_NAME'."
+    exit 1
+  fi
+  echo "Resolved codespace: $CODESPACE"
+fi
+
+# Ensure the extensions directory exists on the codespace
+echo "Ensuring gh extension directory exists..."
+gh codespace ssh -c "$CODESPACE" -- \
+  'mkdir -p /home/vscode/.local/share/gh/extensions/gh-test'
+
+# Cross-compile and deploy
+echo "Building and deploying..."
+cd "$GH_TEST_DIR"
+make deploy CODESPACE="$CODESPACE"
+
+# Run the shim setup
+echo ""
+echo "Running 'gh test shim --rails' on codespace..."
+gh codespace ssh -c "$CODESPACE" -- 'cd /workspaces/github && gh test shim --rails'
+
+echo ""
+echo "Done! gh-test is deployed and shimmed."
