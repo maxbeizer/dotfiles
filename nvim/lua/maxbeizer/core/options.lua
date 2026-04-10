@@ -32,6 +32,13 @@ local vendored_node = '/workspaces/github/vendor/node'
 if vim.fn.isdirectory(vendored_node) == 1 then
   vim.env.PATH = vendored_node .. ':' .. vendored_node .. '/bin:' .. vim.env.PATH
   vim.g.copilot_node_command = vendored_node .. '/node'
+else
+  -- Locally, asdf's node has node:sqlite support that copilot-language-server
+  -- requires; Homebrew's node (which nvim may find first) does not.
+  local asdf_node = vim.fn.expand('~/.asdf/shims/node')
+  if vim.fn.executable(asdf_node) == 1 then
+    vim.g.copilot_node_command = asdf_node
+  end
 end
 
 -- Use bundled language server instead of npx (avoids registry auth issues)

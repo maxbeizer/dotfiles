@@ -32,6 +32,7 @@ brew "azure-cli"
 brew "telnet"
 brew "tldr"
 brew "posting"
+brew "tailscale"
 
 # Casks — on a fresh machine, uncomment or run:
 #   brew bundle --file=Brewfile

@@ -2,6 +2,13 @@
 
 Notable changes to this dotfiles repo, newest first.
 
+## 2026-04-10
+
+### Fixed
+- Copilot LSP crashing with `No such built-in module: node:sqlite` — Neovim was
+  finding Homebrew's Node v22 instead of asdf's Node v24. Added fallback to set
+  `copilot_node_command` to `~/.asdf/shims/node` on local machines.
+
 ## 2026-04-03
 
 ### Added
