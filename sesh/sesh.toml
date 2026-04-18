@@ -4,7 +4,7 @@
 dir_length = 2
 
 [default_session]
-startup_command = "github copilot --yolo"
+startup_command = "gh copilot --yolo"
 preview_command = "eza --all --git --icons --color=always {}"
 
 [[session]]

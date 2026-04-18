@@ -5,7 +5,7 @@ Notable changes to this dotfiles repo, newest first.
 ## 2026-04-18
 
 ### Changed
-- sesh default session startup command now launches `github copilot --yolo`
+- sesh default session startup command now launches `gh copilot --yolo`
   instead of `ll`
 
 ## 2026-04-10
