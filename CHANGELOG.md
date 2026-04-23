@@ -2,6 +2,11 @@
 
 Notable changes to this dotfiles repo, newest first.
 
+## 2026-04-23
+
+### Added
+- `godlygeek/tabular` Neovim plugin for text alignment (`:Tabularize`)
+
 ## 2026-04-18
 
 ### Changed

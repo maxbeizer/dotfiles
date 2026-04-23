@@ -140,6 +140,7 @@ return {
   },
   { 'github/copilot.vim', event = 'InsertEnter' },
   { 'tpope/vim-abolish', event = 'BufReadPost' },
+  { 'godlygeek/tabular', cmd = 'Tabularize' },
   {
     'linrongbin16/gitlinker.nvim',
     keys = {
