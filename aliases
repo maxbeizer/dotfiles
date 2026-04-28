@@ -22,6 +22,7 @@ alias ghpr="gh pr create --fill"
 alias ghpv="gh pr view --web"
 alias ghpc="gh pr checkout"
 alias ghrv="gh repo view --web"
+alias deploy="gh review-lab deploy"
 
 # gh-rdm (remote clipboard/open forwarding)
 if [ "$CODESPACES" = "true" ] || [ -n "$SSH_CONNECTION" ]; then

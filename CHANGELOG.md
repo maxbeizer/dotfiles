@@ -2,6 +2,11 @@
 
 Notable changes to this dotfiles repo, newest first.
 
+## 2026-04-28
+
+### Added
+- `deploy` alias for `gh review-lab deploy` — passes all flags through
+
 ## 2026-04-23
 
 ### Added
