@@ -39,7 +39,7 @@ brew "tailscale"
 # with these uncommented. Skipped by default because most are
 # already installed outside of brew on existing machines.
 #
-# cask "ghostty"
+# cask "kitty"
 # cask "1password"
 # cask "arc"
 # cask "firefox"

@@ -142,11 +142,16 @@ for f in "$DOTFILES_DIR/bin/"*; do
   [ -f "$f" ] && link_file "$f" "$HOME/.local/bin/$(basename "$f")"
 done
 
-# --- Ghostty ---
-if [ -d "$DOTFILES_DIR/ghostty" ]; then
-  fancy_echo "Linking Ghostty config"
-  mkdir -p "$HOME/.config/ghostty"
-  link_file "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
+# --- Kitty ---
+if [ -d "$DOTFILES_DIR/kitty" ]; then
+  fancy_echo "Linking Kitty config"
+  mkdir -p "$HOME/.config/kitty/themes"
+  link_file "$DOTFILES_DIR/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+  if [ -d "$DOTFILES_DIR/kitty/themes" ]; then
+    for f in "$DOTFILES_DIR/kitty/themes/"*; do
+      [ -f "$f" ] && link_file "$f" "$HOME/.config/kitty/themes/$(basename "$f")"
+    done
+  fi
 fi
 
 # --- Sesh ---

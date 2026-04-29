@@ -124,3 +124,4 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 # codespace extras (dotup, codespace helper, etc.)
 [[ -f ~/.codespaces.local ]] && source ~/.codespaces.local
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
