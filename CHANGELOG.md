@@ -2,6 +2,17 @@
 
 Notable changes to this dotfiles repo, newest first.
 
+## 2026-04-30
+
+### Fixed
+- Shift+Enter in Copilot CLI now works in Kitty terminal (via tmux)
+  - Added `map shift+enter send_text all \x1b[13;2u` to `kitty/kitty.conf` so Kitty
+    sends the CSI-u sequence that tmux recognizes as `S-Enter`
+  - Restored tmux binding `bind -n S-Enter send-keys Escape Enter` so tmux translates
+    the CSI-u to `\x1b\r` which bubbletea (Copilot CLI) expects
+  - Required `extended-keys on` in tmux.conf (already present) for tmux to intercept
+    the CSI-u sequence from Kitty
+
 ## 2026-04-28
 
 ### Added
