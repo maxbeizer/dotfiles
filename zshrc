@@ -125,3 +125,6 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 [[ -f ~/.codespaces.local ]] && source ~/.codespaces.local
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
+
+# GitHub Ace
+export PATH="$HOME/.ace/bin:$PATH"
