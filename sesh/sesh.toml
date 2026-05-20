@@ -9,7 +9,7 @@ preview_command = "eza --all --git --icons --color=always {}"
 
 [[wildcard]]
 pattern = "~/code/one-to-one/*"
-startup_command = "tmux split-window -h 'gh pr list' && gh copilot --yolo"
+startup_command = "tmux split-window -h \\; send-keys 'gh pr list' Enter \\; select-pane -L && gh copilot --yolo"
 
 [[session]]
 name = "dotfiles"
