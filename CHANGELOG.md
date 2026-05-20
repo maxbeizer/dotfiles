@@ -2,6 +2,13 @@
 
 Notable changes to this dotfiles repo, newest first.
 
+## 2026-05-20
+
+### Added
+- sesh wildcard config for `~/code/one-to-one/*` repos: sessions start with
+  Copilot CLI (`gh copilot --yolo`) in the left pane and `gh pr list` in a
+  vertical split on the right
+
 ## 2026-04-30
 
 ### Fixed

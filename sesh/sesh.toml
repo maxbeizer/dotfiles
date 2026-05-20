@@ -7,6 +7,10 @@ dir_length = 2
 startup_command = "gh copilot --yolo"
 preview_command = "eza --all --git --icons --color=always {}"
 
+[[wildcard]]
+pattern = "~/code/one-to-one/*"
+startup_command = "tmux split-window -h 'gh pr list' && gh copilot --yolo"
+
 [[session]]
 name = "dotfiles"
 path = "~/dotfiles"
