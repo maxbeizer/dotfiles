@@ -14,4 +14,10 @@ map('n', '<leader>bg', function()
   vim.o.background = vim.o.background == 'dark' and 'light' or 'dark'
 end)
 
+map('n', '<leader>tw', function()
+  vim.wo.wrap = not vim.wo.wrap
+  vim.wo.linebreak = vim.wo.wrap
+  print('wrap ' .. (vim.wo.wrap and 'on' or 'off'))
+end, { desc = 'Toggle line wrap' })
+
 -- Telescope and nvim-tree keymaps are defined in their lazy.nvim `keys` specs
