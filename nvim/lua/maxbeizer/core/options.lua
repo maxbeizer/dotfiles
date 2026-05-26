@@ -1,6 +1,8 @@
 vim.opt.number = true
 vim.opt.mouse = 'a'
 vim.opt.wrap = false
+vim.opt.splitright = true
+vim.opt.splitbelow = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 15
 vim.opt.updatetime = 250

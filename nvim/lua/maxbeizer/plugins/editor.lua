@@ -79,7 +79,18 @@ return {
     end,
   },
   {
-    'numToStr/Comment.nvim',
+    'stevearc/oil.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('oil').setup({
+        view_options = { show_hidden = true },
+        -- open files in the window you came from, not the oil window
+        default_file_explorer = false,
+      })
+      vim.keymap.set('n', '-', '<cmd>Oil<CR>', { desc = 'Open parent directory' })
+    end,
+  },
+  {
     event = 'BufReadPost',
     config = function()
       require('Comment').setup()

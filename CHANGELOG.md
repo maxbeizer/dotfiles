@@ -6,9 +6,15 @@ Notable changes to this dotfiles repo, newest first.
 
 ### Added
 - `<leader>tw` keymap to toggle line wrap (with `linebreak`) in Neovim
+- Oil.nvim for directory browsing (`-` opens parent dir, `<leader>vs` opens
+  dir in a right vsplit); directories are regular buffers with vim motions
 - sesh wildcard config for `~/code/one-to-one/*` repos: sessions start with
   Copilot CLI (`gh copilot --yolo`) in the left pane and `gh pr list` in a
   vertical split on the right
+
+### Changed
+- `<leader>vs` now opens Oil.nvim in a right-side vsplit (replaces netrw/Telescope)
+- Set `splitright` and `splitbelow` defaults in Neovim
 
 ## 2026-04-30
 
