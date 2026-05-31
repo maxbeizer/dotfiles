@@ -102,13 +102,29 @@ if [ "$DRY_RUN" -eq 0 ]; then
   done
 fi
 
-# --- Git SSH commit signing (1Password, when available) ---
-if [ -x "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" ]; then
-  git config --global gpg.ssh.program "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-  git config --global commit.gpgsign true
+# --- Git SSH commit signing (generated ~/.gitconfig.local) ---
+fancy_echo "Generating ~/.gitconfig.local (signing config)"
+GITCONFIG_LOCAL="$HOME/.gitconfig.local"
+if [ "$DRY_RUN" -eq 1 ]; then
+  echo "  [dry-run] would generate $GITCONFIG_LOCAL"
+elif [ -x "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" ]; then
+  cat > "$GITCONFIG_LOCAL" <<'EOF'
+[commit]
+  gpgsign = true
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  allowedSignersFile = ~/.config/git/allowed_signers
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[user]
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrEq8YlmAUVnpK/xXjnLclUTi/kxO5XA8iVPFIjEPac
+EOF
   echo "  ✓ 1Password SSH signing enabled"
 else
-  git config --global commit.gpgsign false
+  cat > "$GITCONFIG_LOCAL" <<'EOF'
+[commit]
+  gpgsign = false
+EOF
   echo "  · no op-ssh-sign found — commit signing disabled"
 fi
 
