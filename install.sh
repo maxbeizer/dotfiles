@@ -186,6 +186,15 @@ if [ -d "$DOTFILES_DIR/television/cable" ]; then
   done
 fi
 
+# --- Copilot CLI hooks ---
+if [ -d "$DOTFILES_DIR/copilot/hooks" ]; then
+  fancy_echo "Linking Copilot CLI hooks"
+  mkdir -p "$HOME/.copilot/hooks"
+  for hook_file in "$DOTFILES_DIR/copilot/hooks/"*; do
+    [ -f "$hook_file" ] && link_file "$hook_file" "$HOME/.copilot/hooks/$(basename "$hook_file")"
+  done
+fi
+
 # --- Codespace-specific extras ---
 if [ "${CODESPACES:-}" = "true" ]; then
   fancy_echo "Codespace extras"
@@ -299,6 +308,7 @@ if [ "${CODESPACES:-}" = "true" ]; then
       fancy_echo "  $skill_name → $target"
     done
   fi
+
 fi
 
 fancy_echo "Done ✓"

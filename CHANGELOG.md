@@ -2,6 +2,13 @@
 
 Notable changes to this dotfiles repo, newest first.
 
+## 2026-06-02
+
+### Changed
+- Copilot CLI hooks are now managed in `copilot/hooks/` and linked by
+  `install.sh`; the tmux bell hook replaces the old cmux notification script
+  name.
+
 ## 2026-05-31
 
 ### Changed

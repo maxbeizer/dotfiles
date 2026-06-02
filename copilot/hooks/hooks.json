@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "~/.copilot/hooks/copilot-tmux-bell.sh",
+        "env": {
+          "COPILOT_HOOK_TYPE": "preToolUse"
+        },
+        "timeoutSec": 5
+      }
+    ],
+    "sessionEnd": [
+      {
+        "type": "command",
+        "bash": "~/.copilot/hooks/copilot-tmux-bell.sh",
+        "env": {
+          "COPILOT_HOOK_TYPE": "sessionEnd"
+        },
+        "timeoutSec": 5
+      }
+    ]
+  }
+}

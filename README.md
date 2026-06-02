@@ -36,10 +36,9 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 ├── gemrc                     # Gem defaults (skip docs)
 ├── ripgreprc                 # Ripgrep defaults
 ├── codespaces.local          # Codespace-specific bash setup + dotup function
-├── copilot/skills/           # Copilot CLI skills (symlinked to ~/.copilot/skills/)
-│   ├── grill-me/             # Stress-test plans via relentless interviewing
-│   ├── mikado/               # Mikado Method for structured refactoring
-│   └── agent-orchestration/  # Parallel agent workstreams
+├── copilot/
+│   ├── hooks/                # Copilot CLI hooks (symlinked to ~/.copilot/hooks/)
+│   └── skills/               # Copilot CLI skills (symlinked to ~/.copilot/skills/)
 └── install-gh-extensions.sh  # gh CLI extensions (idempotent)
 ```
 
@@ -59,6 +58,7 @@ When `$CODESPACES` is set, `install.sh` also:
 - Wires up bash with aliases, Starship, zoxide, and fzf
 - Links codespaces.local for the `dotup` and `codespace` functions
 - Installs Copilot CLI (when `$GITHUB_TOKEN` is available)
+- Links Copilot CLI skills and hooks
 
 To iterate on config changes in a codespace:
 

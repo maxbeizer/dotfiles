@@ -81,12 +81,12 @@ Custom cable channels in `television/cable/` provide fuzzy pickers with previews
 - `tv brew-packages` — manage Homebrew packages
 - `tv channels` — meta-channel to browse all channels
 
-## Copilot CLI hooks (cmux notifications)
+## Copilot CLI hooks (tmux bells)
 
-Global hooks live at `~/.copilot/hooks/hooks.json` with the notification script
-at `~/.copilot/hooks/cmux-notify.sh`. These fire cmux desktop notifications when
+Global hooks live in `copilot/hooks/` and are linked to `~/.copilot/hooks/` by
+`install.sh`. These send a tmux terminal bell when
 the Copilot CLI agent needs user input (`ask_user` via `preToolUse`) or a session
-ends (`sessionEnd`).
+ends (`sessionEnd`), so `bin/sesh-picker` can float sessions needing attention.
 
 ## Theme switching
 ```bash
@@ -127,5 +127,6 @@ CODESPACES=true ./install.sh
 | `sesh/sesh.toml` | sesh session manager config |
 | `television/cable/` | Television custom cable channels |
 | `codespaces.local` | Bash extras for codespaces + `dotup` |
+| `copilot/hooks/` | Copilot CLI hooks (symlinked to `~/.copilot/hooks/`) |
 | `copilot/skills/` | Copilot CLI skills (symlinked to `~/.copilot/skills/`) |
 | `CHANGELOG.md` | Document notable changes here |
