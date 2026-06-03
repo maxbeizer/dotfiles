@@ -8,7 +8,7 @@
         "env": {
           "COPILOT_HOOK_TYPE": "preToolUse"
         },
-        "timeoutSec": 5
+        "timeoutSec": 1
       }
     ],
     "sessionEnd": [
@@ -18,7 +18,7 @@
         "env": {
           "COPILOT_HOOK_TYPE": "sessionEnd"
         },
-        "timeoutSec": 5
+        "timeoutSec": 1
       }
     ]
   }

@@ -1,5 +1,7 @@
 #!/bin/bash
-INPUT=$(cat)
+exec 2>/dev/null
+
+INPUT=$(cat || true)
 EVENT_TYPE="${COPILOT_HOOK_TYPE:-unknown}"
 
 # Send a terminal bell to the tmux pane so window_bell_flag lights up.
@@ -21,9 +23,9 @@ case "$EVENT_TYPE" in
     send_tmux_bell
     ;;
   preToolUse)
-    # Notify when the agent is waiting for user input. Keep this parser simple
+    # Notify when the agent is waiting for user input. Use bash-only matching
     # and fail-open so the safety hook never blocks Copilot tool calls.
-    if printf '%s' "$INPUT" | grep -q 'ask_user'; then
+    if [[ "$INPUT" == *ask_user* ]]; then
       send_tmux_bell
     fi
     ;;
