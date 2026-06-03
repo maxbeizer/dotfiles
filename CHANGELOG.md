@@ -5,6 +5,8 @@ Notable changes to this dotfiles repo, newest first.
 ## 2026-06-02
 
 ### Fixed
+- Copilot tmux bell hook now matches `ask_user` more robustly and `sesh-picker`
+  now handles never-attached tmux sessions when sorting bell indicators.
 - `install.sh --dry-run` no longer removes existing zsh or Neovim config
   symlinks while previewing installer actions.
 
