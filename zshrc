@@ -1,6 +1,6 @@
 # load custom executable functions
-for function in ~/.zsh/functions/*; do
-  source $function
+for function in "$HOME"/.zsh/functions/*(N-.); do
+  source "$function"
 done
 
 export EDITOR="nvim"

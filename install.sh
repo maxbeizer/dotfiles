@@ -84,7 +84,7 @@ mkdir -p "$HOME/.zsh"
 for zdir in configs functions; do
   if [ -d "$DOTFILES_DIR/zsh/$zdir" ]; then
     # Remove existing dir/symlink to avoid nesting a symlink inside itself
-    rm -rf "$HOME/.zsh/$zdir"
+    [ "$DRY_RUN" -eq 0 ] && rm -rf "$HOME/.zsh/$zdir"
     link_file "$DOTFILES_DIR/zsh/$zdir" "$HOME/.zsh/$zdir"
   fi
 done
@@ -141,12 +141,12 @@ fancy_echo "Linking Neovim config"
 mkdir -p "$HOME/.config/nvim"
 [ -f "$DOTFILES_DIR/nvim.local" ] && link_file "$DOTFILES_DIR/nvim.local" "$HOME/.config/nvim/init.vim"
 if [ -d "$DOTFILES_DIR/nvim/lua" ]; then
-  rm -rf "$HOME/.config/nvim/lua"
+  [ "$DRY_RUN" -eq 0 ] && rm -rf "$HOME/.config/nvim/lua"
   link_file "$DOTFILES_DIR/nvim/lua" "$HOME/.config/nvim/lua"
   echo "  ✓ nvim/lua"
 fi
 if [ -d "$DOTFILES_DIR/nvim/after" ]; then
-  rm -rf "$HOME/.config/nvim/after"
+  [ "$DRY_RUN" -eq 0 ] && rm -rf "$HOME/.config/nvim/after"
   link_file "$DOTFILES_DIR/nvim/after" "$HOME/.config/nvim/after"
   echo "  ✓ nvim/after"
 fi

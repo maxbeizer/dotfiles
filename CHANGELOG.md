@@ -4,6 +4,10 @@ Notable changes to this dotfiles repo, newest first.
 
 ## 2026-06-02
 
+### Fixed
+- `install.sh --dry-run` no longer removes existing zsh or Neovim config
+  symlinks while previewing installer actions.
+
 ### Changed
 - Copilot CLI hooks are now managed in `copilot/hooks/` and linked by
   `install.sh`; the tmux bell hook replaces the old cmux notification script
