@@ -2,6 +2,17 @@
 
 Notable changes to this dotfiles repo, newest first.
 
+## Unreleased
+
+### Added
+- Branch-only Starship config for `~/code/github/github` to avoid slow Git
+  status and diff checks when opening new shells in the huge repository.
+
+### Fixed
+- Zsh startup now repairs stale inherited Homebrew `FPATH` entries after zsh
+  upgrades, preventing missing `colors`, `add-zsh-hook`, and `is-at-least`
+  function errors in new shells.
+
 ## 2026-06-02
 
 ### Fixed

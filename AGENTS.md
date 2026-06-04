@@ -20,6 +20,7 @@ Useful flags:
 ## What install.sh does
 - Symlinks dotfiles (aliases, gitconfig, zshrc, tmux.conf, etc.) into `$HOME`
 - Links Starship config to `~/.config/starship.toml`
+- Links the fast Starship config to `~/.config/starship-fast-git.toml`
 - Sets up git SSH signing via 1Password (when `op-ssh-sign` is available)
 - Creates `~/.config/git/allowed_signers`
 - Links Neovim config to `~/.config/nvim/`
@@ -124,6 +125,7 @@ CODESPACES=true ./install.sh
 | `gitconfig` | Git config (includes SSH signing) |
 | `tmux.conf` | Tmux config (sesh picker, resurrect, vim keys) |
 | `starship.toml` | Starship prompt config |
+| `starship-fast-git.toml` | Branch-only Starship config used under `~/code/github/github` |
 | `sesh/sesh.toml` | sesh session manager config |
 | `television/cable/` | Television custom cable channels |
 | `codespaces.local` | Bash extras for codespaces + `dotup` |

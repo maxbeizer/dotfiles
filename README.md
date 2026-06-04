@@ -26,6 +26,7 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 │
 ├── tmux.conf                 # Tmux: C-a prefix, vim keys, mouse, sesh sessions
 ├── starship.toml             # Starship prompt config
+├── starship-fast-git.toml    # Lightweight Starship config for huge Git repos
 ├── ghostty/config            # Ghostty terminal (theme, font, keybinds)
 ├── sesh/sesh.toml            # sesh session manager config
 ├── television/cable/         # Television custom cable channels
@@ -77,6 +78,13 @@ theme              # show current
 ```
 
 Ghostty auto-reloads; tmux and nvim update live.
+
+## Prompt performance
+
+Starship normally shows Git branch, status, and diff metrics. Under
+`~/code/github/github`, zsh automatically switches Starship to
+`starship-fast-git.toml`, which keeps the branch but disables expensive status
+and diff checks so new tmux splits do not hang on the huge repository.
 
 ## Session management (sesh + fzf)
 

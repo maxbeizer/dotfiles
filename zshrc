@@ -1,3 +1,15 @@
+# Repair inherited FPATH after Homebrew zsh upgrades.
+typeset -a __dotfiles_fpath=()
+for __dotfiles_dir in $fpath; do
+  [[ -d "$__dotfiles_dir" ]] && __dotfiles_fpath+=("$__dotfiles_dir")
+done
+if [[ -d /opt/homebrew/share/zsh/functions ]]; then
+  __dotfiles_fpath=(/opt/homebrew/share/zsh/functions $__dotfiles_fpath)
+fi
+fpath=($__dotfiles_fpath)
+typeset -U fpath
+unset __dotfiles_dir __dotfiles_fpath
+
 # load custom executable functions
 for function in "$HOME"/.zsh/functions/*(N-.); do
   source "$function"
@@ -54,7 +66,20 @@ setopt EXTENDED_GLOB
 
 # prompt — use Starship if available, fall back to hand-rolled
 if command -v starship >/dev/null 2>&1; then
+  typeset -g __DOTFILES_DEFAULT_STARSHIP_CONFIG="${STARSHIP_CONFIG:-}"
+
+  __dotfiles_starship_config_for_pwd() {
+    if [[ "$PWD" == "$HOME/code/github/github" || "$PWD" == "$HOME/code/github/github"/* ]]; then
+      export STARSHIP_CONFIG="$HOME/.config/starship-fast-git.toml"
+    elif [[ -n "$__DOTFILES_DEFAULT_STARSHIP_CONFIG" ]]; then
+      export STARSHIP_CONFIG="$__DOTFILES_DEFAULT_STARSHIP_CONFIG"
+    else
+      unset STARSHIP_CONFIG
+    fi
+  }
+
   eval "$(starship init zsh)"
+  add-zsh-hook precmd __dotfiles_starship_config_for_pwd
 else
   # fallback prompt
   ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}["

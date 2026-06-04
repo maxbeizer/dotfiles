@@ -1,0 +1,45 @@
+# Fast prompt for very large Git repositories.
+
+format = """
+$env_var\
+$directory\
+$git_branch\
+$line_break\
+$character"""
+
+right_format = """$cmd_duration$time"""
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+fish_style_pwd_dir_length = 1
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+symbol = ""
+style = "green"
+
+[git_status]
+disabled = true
+
+[git_metrics]
+disabled = true
+
+[cmd_duration]
+min_time = 2_000
+format = "[$duration]($style) "
+style = "yellow"
+
+[character]
+success_symbol = "[\\$](bold green)"
+error_symbol = "[\\$](bold red)"
+
+[time]
+disabled = false
+format = "[$time]($style)"
+style = "dimmed white"
+time_format = "%T"
+
+[env_var.CODESPACE_SHORT_NAME]
+format = "\\[[$env_value]($style)\\] "
+style = "cyan"

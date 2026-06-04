@@ -77,6 +77,10 @@ if [ -f "$DOTFILES_DIR/starship.toml" ]; then
   mkdir -p "$HOME/.config"
   link_file "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
 fi
+if [ -f "$DOTFILES_DIR/starship-fast-git.toml" ]; then
+  mkdir -p "$HOME/.config"
+  link_file "$DOTFILES_DIR/starship-fast-git.toml" "$HOME/.config/starship-fast-git.toml"
+fi
 
 # --- Zsh configs directory ---
 fancy_echo "Linking zsh config directory"
