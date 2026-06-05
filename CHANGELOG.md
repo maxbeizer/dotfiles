@@ -12,6 +12,9 @@ Notable changes to this dotfiles repo, newest first.
 - Zsh startup now repairs stale inherited Homebrew `FPATH` entries after zsh
   upgrades, preventing missing `colors`, `add-zsh-hook`, and `is-at-least`
   function errors in new shells.
+- Codespaces Neovim setup now installs or repairs a package-manager
+  `tree-sitter` CLI and prefers it over vendored Node shims, avoiding glibc
+  errors during parser builds.
 
 ## 2026-06-02
 

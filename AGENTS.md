@@ -28,7 +28,8 @@ Useful flags:
 - Links Ghostty config to `~/.config/ghostty/`
 - Links sesh config to `~/.config/sesh/`
 - Links television cable channels to `~/.config/television/cable/`
-- In codespaces: wires up bash with Starship, zoxide, fzf, and aliases
+- In codespaces: wires up bash with Starship, zoxide, fzf, aliases, and a
+  package-manager `tree-sitter` CLI for Neovim parser builds
 
 ## Iterating on changes
 ```bash

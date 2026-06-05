@@ -23,6 +23,10 @@ fancy_echo() {
   printf "\n%s\n" "$1"
 }
 
+is_broken_tree_sitter() {
+  ! command -v tree-sitter >/dev/null 2>&1 || ! tree-sitter --version >/dev/null 2>&1
+}
+
 link_file() {
   local src="$1" dst="$2"
   if [ "$DRY_RUN" -eq 1 ]; then
@@ -207,6 +211,7 @@ if [ "${CODESPACES:-}" = "true" ]; then
   if [ -x "/workspaces/github/vendor/node/node" ]; then
     export PATH="/workspaces/github/vendor/node:/workspaces/github/vendor/node/bin:$PATH"
   fi
+  export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/bin:$PATH"
 
   link_file "$DOTFILES_DIR/codespaces.local" "$HOME/.codespaces.local"
 
@@ -278,6 +283,23 @@ if [ "${CODESPACES:-}" = "true" ]; then
       tar xzf /tmp/eza.tar.gz -C /tmp 2>/dev/null
       sudo install /tmp/eza /usr/local/bin/eza 2>/dev/null && echo "  ✓ eza installed"
       rm -f /tmp/eza /tmp/eza.tar.gz
+    fi
+    # nvim-treesitter requires tree-sitter-cli from a package manager, not npm.
+    # Some gh/gh Codespaces expose a Node-installed binary that needs newer glibc.
+    if is_broken_tree_sitter; then
+      if command -v brew >/dev/null 2>&1; then
+        brew install tree-sitter >/dev/null 2>&1 || true
+      fi
+
+      if is_broken_tree_sitter && command -v cargo >/dev/null 2>&1; then
+        cargo install tree-sitter-cli --version 0.26.1 --locked >/dev/null 2>&1 || true
+      fi
+
+      if is_broken_tree_sitter; then
+        echo "  ⚠ tree-sitter CLI still unavailable; nvim parser installs may fail"
+      else
+        echo "  ✓ tree-sitter installed"
+      fi
     fi
   fi
 

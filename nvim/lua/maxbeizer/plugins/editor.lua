@@ -2,7 +2,16 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     lazy = false,
-    build = ':TSUpdate',
+    build = function()
+      if vim.g.maxbeizer_tree_sitter_cli_ok then
+        vim.cmd.TSUpdate()
+      else
+        vim.notify(
+          'Skipping TSUpdate: tree-sitter CLI is unavailable or broken',
+          vim.log.levels.WARN
+        )
+      end
+    end,
     config = function()
       require('nvim-treesitter').setup()
 
@@ -18,8 +27,13 @@ return {
           table.insert(missing, lang)
         end
       end
-      if #missing > 0 then
+      if #missing > 0 and vim.g.maxbeizer_tree_sitter_cli_ok then
         require('nvim-treesitter').install(missing)
+      elseif #missing > 0 then
+        vim.notify(
+          'Skipping treesitter parser install: tree-sitter CLI is unavailable or broken',
+          vim.log.levels.WARN
+        )
       end
 
       -- Enable treesitter highlighting for all filetypes with an installed parser

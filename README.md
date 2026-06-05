@@ -257,4 +257,6 @@ After `install.sh` and `brew bundle`, open nvim and run:
 ```
 
 This installs nvim plugins and treesitter parsers (one-time setup). Requires
-`tree-sitter` CLI (included in Brewfile).
+`tree-sitter` CLI from a package manager, not npm. It is included in the
+Brewfile locally; Codespaces setup installs or repairs it during `install.sh`
+when possible.

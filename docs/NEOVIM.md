@@ -55,10 +55,15 @@ All codespace-only behavior is **conditional** and safe to run locally:
 
 - **Vendored Node PATH** (`options.lua`): Only activates if
   `/workspaces/github/vendor/node` exists. Ensures copilot.vim and npm
-  find the modern Node (v24) instead of the system Node 10.
+  find the modern Node (v24) instead of the system Node 10, while still
+  preferring package-manager `tree-sitter` binaries over Node shims.
 - **`g:copilot_node_command`**: Points copilot.vim at the vendored Node.
 - **`g:copilot_npx = false`**: Uses the bundled language server instead
   of fetching from the GitHub npm registry (which needs auth).
+- **Tree-sitter CLI**: Parser installs require a package-manager
+  `tree-sitter` executable. The Codespaces installer repairs missing or broken
+  CLIs via Linuxbrew or Cargo so Neovim does not pick up glibc-incompatible npm
+  binaries from the vendored Node path.
 - **ALE augroup clear** (`autocmds.lua`): The base vimrc sets up ALE
   `CursorHold` autocmds that error when ALE isn't loaded via vim-plug.
   Clearing the augroup is a no-op if ALE was never loaded.
