@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+#
+# Create a github/github Codespace, then connect and deploy gh-test.
+#
+# Usage:
+#   gh new-cs [display-name]
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: gh new-cs [display-name]
+
+Create a github/github Codespace, wait for it to become available, connect with
+rdm-connect, and deploy gh-test.
+EOF
+}
+
+case "${1:-}" in
+  -h|--help)
+    usage
+    exit 0
+    ;;
+esac
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo="github/github"
+machine="xLargePremiumLinux"
+devcontainer_path=".devcontainer/devcontainer.json"
+display_name="${1:-}"
+
+create_args=(
+  codespace create
+  -R "$repo"
+  -m "$machine"
+  --devcontainer-path "$devcontainer_path"
+)
+
+if [[ -n "$display_name" ]]; then
+  create_args+=(-d "$display_name")
+fi
+
+cs_name=$(gh "${create_args[@]}")
+
+echo "Codespace created: $cs_name"
+echo "Waiting for setup to finish..."
+
+while true; do
+  state=$(
+    gh codespace list --json name,state \
+      -q ".[] | select(.name==\"$cs_name\") | .state"
+  )
+
+  if [[ "$state" == "Available" ]]; then
+    echo "Ready!"
+    break
+  fi
+
+  sleep 5
+done
+
+"$script_dir/rdm-connect" "$cs_name"
+"$script_dir/deploy-gh-test" "$cs_name"

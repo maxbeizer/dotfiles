@@ -20,6 +20,36 @@
         },
         "timeoutSec": 1
       }
+    ],
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "~/.copilot/hooks/copilot-tmux-bell.sh",
+        "env": {
+          "COPILOT_HOOK_TYPE": "agentStop"
+        },
+        "timeoutSec": 1
+      }
+    ],
+    "subagentStop": [
+      {
+        "type": "command",
+        "bash": "~/.copilot/hooks/copilot-tmux-bell.sh",
+        "env": {
+          "COPILOT_HOOK_TYPE": "subagentStop"
+        },
+        "timeoutSec": 1
+      }
+    ],
+    "errorOccurred": [
+      {
+        "type": "command",
+        "bash": "~/.copilot/hooks/copilot-tmux-bell.sh",
+        "env": {
+          "COPILOT_HOOK_TYPE": "errorOccurred"
+        },
+        "timeoutSec": 1
+      }
     ]
   }
 }

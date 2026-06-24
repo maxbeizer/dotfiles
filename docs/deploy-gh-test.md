@@ -12,6 +12,13 @@ The `gh-test` extension is a Go CLI tool. Since codespaces run Linux/amd64 and l
 
 The `gh new-cs` alias runs `deploy-gh-test` automatically after creating a new github/github codespace. No extra steps needed — `gh-test` is installed and shimmed as part of codespace creation.
 
+The alias intentionally does not pass `gh codespace create --default-permissions`.
+If the devcontainer asks for access to related private repositories, keep the
+interactive permissions prompt enabled and approve the extra access. Skipping
+that prompt creates a Codespace token scoped only to `github/github`, which can
+make repos such as `github/github-ui` appear as 404/403 from inside the
+Codespace.
+
 ## Manual deploy
 
 ```bash

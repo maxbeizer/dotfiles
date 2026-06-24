@@ -8,7 +8,25 @@ Notable changes to this dotfiles repo, newest first.
 - Branch-only Starship config for `~/code/github/github` to avoid slow Git
   status and diff checks when opening new shells in the huge repository.
 
+### Removed
+- Tri-State Relay Service/`relay` integration was removed from the local
+  machine and dotfiles; Copilot attention alerts are tmux-only again.
+
 ### Fixed
+- `gh new-cs` no longer suppresses Codespaces permission prompts, allowing the
+  `github/github` devcontainer to request access to related private repos such
+  as `github/github-ui`.
+- Copilot tmux attention alerts now write local session markers in addition to
+  ringing tmux, so `sesh-picker` can keep surfacing sessions needing attention
+  even when tmux's transient bell flag is missed or cleared. Alerts run on
+  `agentStop`, `subagentStop`, and `errorOccurred`, and clear automatically when
+  the marked session/window becomes visible. `sesh-picker` suppresses bells for
+  sessions attached to active tmux clients.
+- Copilot attention hooks now fall back to ringing `/dev/tty` when no local tmux
+  pane can be resolved, improving alerts from Copilot CLI sessions running
+  inside Codespaces or other SSH-backed panes.
+- The active tmux window format now shows Copilot attention/bell indicators, so
+  alerts are visible even when the affected window is currently selected.
 - Zsh startup now repairs stale inherited Homebrew `FPATH` entries after zsh
   upgrades, preventing missing `colors`, `add-zsh-hook`, and `is-at-least`
   function errors in new shells.

@@ -86,9 +86,14 @@ Custom cable channels in `television/cable/` provide fuzzy pickers with previews
 ## Copilot CLI hooks (tmux bells)
 
 Global hooks live in `copilot/hooks/` and are linked to `~/.copilot/hooks/` by
-`install.sh`. These send a tmux terminal bell when
-the Copilot CLI agent needs user input (`ask_user` via `preToolUse`) or a session
-ends (`sessionEnd`), so `bin/sesh-picker` can float sessions needing attention.
+`install.sh`. These send a tmux terminal bell and write a local attention marker
+when the Copilot CLI agent needs user input (`ask_user`) or a session ends
+(`sessionEnd`), so `bin/sesh-picker` can float sessions needing attention even
+if tmux's transient bell flag is missed or cleared. If no local tmux pane can be
+resolved (for example inside an SSH-backed Codespace), the hook falls back to
+ringing `/dev/tty`. Attention clears
+automatically when the marked session/window becomes visible, and `sesh-picker`
+suppresses bells for sessions attached to active tmux clients.
 
 ## Theme switching
 ```bash
@@ -119,6 +124,8 @@ CODESPACES=true ./install.sh
 |------|---------|
 | `install.sh` | Idempotent installer (local + codespace) |
 | `bin/bootstrap-machine` | Fresh machine setup |
+| `bin/copilot-clear-attention` | Clears Copilot tmux attention markers when sessions/windows become visible |
+| `bin/gh-new-cs` | Creates/connects a github/github Codespace and deploys gh-test |
 | `bin/sesh-picker` | Session picker with 🔔 bell indicators |
 | `bin/theme` | Theme switcher (solarized ↔ mocha) |
 | `zshrc` | Shell config (prompt, PATH, tools) |

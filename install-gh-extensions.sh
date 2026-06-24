@@ -45,3 +45,9 @@ for ext in "${extensions[@]}"; do
 done
 
 fancy_echo "gh CLI extensions installed ✓"
+
+fancy_echo "Installing gh CLI aliases..."
+
+gh alias set --clobber new-cs '!"$HOME/.local/bin/gh-new-cs" "$1"'
+
+fancy_echo "gh CLI aliases installed ✓"

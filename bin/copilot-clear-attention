@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+session="${1:-}"
+window="${2:-}"
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/copilot-attention"
+
+safe_name() {
+  printf '%s' "$1" | LC_ALL=C tr -c 'A-Za-z0-9._-' '_'
+}
+
+if [ -n "$session" ]; then
+  rm -f "$state_dir/$(safe_name "$session")"
+fi
+
+if [ -n "$window" ]; then
+  tmux set-window-option -t "$window" -qu @copilot_attention 2>/dev/null || true
+fi

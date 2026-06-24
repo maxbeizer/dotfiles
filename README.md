@@ -9,6 +9,7 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 ├── install.sh                # Idempotent installer (local + codespaces)
 ├── bin/
 │   ├── bootstrap-machine     # One-command fresh machine setup
+│   ├── copilot-clear-attention # Clear Copilot tmux attention markers
 │   ├── sesh-picker           # Session picker with 🔔 bell indicators
 │   ├── theme                 # Switch between solarized dark ↔ catppuccin mocha
 │   ├── codespaces-vim-lab    # Codespaces helper for Vim/Neovim testing
@@ -52,6 +53,10 @@ git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles
 ```
 
 `bootstrap-machine` clones the repo (if needed), runs `install.sh`, and verifies the shell starts cleanly. Supports `--dry-run` and `--skip-verify`.
+
+`install-gh-extensions.sh` also installs repo-backed `gh` aliases, including
+`gh new-cs [display-name]` for creating a `github/github` Codespace, connecting
+with `rdm-connect`, and deploying `gh-test`.
 
 ## Codespaces
 
@@ -114,7 +119,13 @@ prefix Ctrl-r           # Restore sessions after reboot
 | Type to filter | Fuzzy search across all sessions |
 
 Sessions with a 🔔 (bell/notification) are sorted to the top — useful for spotting
-when Copilot CLI or a background process needs attention.
+when Copilot CLI or a background process needs attention. Copilot hooks also
+write local attention markers under `~/.local/state/copilot-attention/`, so
+sessions stay surfaced even if tmux's transient bell flag is missed or cleared.
+When Copilot runs inside an SSH-backed Codespace where the local tmux pane cannot
+be resolved, the hook falls back to ringing the attached terminal directly.
+Attention clears automatically when the marked session/window becomes visible,
+and `sesh-picker` suppresses bells for sessions attached to active tmux clients.
 
 ### sesh configuration
 
@@ -205,6 +216,7 @@ Prefix is `Ctrl-a`.
 | `lg` | `lazygit` |
 | `ghpr` | `gh pr create --fill` |
 | `ghpv` | `gh pr view --web` |
+| `gh new-cs [display-name]` | Create/connect a `github/github` Codespace and deploy `gh-test` |
 | `speedtest` | `networkQuality` |
 
 ## Git aliases

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# sesh-picker: Session picker with bell indicators (bell-only, not activity)
+# sesh-picker: Session picker with attention indicators
 #
 # Wraps sesh's built-in picker with bell-awareness: sessions with pending
-# tmux bells (e.g. Copilot CLI finished) are sorted to the top with 🔔.
+# tmux bells or Copilot attention markers are sorted to the top with 🔔.
 #
 # Usage: sesh-picker [--list]
 #   --list  Print session list and exit (used by fzf reload)
@@ -11,14 +11,73 @@
 export PATH="/opt/homebrew/bin:$PATH"
 
 SELF="$(realpath "$0")"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/copilot-attention"
+
+attention_marker() {
+  local session="$1"
+  [ -n "$session" ] || return 0
+
+  local safe_session
+  safe_session=$(printf '%s' "$session" | LC_ALL=C tr -c 'A-Za-z0-9._-' '_')
+  printf '%s/%s\n' "$STATE_DIR" "$safe_session"
+}
+
+has_attention_marker() {
+  local session="$1" marker
+  marker=$(attention_marker "$session")
+  [ -n "$marker" ] && [ -f "$marker" ]
+}
+
+has_tmux_attention() {
+  local session="$1"
+  tmux list-windows -t "$session" -F '#{@copilot_attention}' 2>/dev/null | grep -c 1
+}
+
+is_visible_session() {
+  local session="$1" visible_session
+  [ -n "$session" ] || return 1
+
+  while IFS= read -r visible_session; do
+    [ "$visible_session" = "$session" ] && return 0
+  done < <(tmux list-clients -F '#{session_name}' 2>/dev/null)
+
+  return 1
+}
+
+clear_attention_marker() {
+  local session="$1" marker
+  marker=$(attention_marker "$session")
+  [ -n "$marker" ] && rm -f "$marker"
+
+  while IFS= read -r window_id; do
+    [ -n "$window_id" ] && tmux set-window-option -t "$window_id" -qu @copilot_attention
+  done < <(tmux list-windows -t "$session" -F '#{window_id}' 2>/dev/null)
+}
+
+clear_visible_attention() {
+  local session window
+  while IFS=$'\t' read -r session window; do
+    [ -n "$session" ] || continue
+    clear_attention_marker "$session"
+    [ -n "$window" ] && tmux set-window-option -t "$window" -qu @copilot_attention 2>/dev/null || true
+  done < <(tmux list-clients -F '#{session_name}	#{window_id}' 2>/dev/null)
+}
 
 list_sessions() {
+  clear_visible_attention
+
   # Bell sessions first, then other tmux sessions (most recently visited first)
   local bell_sessions=() other_sessions=()
   while IFS=$'\t' read -r _ts session; do
     [ -n "$session" ] || continue
+    if is_visible_session "$session"; then
+      other_sessions+=("$session")
+      continue
+    fi
+
     has_bell=$(tmux list-windows -t "$session" -F '#{window_bell_flag}' 2>/dev/null | grep -c 1)
-    if [ "$has_bell" -gt 0 ]; then
+    has_attention=$(has_tmux_attention "$session")
+    if [ "$has_bell" -gt 0 ] || [ "$has_attention" -gt 0 ] || has_attention_marker "$session"; then
       bell_sessions+=("🔔 $session")
     else
       other_sessions+=("$session")
@@ -38,6 +97,8 @@ strip_bell() {
   sed 's/^🔔 //'
 }
 
+# fzf expands {} inside these single-quoted command templates.
+# shellcheck disable=SC2016
 pick=$(list_sessions | fzf --reverse --ansi \
   --preview 'sesh preview "$(echo {} | sed "s/^🔔 //")"' \
   --header 'enter=connect  ctrl-d=kill  ctrl-g=clone' \
@@ -49,5 +110,7 @@ if [ "$pick" = "__CLONE__" ]; then
   url=$(echo "" | fzf --reverse --print-query --prompt="repo url> " --header "paste a git URL to clone" | head -1)
   [ -n "$url" ] && sesh clone "$url"
 elif [ -n "$pick" ]; then
-  sesh connect "$(echo "$pick" | strip_bell)"
+  session=$(echo "$pick" | strip_bell)
+  clear_attention_marker "$session"
+  sesh connect "$session"
 fi
