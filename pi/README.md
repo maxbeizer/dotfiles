@@ -37,6 +37,7 @@ Linked to: `~/.pi/agent/extensions/`
 
 | Extension | Commands | Purpose |
 |-----------|----------|---------|
+| `clean-footer.ts` | `/clean-footer`, `/clean-footer on`, `/clean-footer off`, `/clean-footer status` | Replaces the default cwd/token-heavy footer with a compact model/thinking/status line. |
 | `repo-status.ts` | `/repo-status` | Shows current git branch and dirty-file count in the footer/status area. |
 | `safety.ts` | `/allow-repo`, `/allow-repo list`, `/allow-repo clear` | Confirms dangerous commands and sensitive edits; supports session-scoped mutation allowlists. |
 | `vault-vibes.ts` | `/vibe`, `/vibe vault`, `/vibe quiet`, `/vibe default` | Catppuccin-friendly working indicator and message. |

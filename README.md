@@ -89,6 +89,7 @@ Ghostty auto-reloads; tmux and nvim update live.
 
 Global Pi customizations live in `pi/` and are linked by `install.sh` via `pi/install.sh`:
 
+- `pi/extensions/clean-footer.ts` — replaces the default footer with a compact model/thinking/status line
 - `pi/extensions/repo-status.ts` — footer status with git branch and dirty count
 - `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits; adds `/allow-repo` for session-scoped mutation allowlists
 - `pi/extensions/vault-vibes.ts` — Catppuccin-friendly working indicator/message
@@ -102,6 +103,7 @@ The installer links these into `~/.pi/agent/` and links shared Agent Skills from
 Useful global extension commands:
 
 ```text
+/clean-footer [on|off|status]
 /repo-status              # refresh git branch/dirty status
 /vibe [vault|quiet|default]
 /prompt-hint [list|clear] # show/list/clear global prompt reminders

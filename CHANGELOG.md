@@ -5,6 +5,8 @@ Notable changes to this dotfiles repo, newest first.
 ## Unreleased
 
 ### Added
+- Pi clean footer extension that replaces the default cwd/token-heavy footer
+  with a compact model/thinking/status line.
 - Pi coding agent global customizations under `pi/`, including Catppuccin Mocha
   theme, repo status footer, vault vibes working indicator, safety guard, and
   `pi/install.sh` bootstrap wiring.
