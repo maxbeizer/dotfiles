@@ -92,6 +92,7 @@ Global Pi customizations live in `pi/` and are linked by `install.sh` via `pi/in
 - `pi/extensions/repo-status.ts` — footer status with git branch and dirty count
 - `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits; adds `/allow-repo` for session-scoped mutation allowlists
 - `pi/extensions/vault-vibes.ts` — Catppuccin-friendly working indicator/message
+- `pi/extensions/prompt-hint.ts` — startup widget that reminds you of a random global prompt template
 - `pi/prompts/*.md` — global prompt templates for reviews, commits, PR bodies, repo explanation, and tests
 - `pi/themes/catppuccin-mocha.json` — Catppuccin Mocha TUI theme
 
@@ -103,6 +104,7 @@ Useful global extension commands:
 ```text
 /repo-status              # refresh git branch/dirty status
 /vibe [vault|quiet|default]
+/prompt-hint [list|clear] # show/list/clear global prompt reminders
 /allow-repo [path]        # allow edits/writes under a repo/path for this Pi session
 /allow-repo list
 /allow-repo clear
