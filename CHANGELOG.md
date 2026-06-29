@@ -13,7 +13,9 @@ Notable changes to this dotfiles repo, newest first.
 - Global Pi prompt templates for reviewing changes, committing changes,
   drafting PR bodies, explaining repos, finding tests, and running tests.
 - Pi prompt hint extension that shows a random global prompt-template reminder
-  at session startup and adds `/prompt-hint`.
+  at session startup and adds `/prompt-hint` and `/prompts`.
+- `pi/README.md` and `pi/doctor.sh` for documenting and verifying global Pi
+  customizations.
 - Branch-only Starship config for `~/code/github/github` to avoid slow Git
   status and diff checks when opening new shells in the huge repository.
 

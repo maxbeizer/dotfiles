@@ -105,6 +105,7 @@ Useful global extension commands:
 /repo-status              # refresh git branch/dirty status
 /vibe [vault|quiet|default]
 /prompt-hint [list|clear] # show/list/clear global prompt reminders
+/prompts                  # pick a global prompt template and prefill the editor
 /allow-repo [path]        # allow edits/writes under a repo/path for this Pi session
 /allow-repo list
 /allow-repo clear
@@ -121,11 +122,19 @@ Useful global prompt templates:
 /run-tests [focus-or-command]
 ```
 
+Check global Pi setup:
+
+```bash
+~/dotfiles/pi/doctor.sh
+```
+
 Reload open Pi sessions after changes:
 
 ```text
 /reload
 ```
+
+See `pi/README.md` for the canonical Pi customization guide.
 
 ## Prompt performance
 

@@ -63,6 +63,22 @@ function clearTip(ctx: ExtensionContext) {
   ctx.ui.setWidget("prompt-hint", undefined);
 }
 
+async function pickPrompt(ctx: ExtensionContext) {
+  const selected = await ctx.ui.select(
+    "Global prompt templates",
+    promptTips.map((tip) => `${tip.command} — ${tip.description}`),
+  );
+
+  if (!selected) return;
+
+  const command = selected.split(" — ")[0];
+  const tip = promptTips.find((candidate) => candidate.command === command);
+  if (tip) {
+    renderTip(ctx, tip);
+    ctx.ui.setEditorText(tip.example ?? tip.command);
+  }
+}
+
 export default function promptHintExtension(pi: ExtensionAPI) {
   pi.on("session_start", async (_event, ctx) => {
     if (!ctx.hasUI) return;
@@ -88,19 +104,7 @@ export default function promptHintExtension(pi: ExtensionAPI) {
       }
 
       if (requested === "list") {
-        const selected = await ctx.ui.select(
-          "Global prompt templates",
-          promptTips.map((tip) => `${tip.command} — ${tip.description}`),
-        );
-
-        if (!selected) return;
-
-        const command = selected.split(" — ")[0];
-        const tip = promptTips.find((candidate) => candidate.command === command);
-        if (tip) {
-          renderTip(ctx, tip);
-          ctx.ui.setEditorText(tip.example ?? tip.command);
-        }
+        await pickPrompt(ctx);
         return;
       }
 
@@ -118,6 +122,14 @@ export default function promptHintExtension(pi: ExtensionAPI) {
       }
 
       renderTip(ctx, randomTip());
+    },
+  });
+
+  pi.registerCommand("prompts", {
+    description: "Pick a global Pi prompt template and prefill the editor",
+    handler: async (_args, ctx) => {
+      if (!ctx.hasUI) return;
+      await pickPrompt(ctx);
     },
   });
 }
