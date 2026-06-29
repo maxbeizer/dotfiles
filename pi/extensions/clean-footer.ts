@@ -1,6 +1,11 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
+const RESET = "\x1b[0m";
+const GREEN = "\x1b[38;2;166;227;161m";
+const RED = "\x1b[38;2;243;139;168m";
+const YELLOW = "\x1b[38;2;249;226;175m";
+
 function shortModelName(modelId: string | undefined): string {
   if (!modelId) return "no model";
 
@@ -12,27 +17,36 @@ function shortModelName(modelId: string | undefined): string {
     .replace(/-\d{4}-\d{2}-\d{2}$/, "");
 }
 
-function compactStatusKey(key: string): string {
-  switch (key) {
-    case "repo-status":
-      return "";
-    case "vault-vibes":
-      return "";
-    case "safety":
-      return "safe";
-    default:
-      return key;
-  }
+function stripAnsi(text: string): string {
+  return text.replace(/\x1b\[[0-9;]*m/g, "");
 }
 
-function visibleStatuses(statuses: ReadonlyMap<string, string>): string[] {
-  return [...statuses.entries()]
-    .filter(([key]) => key !== "working-indicator")
-    .map(([key, value]) => {
-      const label = compactStatusKey(key);
-      return label ? `${label} ${value}` : value;
-    })
-    .filter(Boolean);
+function parseRepoStatus(statuses: ReadonlyMap<string, string>): string | undefined {
+  const raw = statuses.get("repo-status");
+  if (!raw) return undefined;
+
+  // repo-status emits strings like: "git main clean" or "git main +2?1".
+  const clean = stripAnsi(raw).trim();
+  const match = clean.match(/^git\s+(\S+)(?:\s+(.+))?$/);
+  if (!match) return clean;
+
+  const branch = match[1] ?? "";
+  const state = match[2]?.trim() ?? "";
+  if (!state || state === "clean") return `${GREEN}${branch}${RESET}`;
+
+  return `${GREEN}${branch}${RESET} ${RED}${state}${RESET}`;
+}
+
+function parseSafetyStatus(statuses: ReadonlyMap<string, string>): string | undefined {
+  const raw = statuses.get("safety");
+  if (!raw) return undefined;
+
+  const clean = stripAnsi(raw).trim();
+  return `${YELLOW}${clean}${RESET}`;
+}
+
+function currentTime(): string {
+  return new Date().toLocaleTimeString("en-US", { hour12: false });
 }
 
 export default function cleanFooterExtension(pi: ExtensionAPI) {
@@ -53,13 +67,16 @@ export default function cleanFooterExtension(pi: ExtensionAPI) {
         dispose: unsub,
         invalidate() {},
         render(width: number): string[] {
+          const statuses = footerData.getExtensionStatuses();
           const piMark = theme.fg("accent", "π");
           const model = theme.fg("text", shortModelName(ctx.model?.id));
-          const thinking = theme.fg("dim", `think:${pi.getThinkingLevel()}`);
-          const left = `${piMark} ${model} ${theme.fg("dim", "·")} ${thinking}`;
+          const thinking = theme.fg("dim", pi.getThinkingLevel());
+          const left = `${piMark} ${model} ${thinking}`;
 
-          const statusText = visibleStatuses(footerData.getExtensionStatuses()).join(theme.fg("dim", " · "));
-          const right = statusText ? theme.fg("dim", statusText) : theme.fg("dim", "ready");
+          const rightParts = [parseRepoStatus(statuses), parseSafetyStatus(statuses), theme.fg("dim", currentTime())].filter(
+            Boolean,
+          ) as string[];
+          const right = rightParts.join(theme.fg("dim", " "));
 
           const gap = Math.max(1, width - visibleWidth(left) - visibleWidth(right));
           return [truncateToWidth(left + " ".repeat(gap) + right, width)];
