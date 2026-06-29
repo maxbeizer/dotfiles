@@ -29,7 +29,7 @@ Useful flags:
 - Links sesh config to `~/.config/sesh/`
 - Links television cable channels to `~/.config/television/cable/`
 - Links Pi global customizations with `pi/install.sh` into `~/.pi/agent/`
-  and `~/.agents/skills`
+  and `~/.agents/skills`, including extensions, prompt templates, and themes
 - In codespaces: wires up bash with Starship, zoxide, fzf, aliases, and a
   package-manager `tree-sitter` CLI for Neovim parser builds
 

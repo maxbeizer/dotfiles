@@ -61,6 +61,7 @@ link_exact() {
 
 fancy_echo "Creating Pi config directories"
 ensure_dir "$GLOBAL_PI_DIR/extensions"
+ensure_dir "$GLOBAL_PI_DIR/prompts"
 ensure_dir "$GLOBAL_PI_DIR/themes"
 ensure_dir "$HOME/.agents"
 
@@ -69,6 +70,14 @@ if [ -d "$PI_DIR/extensions" ]; then
   for extension in "$PI_DIR/extensions"/*.ts; do
     [ -f "$extension" ] || continue
     link_exact "$extension" "$GLOBAL_PI_DIR/extensions/$(basename "$extension")"
+  done
+fi
+
+if [ -d "$PI_DIR/prompts" ]; then
+  fancy_echo "Linking global Pi prompt templates"
+  for prompt in "$PI_DIR/prompts"/*.md; do
+    [ -f "$prompt" ] || continue
+    link_exact "$prompt" "$GLOBAL_PI_DIR/prompts/$(basename "$prompt")"
   done
 fi
 

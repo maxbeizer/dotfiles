@@ -10,6 +10,8 @@ Notable changes to this dotfiles repo, newest first.
   `pi/install.sh` bootstrap wiring.
 - Pi safety guard now supports `/allow-repo [path]` for session-scoped file
   mutation allowlists, with `/allow-repo list` and `/allow-repo clear`.
+- Global Pi prompt templates for reviewing changes, committing changes,
+  drafting PR bodies, explaining repos, finding tests, and running tests.
 - Branch-only Starship config for `~/code/github/github` to avoid slow Git
   status and diff checks when opening new shells in the huge repository.
 

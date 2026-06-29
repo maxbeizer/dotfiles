@@ -92,12 +92,13 @@ Global Pi customizations live in `pi/` and are linked by `install.sh` via `pi/in
 - `pi/extensions/repo-status.ts` — footer status with git branch and dirty count
 - `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits; adds `/allow-repo` for session-scoped mutation allowlists
 - `pi/extensions/vault-vibes.ts` — Catppuccin-friendly working indicator/message
+- `pi/prompts/*.md` — global prompt templates for reviews, commits, PR bodies, repo explanation, and tests
 - `pi/themes/catppuccin-mocha.json` — Catppuccin Mocha TUI theme
 
 The installer links these into `~/.pi/agent/` and links shared Agent Skills from
 `copilot/skills/` into `~/.agents/skills`.
 
-Useful global commands:
+Useful global extension commands:
 
 ```text
 /repo-status              # refresh git branch/dirty status
@@ -105,6 +106,17 @@ Useful global commands:
 /allow-repo [path]        # allow edits/writes under a repo/path for this Pi session
 /allow-repo list
 /allow-repo clear
+```
+
+Useful global prompt templates:
+
+```text
+/review-changes [focus]
+/commit-changes [commit-message-or-focus]
+/pr-body [base-branch]
+/explain-repo [focus]
+/find-tests [focus-or-path]
+/run-tests [focus-or-command]
 ```
 
 Reload open Pi sessions after changes:
