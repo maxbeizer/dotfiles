@@ -8,6 +8,8 @@ Notable changes to this dotfiles repo, newest first.
 - Pi coding agent global customizations under `pi/`, including Catppuccin Mocha
   theme, repo status footer, vault vibes working indicator, safety guard, and
   `pi/install.sh` bootstrap wiring.
+- Pi safety guard now supports `/allow-repo [path]` for session-scoped file
+  mutation allowlists, with `/allow-repo list` and `/allow-repo clear`.
 - Branch-only Starship config for `~/code/github/github` to avoid slow Git
   status and diff checks when opening new shells in the huge repository.
 

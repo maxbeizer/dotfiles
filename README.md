@@ -90,12 +90,22 @@ Ghostty auto-reloads; tmux and nvim update live.
 Global Pi customizations live in `pi/` and are linked by `install.sh` via `pi/install.sh`:
 
 - `pi/extensions/repo-status.ts` — footer status with git branch and dirty count
-- `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits
+- `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits; adds `/allow-repo` for session-scoped mutation allowlists
 - `pi/extensions/vault-vibes.ts` — Catppuccin-friendly working indicator/message
 - `pi/themes/catppuccin-mocha.json` — Catppuccin Mocha TUI theme
 
 The installer links these into `~/.pi/agent/` and links shared Agent Skills from
 `copilot/skills/` into `~/.agents/skills`.
+
+Useful global commands:
+
+```text
+/repo-status              # refresh git branch/dirty status
+/vibe [vault|quiet|default]
+/allow-repo [path]        # allow edits/writes under a repo/path for this Pi session
+/allow-repo list
+/allow-repo clear
+```
 
 Reload open Pi sessions after changes:
 

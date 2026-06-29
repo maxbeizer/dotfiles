@@ -1,5 +1,6 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { relative, resolve } from "node:path";
+import { existsSync, realpathSync } from "node:fs";
 
 const blockedPathPrefixes = [".git/", "node_modules/"];
 const blockedExactPaths = [".env", "collections/.env", "collections/.env.example", "collections/.env.token"];
@@ -17,14 +18,36 @@ const dangerousBashPatterns = [
   /\b(chmod|chown)\b[^\n;|&]*\b777\b/i,
 ];
 
+function expandHome(path: string): string {
+  if (path === "~") return process.env.HOME ?? path;
+  if (path.startsWith("~/")) return `${process.env.HOME ?? "~"}${path.slice(1)}`;
+  return path;
+}
+
+function canonicalPath(path: string): string {
+  const expanded = expandHome(path);
+  const absolute = resolve(expanded);
+  return existsSync(absolute) ? realpathSync(absolute) : absolute;
+}
+
 function normalizeRepoPath(cwd: string, rawPath: unknown): string | undefined {
   if (typeof rawPath !== "string" || rawPath.length === 0) return undefined;
 
-  const withoutAt = rawPath.startsWith("@") ? rawPath.slice(1) : rawPath;
-  const absolutePath = resolve(cwd, withoutAt);
-  const repoRelative = relative(cwd, absolutePath).replaceAll("\\", "/");
+  const absolutePath = normalizeAbsolutePath(cwd, rawPath);
+  if (!absolutePath) return undefined;
 
+  const repoRelative = relative(cwd, absolutePath).replaceAll("\\", "/");
   return repoRelative === "" ? "." : repoRelative;
+}
+
+function normalizeAbsolutePath(cwd: string, rawPath: unknown): string | undefined {
+  if (typeof rawPath !== "string" || rawPath.length === 0) return undefined;
+
+  const withoutAt = rawPath.startsWith("@") ? rawPath.slice(1) : rawPath;
+  const expanded = expandHome(withoutAt);
+  const absolutePath = resolve(cwd, expanded);
+
+  return existsSync(absolutePath) ? realpathSync(absolutePath) : absolutePath;
 }
 
 function pathIsOutsideRepo(repoPath: string): boolean {
@@ -39,22 +62,75 @@ function pathIsSensitive(repoPath: string): boolean {
   return sensitivePathPrefixes.some((prefix) => repoPath.startsWith(prefix));
 }
 
+function pathIsWithinRoot(path: string, root: string): boolean {
+  const rel = relative(root, path).replaceAll("\\", "/");
+  return rel === "" || (!rel.startsWith("../") && rel !== "..");
+}
+
+function formatAllowedRoots(roots: Set<string>): string {
+  if (roots.size === 0) return "No session mutation allowlist entries.";
+  return [...roots].sort().map((root) => `- ${root}`).join("\n");
+}
+
 async function confirmSensitive(ctx: any, title: string, message: string): Promise<boolean> {
   if (!ctx.hasUI) return false;
   return await ctx.ui.confirm(title, message);
 }
 
 export default function safetyExtension(pi: ExtensionAPI) {
+  const allowedMutationRoots = new Set<string>();
+
+  function isAllowedMutationPath(path: string): boolean {
+    return [...allowedMutationRoots].some((root) => pathIsWithinRoot(path, root));
+  }
+
+  pi.registerCommand("allow-repo", {
+    description: "Session-allow file mutations under a repo/path; usage: /allow-repo [path|clear|list]",
+    getArgumentCompletions: (prefix) => {
+      const candidates = [".", "~/dotfiles", "clear", "list"];
+      const filtered = candidates.filter((candidate) => candidate.startsWith(prefix));
+      return filtered.length > 0 ? filtered.map((value) => ({ value, label: value })) : null;
+    },
+    handler: async (args, ctx) => {
+      const requested = args.trim();
+
+      if (requested === "clear") {
+        allowedMutationRoots.clear();
+        ctx.ui.notify("Cleared session mutation allowlist", "info");
+        ctx.ui.setStatus("safety", undefined);
+        return;
+      }
+
+      if (requested === "list") {
+        ctx.ui.notify(formatAllowedRoots(allowedMutationRoots), "info");
+        return;
+      }
+
+      const target = requested || ".";
+      const rootResult = await pi.exec("git", ["-C", expandHome(target), "rev-parse", "--show-toplevel"], {
+        timeout: 2000,
+      });
+
+      const root = rootResult.code === 0 ? canonicalPath(rootResult.stdout.trim()) : canonicalPath(resolve(ctx.cwd, expandHome(target)));
+      allowedMutationRoots.add(root);
+
+      ctx.ui.setStatus("safety", ctx.ui.theme.fg("warning", `allowed: ${allowedMutationRoots.size}`));
+      ctx.ui.notify(`Allowed file mutations under this path for this session:\n${root}`, "warning");
+    },
+  });
+
   pi.on("tool_call", async (event, ctx) => {
     if (event.toolName === "write" || event.toolName === "edit") {
-      const repoPath = normalizeRepoPath(ctx.cwd, (event.input as { path?: unknown }).path);
-      if (!repoPath) return undefined;
+      const rawPath = (event.input as { path?: unknown }).path;
+      const absolutePath = normalizeAbsolutePath(ctx.cwd, rawPath);
+      const repoPath = normalizeRepoPath(ctx.cwd, rawPath);
+      if (!repoPath || !absolutePath) return undefined;
 
-      if (pathIsOutsideRepo(repoPath)) {
+      if (pathIsOutsideRepo(repoPath) && !isAllowedMutationPath(absolutePath)) {
         const ok = await confirmSensitive(
           ctx,
           "External file mutation",
-          `The ${event.toolName} tool wants to modify a file outside this repo:\n\n${repoPath}\n\nAllow?`,
+          `The ${event.toolName} tool wants to modify a file outside this repo:\n\n${absolutePath}\n\nAllow once?\n\nTip: use /allow-repo <path> to allow a repo/path for this session.`,
         );
         if (!ok) return { block: true, reason: "Blocked external file mutation" };
       }
@@ -63,11 +139,11 @@ export default function safetyExtension(pi: ExtensionAPI) {
         return { block: true, reason: `Blocked mutation of protected path: ${repoPath}` };
       }
 
-      if (pathIsSensitive(repoPath)) {
+      if (pathIsSensitive(repoPath) && !isAllowedMutationPath(absolutePath)) {
         const ok = await confirmSensitive(
           ctx,
           "Sensitive file mutation",
-          `The ${event.toolName} tool wants to modify sensitive people/performance-adjacent content:\n\n${repoPath}\n\nAllow?`,
+          `The ${event.toolName} tool wants to modify sensitive people/performance-adjacent content:\n\n${repoPath}\n\nAllow once?`,
         );
         if (!ok) return { block: true, reason: `Blocked sensitive file mutation: ${repoPath}` };
       }
