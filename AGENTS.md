@@ -28,6 +28,8 @@ Useful flags:
 - Links Ghostty config to `~/.config/ghostty/`
 - Links sesh config to `~/.config/sesh/`
 - Links television cable channels to `~/.config/television/cable/`
+- Links Pi global customizations with `pi/install.sh` into `~/.pi/agent/`
+  and `~/.agents/skills`
 - In codespaces: wires up bash with Starship, zoxide, fzf, aliases, and a
   package-manager `tree-sitter` CLI for Neovim parser builds
 
@@ -138,5 +140,6 @@ CODESPACES=true ./install.sh
 | `television/cable/` | Television custom cable channels |
 | `codespaces.local` | Bash extras for codespaces + `dotup` |
 | `copilot/hooks/` | Copilot CLI hooks (symlinked to `~/.copilot/hooks/`) |
-| `copilot/skills/` | Copilot CLI skills (symlinked to `~/.copilot/skills/`) |
+| `copilot/skills/` | Copilot CLI skills (symlinked to `~/.copilot/skills/` and `~/.agents/skills`) |
+| `pi/` | Pi coding agent global extensions, themes, and installer |
 | `CHANGELOG.md` | Document notable changes here |

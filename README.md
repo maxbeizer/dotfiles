@@ -40,7 +40,8 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 ├── codespaces.local          # Codespace-specific bash setup + dotup function
 ├── copilot/
 │   ├── hooks/                # Copilot CLI hooks (symlinked to ~/.copilot/hooks/)
-│   └── skills/               # Copilot CLI skills (symlinked to ~/.copilot/skills/)
+│   └── skills/               # Agent skills (symlinked to ~/.copilot/skills/ and ~/.agents/skills)
+├── pi/                       # Pi coding agent global extensions, themes, installer
 └── install-gh-extensions.sh  # gh CLI extensions (idempotent)
 ```
 
@@ -83,6 +84,24 @@ theme              # show current
 ```
 
 Ghostty auto-reloads; tmux and nvim update live.
+
+## Pi coding agent
+
+Global Pi customizations live in `pi/` and are linked by `install.sh` via `pi/install.sh`:
+
+- `pi/extensions/repo-status.ts` — footer status with git branch and dirty count
+- `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits
+- `pi/extensions/vault-vibes.ts` — Catppuccin-friendly working indicator/message
+- `pi/themes/catppuccin-mocha.json` — Catppuccin Mocha TUI theme
+
+The installer links these into `~/.pi/agent/` and links shared Agent Skills from
+`copilot/skills/` into `~/.agents/skills`.
+
+Reload open Pi sessions after changes:
+
+```text
+/reload
+```
 
 ## Prompt performance
 

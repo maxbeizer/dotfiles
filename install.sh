@@ -203,6 +203,16 @@ if [ -d "$DOTFILES_DIR/copilot/hooks" ]; then
   done
 fi
 
+# --- Pi coding agent customizations ---
+if [ -x "$DOTFILES_DIR/pi/install.sh" ]; then
+  fancy_echo "Linking Pi customizations"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    "$DOTFILES_DIR/pi/install.sh" --dry-run
+  else
+    "$DOTFILES_DIR/pi/install.sh"
+  fi
+fi
+
 # --- Codespace-specific extras ---
 if [ "${CODESPACES:-}" = "true" ]; then
   fancy_echo "Codespace extras"
