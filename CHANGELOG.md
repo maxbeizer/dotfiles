@@ -15,6 +15,8 @@ Notable changes to this dotfiles repo, newest first.
 ### Fixed
 - tmux now forwards extended keys using CSI-u format, matching Pi's recommended
   modified-key behavior while preserving Copilot CLI multiline bindings.
+- Removed the tmux `S-Enter` shim so Pi can receive native Shift+Enter key
+  events; Copilot CLI multiline input still works through CSI-u.
 - `gh new-cs` no longer suppresses Codespaces permission prompts, allowing the
   `github/github` devcontainer to request access to related private repos such
   as `github/github-ui`.
