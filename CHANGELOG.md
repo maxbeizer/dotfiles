@@ -13,6 +13,8 @@ Notable changes to this dotfiles repo, newest first.
   machine and dotfiles; Copilot attention alerts are tmux-only again.
 
 ### Fixed
+- tmux now forwards extended keys using CSI-u format, matching Pi's recommended
+  modified-key behavior while preserving Copilot CLI multiline bindings.
 - `gh new-cs` no longer suppresses Codespaces permission prompts, allowing the
   `github/github` devcontainer to request access to related private repos such
   as `github/github-ui`.
