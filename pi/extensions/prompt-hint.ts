@@ -23,6 +23,11 @@ const promptTips: PromptTip[] = [
     example: "/pr-body main",
   },
   {
+    command: "/copilot-review",
+    description: "Fetch and fix GitHub Copilot PR review suggestions.",
+    example: "/copilot-review 123",
+  },
+  {
     command: "/explain-repo",
     description: "Explain the current repository structure, commands, and workflows.",
     example: "/explain-repo testing workflow",
@@ -43,17 +48,15 @@ function randomTip(): PromptTip {
   return promptTips[Math.floor(Math.random() * promptTips.length)] ?? promptTips[0]!;
 }
 
+function startupSeconds(): string {
+  return process.uptime() < 10 ? process.uptime().toFixed(1) : Math.round(process.uptime()).toString();
+}
+
 function renderTip(ctx: ExtensionContext, tip: PromptTip) {
   const theme = ctx.ui.theme;
-  const command = theme.fg("accent", tip.command);
-  const title = theme.fg("muted", "╭─ ✦ prompt idea");
-  const body = `${theme.fg("muted", "│")} ${command}${theme.fg("dim", " — ")}${theme.fg("text", tip.description)}`;
-  const example = tip.example
-    ? `${theme.fg("muted", "│")} ${theme.fg("dim", "try ")}${theme.fg("text", tip.example)}`
-    : undefined;
-  const footer = `${theme.fg("muted", "╰─")} ${theme.fg("dim", "/prompts to browse · /prompt-hint for another · /prompt-hint clear")}`;
+  const tryLine = `${theme.fg("dim", "try ")}${theme.fg("accent", tip.command)}${theme.fg("dim", ` · startup ${startupSeconds()}s · /prompts browse · /prompt-hint clear`)}`;
 
-  ctx.ui.setWidget("prompt-hint", [title, body, example, footer].filter(Boolean) as string[], { placement: "aboveEditor" });
+  ctx.ui.setWidget("prompt-hint", [tryLine], { placement: "aboveEditor" });
 }
 
 function clearTip(ctx: ExtensionContext) {
@@ -109,7 +112,7 @@ export default function promptHintExtension(pi: ExtensionAPI) {
         const normalized = requested.startsWith("/") ? requested : `/${requested}`;
         const tip = promptTips.find((candidate) => candidate.command === normalized);
         if (!tip) {
-          ctx.ui.notify("Usage: /prompt-hint [list|clear|review-changes|commit-changes|pr-body|explain-repo|find-tests|run-tests]", "error");
+          ctx.ui.notify("Usage: /prompt-hint [list|clear|review-changes|commit-changes|pr-body|copilot-review|explain-repo|find-tests|run-tests]", "error");
           return;
         }
 

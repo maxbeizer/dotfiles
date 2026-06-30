@@ -34,7 +34,7 @@ Notable changes to this dotfiles repo, newest first.
 
 ### Changed
 - Pi startup now loads only curated skills from `~/.agents/skills`, enables
-  quiet startup, and shows a prettier prompt hint widget.
+  quiet startup, and shows a minimal one-line prompt hint with a startup timer.
 
 ### Fixed
 - tmux now forwards extended keys using CSI-u format, matching Pi's recommended
