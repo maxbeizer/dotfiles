@@ -48,15 +48,40 @@ function randomTip(): PromptTip {
   return promptTips[Math.floor(Math.random() * promptTips.length)] ?? promptTips[0]!;
 }
 
+const compactLogo = [
+  "██████╗ ██╗",
+  "██╔══██╗██║",
+  "██████╔╝██║",
+  "██╔═══╝ ██║",
+  "██║     ██║",
+  "╚═╝     ╚═╝",
+];
+
 function startupSeconds(): string {
   return process.uptime() < 10 ? process.uptime().toFixed(1) : Math.round(process.uptime()).toString();
 }
 
+function tipLine(theme: ExtensionContext["ui"]["theme"], tip: PromptTip, startupTime = startupSeconds()): string {
+  return `${theme.fg("dim", "try ")}${theme.fg("accent", tip.command)}${theme.fg("dim", ` · startup ${startupTime}s · /prompts browse · /prompt-hint show`)}`;
+}
+
+function renderStartupHeader(ctx: ExtensionContext, tip: PromptTip) {
+  const startupTime = startupSeconds();
+
+  ctx.ui.setHeader((_tui, theme) => ({
+    render(_width: number): string[] {
+      const logo = compactLogo.map((line) => theme.fg("accent", line));
+      return ["", ...logo, "", tipLine(theme, tip, startupTime), ""];
+    },
+    invalidate() {},
+  }));
+}
+
 function renderTip(ctx: ExtensionContext, tip: PromptTip) {
   const theme = ctx.ui.theme;
-  const tryLine = `${theme.fg("dim", "try ")}${theme.fg("accent", tip.command)}${theme.fg("dim", ` · startup ${startupSeconds()}s · /prompts browse · /prompt-hint clear`)}`;
+  const logo = compactLogo.map((line) => theme.fg("accent", line));
 
-  ctx.ui.setWidget("prompt-hint", [tryLine], { placement: "aboveEditor" });
+  ctx.ui.setWidget("prompt-hint", ["", ...logo, "", tipLine(theme, tip), ""], { placement: "aboveEditor" });
 }
 
 function clearTip(ctx: ExtensionContext) {
@@ -81,14 +106,14 @@ async function pickPrompt(ctx: ExtensionContext) {
 
 export default function promptHintExtension(pi: ExtensionAPI) {
   pi.on("session_start", async (_event, ctx) => {
-    if (!ctx.hasUI) return;
-    renderTip(ctx, randomTip());
+    if (ctx.mode !== "tui") return;
+    renderStartupHeader(ctx, randomTip());
   });
 
   pi.registerCommand("prompt-hint", {
     description: "Show, list, or clear global Pi prompt-template reminders",
     getArgumentCompletions: (prefix) => {
-      const candidates = ["list", "clear", ...promptTips.map((tip) => tip.command.slice(1))];
+      const candidates = ["show", "list", "clear", ...promptTips.map((tip) => tip.command.slice(1))];
       const filtered = candidates.filter((candidate) => candidate.startsWith(prefix));
       return filtered.length > 0 ? filtered.map((value) => ({ value, label: value })) : null;
     },
@@ -108,11 +133,16 @@ export default function promptHintExtension(pi: ExtensionAPI) {
         return;
       }
 
+      if (requested === "show") {
+        renderTip(ctx, randomTip());
+        return;
+      }
+
       if (requested) {
         const normalized = requested.startsWith("/") ? requested : `/${requested}`;
         const tip = promptTips.find((candidate) => candidate.command === normalized);
         if (!tip) {
-          ctx.ui.notify("Usage: /prompt-hint [list|clear|review-changes|commit-changes|pr-body|copilot-review|explain-repo|find-tests|run-tests]", "error");
+          ctx.ui.notify("Usage: /prompt-hint [show|list|clear|review-changes|commit-changes|pr-body|copilot-review|explain-repo|find-tests|run-tests]", "error");
           return;
         }
 

@@ -93,7 +93,7 @@ Global Pi customizations live in `pi/` and are linked by `install.sh` via `pi/in
 - `pi/extensions/clean-footer.ts` — replaces the default footer with a compact model/thinking/time line
 - `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits; adds `/allow-repo` for session-scoped mutation allowlists
 - `pi/extensions/vault-vibes.ts` — Catppuccin-friendly working indicator/message
-- `pi/extensions/prompt-hint.ts` — minimal one-line startup hint with a timer and random global prompt template
+- `pi/extensions/prompt-hint.ts` — startup header art plus a random global prompt-template hint; `/prompt-hint show` can display the hint widget on demand
 - `pi/extensions/mcp/` — on-demand MCP helpers that lazy-load the MCP SDK only when a server starts
 - `pi/prompts/*.md` — global prompt templates for reviews, commits, PR bodies, repo explanation, and tests
 - `pi/themes/catppuccin-mocha.json` — Catppuccin Mocha TUI theme
@@ -107,7 +107,7 @@ Useful global extension commands:
 ```text
 /clean-footer [on|off|status]
 /vibe [vault|quiet|default]
-/prompt-hint [list|clear] # show/list/clear global prompt reminders
+/prompt-hint [show|list|clear] # show/list/clear global prompt reminders
 /prompts                  # pick a global prompt template and prefill the editor
 /allow-repo [path]        # allow edits/writes under a repo/path for this Pi session
 /allow-repo list

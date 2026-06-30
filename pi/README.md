@@ -40,7 +40,7 @@ Linked to: `~/.pi/agent/extensions/`
 | `clean-footer.ts` | `/clean-footer`, `/clean-footer on`, `/clean-footer off`, `/clean-footer status` | Replaces the default cwd/token-heavy footer with a compact model/thinking/time line. |
 | `safety.ts` | `/allow-repo`, `/allow-repo list`, `/allow-repo clear` | Confirms dangerous commands and sensitive edits; supports session-scoped mutation allowlists. |
 | `vault-vibes.ts` | `/vibe`, `/vibe vault`, `/vibe quiet`, `/vibe default` | Catppuccin-friendly working indicator and message. |
-| `prompt-hint.ts` | `/prompt-hint`, `/prompt-hint list`, `/prompt-hint clear`, `/prompts` | Shows a minimal one-line startup hint with a timer and picker for global prompts. |
+| `prompt-hint.ts` | `/prompt-hint`, `/prompt-hint show`, `/prompt-hint list`, `/prompt-hint clear`, `/prompts` | Shows startup header art plus a random prompt-template hint without leaving a persistent widget; can display the hint widget on demand. |
 | `mcp/` | `/mcp-status`, `/mcp-start` plus MCP tools | Registers MCP helpers without loading the MCP SDK until a server is started. |
 
 ## Global Prompt Templates

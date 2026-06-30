@@ -2,6 +2,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
 const YELLOW = "\x1b[38;2;249;226;175m";
+const RESET = "\x1b[0m";
 
 function shortModelName(modelId: string | undefined): string {
   if (!modelId) return "no model";

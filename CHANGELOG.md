@@ -33,10 +33,15 @@ Notable changes to this dotfiles repo, newest first.
   machine and dotfiles; Copilot attention alerts are tmux-only again.
 
 ### Changed
+- Pi prompt hint now renders as a startup header (art plus prompt-template hint)
+  instead of a persistent editor widget, so it appears during boot without
+  staying above the editor.
 - Pi startup now loads only curated skills from `~/.agents/skills`, enables
-  quiet startup, and shows a minimal one-line prompt hint with a startup timer.
+  quiet startup, and shows a padded single-color Pi logo with a startup timer.
 
 ### Fixed
+- Pi clean footer defines its ANSI reset sequence explicitly, avoiding extension
+  rendering errors in the footer.
 - tmux now forwards extended keys using CSI-u format, matching Pi's recommended
   modified-key behavior while preserving Copilot CLI multiline bindings.
 - Removed the tmux `S-Enter` shim so Pi can receive native Shift+Enter key
