@@ -54,6 +54,7 @@ Linked to: `~/.pi/agent/prompts/`
 | `/review-changes [focus]` | Review current git changes for correctness, risk, security, and missing tests. |
 | `/commit-changes [commit-message-or-focus]` | Inspect, group, validate, and commit current changes. |
 | `/pr-body [base-branch]` | Draft a pull request body from the current branch diff. |
+| `/copilot-review <PR-URL-or-number> [instructions]` | Fetch, summarize, and apply targeted fixes for Copilot PR review suggestions. |
 | `/explain-repo [focus]` | Explain repository structure, commands, and workflows. |
 | `/find-tests [focus-or-path]` | Discover relevant test, lint, and typecheck commands. |
 | `/run-tests [focus-or-command]` | Run the fastest relevant validation and summarize results. |

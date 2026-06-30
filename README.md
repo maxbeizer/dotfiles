@@ -122,6 +122,7 @@ Useful global prompt templates:
 /review-changes [focus]
 /commit-changes [commit-message-or-focus]
 /pr-body [base-branch]
+/copilot-review <PR-URL-or-number> [instructions]
 /explain-repo [focus]
 /find-tests [focus-or-path]
 /run-tests [focus-or-command]

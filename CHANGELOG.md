@@ -15,9 +15,11 @@ Notable changes to this dotfiles repo, newest first.
   theme, repo status footer, vault vibes working indicator, safety guard, and
   `pi/install.sh` bootstrap wiring.
 - Pi safety guard now supports `/allow-repo [path]` for session-scoped file
-  mutation allowlists, with `/allow-repo list` and `/allow-repo clear`.
+  mutation allowlists, with `/allow-repo list` and `/allow-repo clear`, and
+  sensitive edit prompts can add an allowlist entry directly.
 - Global Pi prompt templates for reviewing changes, committing changes,
-  drafting PR bodies, explaining repos, finding tests, and running tests.
+  drafting PR bodies, fixing Copilot PR review suggestions, explaining repos,
+  finding tests, and running tests.
 - Pi prompt hint extension that shows a random global prompt-template reminder
   at session startup and adds `/prompt-hint` and `/prompts`.
 - `pi/README.md` and `pi/doctor.sh` for documenting and verifying global Pi

@@ -1,6 +1,6 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { relative, resolve } from "node:path";
-import { existsSync, realpathSync } from "node:fs";
+import { dirname, relative, resolve } from "node:path";
+import { existsSync, realpathSync, statSync } from "node:fs";
 
 const blockedPathPrefixes = [".git/", "node_modules/"];
 const blockedExactPaths = [".env", "collections/.env", "collections/.env.example", "collections/.env.token"];
@@ -67,6 +67,17 @@ function pathIsWithinRoot(path: string, root: string): boolean {
   return rel === "" || (!rel.startsWith("../") && rel !== "..");
 }
 
+function nearestExistingDirectory(path: string): string {
+  let current = path;
+  while (!existsSync(current)) {
+    const parent = dirname(current);
+    if (parent === current) return current;
+    current = parent;
+  }
+
+  return statSync(current).isDirectory() ? current : dirname(current);
+}
+
 function formatAllowedRoots(roots: Set<string>): string {
   if (roots.size === 0) return "No session mutation allowlist entries.";
   return [...roots].sort().map((root) => `- ${root}`).join("\n");
@@ -82,6 +93,36 @@ export default function safetyExtension(pi: ExtensionAPI) {
 
   function isAllowedMutationPath(path: string): boolean {
     return [...allowedMutationRoots].some((root) => pathIsWithinRoot(path, root));
+  }
+
+  async function allowedRootForPath(path: string): Promise<string> {
+    const gitCwd = nearestExistingDirectory(path);
+    const rootResult = await pi.exec("git", ["-C", gitCwd, "rev-parse", "--show-toplevel"], {
+      timeout: 2000,
+    });
+
+    return rootResult.code === 0 ? canonicalPath(rootResult.stdout.trim()) : canonicalPath(gitCwd);
+  }
+
+  function addAllowedMutationRoot(root: string, ctx: any): void {
+    allowedMutationRoots.add(root);
+    ctx.ui.setStatus("safety", ctx.ui.theme.fg("warning", `allowed: ${allowedMutationRoots.size}`));
+    ctx.ui.notify(`Allowed file mutations under this path for this session:\n${root}`, "warning");
+  }
+
+  async function chooseMutationPermission(ctx: any, title: string, message: string, pathToAllow: string): Promise<boolean> {
+    if (!ctx.hasUI) return false;
+
+    const choice = await ctx.ui.select(`${title}\n\n${message}\n\nAllow?`, ["Allow once", "Allow repo/path for this session", "Block"]);
+    if (choice === "Allow once") return true;
+
+    if (choice === "Allow repo/path for this session") {
+      const root = await allowedRootForPath(pathToAllow);
+      addAllowedMutationRoot(root, ctx);
+      return true;
+    }
+
+    return false;
   }
 
   pi.registerCommand("allow-repo", {
@@ -107,15 +148,8 @@ export default function safetyExtension(pi: ExtensionAPI) {
       }
 
       const target = requested || ".";
-      const rootResult = await pi.exec("git", ["-C", expandHome(target), "rev-parse", "--show-toplevel"], {
-        timeout: 2000,
-      });
-
-      const root = rootResult.code === 0 ? canonicalPath(rootResult.stdout.trim()) : canonicalPath(resolve(ctx.cwd, expandHome(target)));
-      allowedMutationRoots.add(root);
-
-      ctx.ui.setStatus("safety", ctx.ui.theme.fg("warning", `allowed: ${allowedMutationRoots.size}`));
-      ctx.ui.notify(`Allowed file mutations under this path for this session:\n${root}`, "warning");
+      const root = await allowedRootForPath(resolve(ctx.cwd, expandHome(target)));
+      addAllowedMutationRoot(root, ctx);
     },
   });
 
@@ -127,10 +161,11 @@ export default function safetyExtension(pi: ExtensionAPI) {
       if (!repoPath || !absolutePath) return undefined;
 
       if (pathIsOutsideRepo(repoPath) && !isAllowedMutationPath(absolutePath)) {
-        const ok = await confirmSensitive(
+        const ok = await chooseMutationPermission(
           ctx,
           "External file mutation",
-          `The ${event.toolName} tool wants to modify a file outside this repo:\n\n${absolutePath}\n\nAllow once?\n\nTip: use /allow-repo <path> to allow a repo/path for this session.`,
+          `The ${event.toolName} tool wants to modify a file outside this repo:\n\n${absolutePath}`,
+          absolutePath,
         );
         if (!ok) return { block: true, reason: "Blocked external file mutation" };
       }
@@ -140,10 +175,11 @@ export default function safetyExtension(pi: ExtensionAPI) {
       }
 
       if (pathIsSensitive(repoPath) && !isAllowedMutationPath(absolutePath)) {
-        const ok = await confirmSensitive(
+        const ok = await chooseMutationPermission(
           ctx,
           "Sensitive file mutation",
-          `The ${event.toolName} tool wants to modify sensitive people/performance-adjacent content:\n\n${repoPath}\n\nAllow once?`,
+          `The ${event.toolName} tool wants to modify sensitive people/performance-adjacent content:\n\n${repoPath}`,
+          absolutePath,
         );
         if (!ok) return { block: true, reason: `Blocked sensitive file mutation: ${repoPath}` };
       }
