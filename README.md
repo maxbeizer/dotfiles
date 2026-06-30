@@ -17,6 +17,7 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 │
 ├── aliases                   # Shell aliases (git, gh, misc)
 ├── gitconfig                 # Git identity, aliases, SSH signing (1Password)
+├── .gitignore                # Repo ignores (for local dependency folders)
 ├── gitignore                 # Global gitignore
 ├── gitmessage                # Commit message template
 ├── zshrc                     # Zsh config (Starship prompt, fzf, zoxide, PATH)
@@ -41,7 +42,7 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 ├── copilot/
 │   ├── hooks/                # Copilot CLI hooks (symlinked to ~/.copilot/hooks/)
 │   └── skills/               # Agent skills (symlinked to ~/.copilot/skills/ and ~/.agents/skills)
-├── pi/                       # Pi coding agent global extensions, themes, installer
+├── pi/                       # Pi coding agent global extensions, prompts, themes, installer
 └── install-gh-extensions.sh  # gh CLI extensions (idempotent)
 ```
 
@@ -89,28 +90,30 @@ Ghostty auto-reloads; tmux and nvim update live.
 
 Global Pi customizations live in `pi/` and are linked by `install.sh` via `pi/install.sh`:
 
-- `pi/extensions/clean-footer.ts` — replaces the default footer with a compact Starship-inspired model/thinking/git/time line
-- `pi/extensions/repo-status.ts` — footer status with git branch and dirty count
+- `pi/extensions/clean-footer.ts` — replaces the default footer with a compact model/thinking/time line
 - `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits; adds `/allow-repo` for session-scoped mutation allowlists
 - `pi/extensions/vault-vibes.ts` — Catppuccin-friendly working indicator/message
-- `pi/extensions/prompt-hint.ts` — startup widget that reminds you of a random global prompt template
+- `pi/extensions/prompt-hint.ts` — pretty startup widget that reminds you of a random global prompt template
+- `pi/extensions/mcp/` — on-demand MCP helpers that lazy-load the MCP SDK only when a server starts
 - `pi/prompts/*.md` — global prompt templates for reviews, commits, PR bodies, repo explanation, and tests
 - `pi/themes/catppuccin-mocha.json` — Catppuccin Mocha TUI theme
 
-The installer links these into `~/.pi/agent/` and links shared Agent Skills from
-`copilot/skills/` into `~/.agents/skills`.
+The installer links these into `~/.pi/agent/`, links shared Agent Skills from
+`copilot/skills/` into `~/.agents/skills`, and configures Pi to load only that
+curated skill directory with quiet startup enabled.
 
 Useful global extension commands:
 
 ```text
 /clean-footer [on|off|status]
-/repo-status              # refresh git branch/dirty status
 /vibe [vault|quiet|default]
 /prompt-hint [list|clear] # show/list/clear global prompt reminders
 /prompts                  # pick a global prompt template and prefill the editor
 /allow-repo [path]        # allow edits/writes under a repo/path for this Pi session
 /allow-repo list
 /allow-repo clear
+/mcp-status               # show configured/connected MCP servers
+/mcp-start [server]       # start an MCP server on demand
 ```
 
 Useful global prompt templates:

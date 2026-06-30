@@ -5,6 +5,10 @@ Notable changes to this dotfiles repo, newest first.
 ## Unreleased
 
 ### Added
+- Repository `.gitignore` now ignores `node_modules/` so local extension
+  dependencies do not flood `git status`.
+- Pi MCP extension is now managed by the installer and lazy-loads the MCP SDK
+  only when a server is started.
 - Pi clean footer extension that replaces the default cwd/token-heavy footer
   with a compact model/thinking/status line.
 - Pi coding agent global customizations under `pi/`, including Catppuccin Mocha
@@ -22,8 +26,13 @@ Notable changes to this dotfiles repo, newest first.
   status and diff checks when opening new shells in the huge repository.
 
 ### Removed
+- Pi repo status extension was removed to avoid startup git status checks.
 - Tri-State Relay Service/`relay` integration was removed from the local
   machine and dotfiles; Copilot attention alerts are tmux-only again.
+
+### Changed
+- Pi startup now loads only curated skills from `~/.agents/skills`, enables
+  quiet startup, and shows a prettier prompt hint widget.
 
 ### Fixed
 - tmux now forwards extended keys using CSI-u format, matching Pi's recommended

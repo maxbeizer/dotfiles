@@ -45,18 +45,15 @@ function randomTip(): PromptTip {
 
 function renderTip(ctx: ExtensionContext, tip: PromptTip) {
   const theme = ctx.ui.theme;
-  const firstLine = [
-    theme.fg("muted", "Prompt tip:"),
-    theme.fg("accent", ` ${tip.command}`),
-    theme.fg("dim", " — "),
-    theme.fg("text", tip.description),
-  ].join("");
+  const command = theme.fg("accent", tip.command);
+  const title = theme.fg("muted", "╭─ ✦ prompt idea");
+  const body = `${theme.fg("muted", "│")} ${command}${theme.fg("dim", " — ")}${theme.fg("text", tip.description)}`;
+  const example = tip.example
+    ? `${theme.fg("muted", "│")} ${theme.fg("dim", "try ")}${theme.fg("text", tip.example)}`
+    : undefined;
+  const footer = `${theme.fg("muted", "╰─")} ${theme.fg("dim", "/prompts to browse · /prompt-hint for another · /prompt-hint clear")}`;
 
-  const secondLine = tip.example
-    ? theme.fg("dim", `Try: ${tip.example}  ·  /prompt-hint for another  ·  /prompt-hint list`)
-    : theme.fg("dim", "/prompt-hint for another  ·  /prompt-hint list");
-
-  ctx.ui.setWidget("prompt-hint", [firstLine, secondLine], { placement: "aboveEditor" });
+  ctx.ui.setWidget("prompt-hint", [title, body, example, footer].filter(Boolean) as string[], { placement: "aboveEditor" });
 }
 
 function clearTip(ctx: ExtensionContext) {

@@ -37,11 +37,11 @@ Linked to: `~/.pi/agent/extensions/`
 
 | Extension | Commands | Purpose |
 |-----------|----------|---------|
-| `clean-footer.ts` | `/clean-footer`, `/clean-footer on`, `/clean-footer off`, `/clean-footer status` | Replaces the default cwd/token-heavy footer with a compact Starship-inspired model/thinking/git/time line. |
-| `repo-status.ts` | `/repo-status` | Shows current git branch and dirty-file count in the footer/status area. |
+| `clean-footer.ts` | `/clean-footer`, `/clean-footer on`, `/clean-footer off`, `/clean-footer status` | Replaces the default cwd/token-heavy footer with a compact model/thinking/time line. |
 | `safety.ts` | `/allow-repo`, `/allow-repo list`, `/allow-repo clear` | Confirms dangerous commands and sensitive edits; supports session-scoped mutation allowlists. |
 | `vault-vibes.ts` | `/vibe`, `/vibe vault`, `/vibe quiet`, `/vibe default` | Catppuccin-friendly working indicator and message. |
-| `prompt-hint.ts` | `/prompt-hint`, `/prompt-hint list`, `/prompt-hint clear`, `/prompts` | Shows prompt-template reminders and a picker for global prompts. |
+| `prompt-hint.ts` | `/prompt-hint`, `/prompt-hint list`, `/prompt-hint clear`, `/prompts` | Shows a prettier prompt-template reminder and picker for global prompts. |
+| `mcp/` | `/mcp-status`, `/mcp-start` plus MCP tools | Registers MCP helpers without loading the MCP SDK until a server is started. |
 
 ## Global Prompt Templates
 
@@ -59,6 +59,20 @@ Linked to: `~/.pi/agent/prompts/`
 | `/run-tests [focus-or-command]` | Run the fastest relevant validation and summarize results. |
 
 Use `/prompts` to pick from these without remembering the names.
+
+## Startup defaults
+
+`pi/install.sh` keeps these global settings in `~/.pi/agent/settings.json`:
+
+```json
+"theme": "catppuccin-mocha",
+"skills": ["~/.agents/skills"],
+"enableSkillCommands": true,
+"quietStartup": true
+```
+
+If startup feels network-bound, test Pi's version check with
+`PI_SKIP_VERSION_CHECK=1 pi`; this is intentionally not set globally.
 
 ## Theme
 
@@ -86,7 +100,8 @@ Shared Agent Skills live in:
 ~/.agents/skills -> ~/dotfiles/copilot/skills
 ```
 
-Currently useful skills:
+It also configures Pi to load only `~/.agents/skills`, not the much larger
+`~/.copilot/skills` directory, so startup only discovers the curated Pi skills:
 
 - `/skill:agent-orchestration`
 - `/skill:grill-me`

@@ -1,9 +1,6 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
-const RESET = "\x1b[0m";
-const GREEN = "\x1b[38;2;166;227;161m";
-const RED = "\x1b[38;2;243;139;168m";
 const YELLOW = "\x1b[38;2;249;226;175m";
 
 function shortModelName(modelId: string | undefined): string {
@@ -19,22 +16,6 @@ function shortModelName(modelId: string | undefined): string {
 
 function stripAnsi(text: string): string {
   return text.replace(/\x1b\[[0-9;]*m/g, "");
-}
-
-function parseRepoStatus(statuses: ReadonlyMap<string, string>): string | undefined {
-  const raw = statuses.get("repo-status");
-  if (!raw) return undefined;
-
-  // repo-status emits strings like: "git main clean" or "git main +2?1".
-  const clean = stripAnsi(raw).trim();
-  const match = clean.match(/^git\s+(\S+)(?:\s+(.+))?$/);
-  if (!match) return clean;
-
-  const branch = match[1] ?? "";
-  const state = match[2]?.trim() ?? "";
-  if (!state || state === "clean") return `${GREEN}${branch}${RESET}`;
-
-  return `${GREEN}${branch}${RESET} ${RED}${state}${RESET}`;
 }
 
 function parseSafetyStatus(statuses: ReadonlyMap<string, string>): string | undefined {
@@ -73,9 +54,7 @@ export default function cleanFooterExtension(pi: ExtensionAPI) {
           const thinking = theme.fg("dim", pi.getThinkingLevel());
           const left = `${piMark} ${model} ${thinking}`;
 
-          const rightParts = [parseRepoStatus(statuses), parseSafetyStatus(statuses), theme.fg("dim", currentTime())].filter(
-            Boolean,
-          ) as string[];
+          const rightParts = [parseSafetyStatus(statuses), theme.fg("dim", currentTime())].filter(Boolean) as string[];
           const right = rightParts.join(theme.fg("dim", " "));
 
           const gap = Math.max(1, width - visibleWidth(left) - visibleWidth(right));

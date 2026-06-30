@@ -59,6 +59,49 @@ link_exact() {
   fi
 }
 
+remove_link_if_target() {
+  local dst="$1" target="$2"
+
+  if [ -L "$dst" ] && [ "$(readlink "$dst")" = "$target" ]; then
+    if [ "$DRY_RUN" -eq 1 ]; then
+      printf '  [dry-run] rm %s\n' "$dst"
+    else
+      rm "$dst"
+      printf '  ✓ removed obsolete link: %s\n' "$dst"
+    fi
+  fi
+}
+
+configure_settings() {
+  local settings="$GLOBAL_PI_DIR/settings.json"
+
+  if [ "$DRY_RUN" -eq 1 ]; then
+    printf '  [dry-run] merge Pi startup defaults into %s\n' "$settings"
+    return 0
+  fi
+
+  SETTINGS_PATH="$settings" python3 <<'PY'
+import json
+import os
+from pathlib import Path
+
+settings = Path(os.environ["SETTINGS_PATH"])
+if settings.exists():
+    data = json.loads(settings.read_text())
+else:
+    data = {}
+
+# Keep user model/provider/auth choices, but keep global Pi startup lightweight and curated.
+data["theme"] = "catppuccin-mocha"
+data["skills"] = ["~/.agents/skills"]
+data["enableSkillCommands"] = True
+data["quietStartup"] = True
+
+settings.write_text(json.dumps(data, indent=2) + "\n")
+PY
+  printf '  ✓ configured Pi settings: %s\n' "$settings"
+}
+
 fancy_echo "Creating Pi config directories"
 ensure_dir "$GLOBAL_PI_DIR/extensions"
 ensure_dir "$GLOBAL_PI_DIR/prompts"
@@ -67,9 +110,17 @@ ensure_dir "$HOME/.agents"
 
 if [ -d "$PI_DIR/extensions" ]; then
   fancy_echo "Linking global Pi extensions"
+  remove_link_if_target "$GLOBAL_PI_DIR/extensions/repo-status.ts" "$PI_DIR/extensions/repo-status.ts"
+
   for extension in "$PI_DIR/extensions"/*.ts; do
     [ -f "$extension" ] || continue
     link_exact "$extension" "$GLOBAL_PI_DIR/extensions/$(basename "$extension")"
+  done
+
+  for extension_dir in "$PI_DIR/extensions"/*; do
+    [ -d "$extension_dir" ] || continue
+    [ -f "$extension_dir/index.ts" ] || continue
+    link_exact "$extension_dir" "$GLOBAL_PI_DIR/extensions/$(basename "$extension_dir")"
   done
 fi
 
@@ -94,6 +145,8 @@ if [ -d "$DOTFILES_DIR/copilot/skills" ]; then
   link_exact "$DOTFILES_DIR/copilot/skills" "$HOME/.agents/skills"
 fi
 
+fancy_echo "Configuring Pi settings"
+configure_settings
+
 fancy_echo "Pi global customization install complete ✓"
-printf '  Theme: set "theme": "catppuccin-mocha" in %s/settings.json if needed.\n' "$GLOBAL_PI_DIR"
 printf '  Reload open Pi sessions with /reload.\n'
