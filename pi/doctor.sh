@@ -63,6 +63,10 @@ check_dir "$GLOBAL_PI_DIR/prompts"
 check_dir "$GLOBAL_PI_DIR/themes"
 check_dir "$HOME/.agents"
 
+printf '\nContext instructions\n'
+printf '%s\n' '--------------------'
+check_link "$PI_DIR/AGENTS.md" "$GLOBAL_PI_DIR/AGENTS.md"
+
 printf '\nExtensions\n'
 printf '%s\n' '----------'
 if [ -L "$GLOBAL_PI_DIR/extensions/repo-status.ts" ]; then

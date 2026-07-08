@@ -29,8 +29,9 @@ Useful flags:
 - Links sesh config to `~/.config/sesh/`
 - Links television cable channels to `~/.config/television/cable/`
 - Links Pi global customizations with `pi/install.sh` into `~/.pi/agent/`
-  and `~/.agents/skills`, including extensions, prompt templates, themes, and
-  lightweight startup settings
+  and `~/.agents/skills`, including global context instructions, extensions,
+  prompt templates, themes, safety defaults (including permanent `/tmp` write
+  allowance), and lightweight startup settings
 - In codespaces: wires up bash with Starship, zoxide, fzf, aliases, and a
   package-manager `tree-sitter` CLI for Neovim parser builds
 
@@ -144,5 +145,5 @@ CODESPACES=true ./install.sh
 | `codespaces.local` | Bash extras for codespaces + `dotup` |
 | `copilot/hooks/` | Copilot CLI hooks (symlinked to `~/.copilot/hooks/`) |
 | `copilot/skills/` | Copilot CLI skills (symlinked to `~/.copilot/skills/` and `~/.agents/skills`) |
-| `pi/` | Pi coding agent global extensions, MCP bridge, prompts, themes, installer, and doctor |
+| `pi/` | Pi coding agent global context instructions, extensions, safety defaults, MCP bridge, prompts, themes, installer, and doctor |
 | `CHANGELOG.md` | Document notable changes here |

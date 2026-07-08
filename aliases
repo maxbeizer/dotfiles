@@ -13,7 +13,7 @@ alias .....="cd ../../../.."
 alias -- -="cd -"
 
 # Git
-alias g="git"
+# `g` is now reserved for https://github.com/maxbeizer/g.
 alias gs="git status -b -s"
 
 # GitHub CLI

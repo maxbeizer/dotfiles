@@ -5,6 +5,9 @@ Notable changes to this dotfiles repo, newest first.
 ## Unreleased
 
 ### Added
+- Global Pi context instructions now tell agents to use authenticated `gh` CLI/API
+  calls for pasted GitHub URLs and to keep them read-only unless explicitly asked
+  to mutate GitHub state.
 - Repository `.gitignore` now ignores `node_modules/` so local extension
   dependencies do not flood `git status`.
 - Pi MCP extension is now managed by the installer and lazy-loads the MCP SDK
@@ -14,9 +17,10 @@ Notable changes to this dotfiles repo, newest first.
 - Pi coding agent global customizations under `pi/`, including Catppuccin Mocha
   theme, repo status footer, vault vibes working indicator, safety guard, and
   `pi/install.sh` bootstrap wiring.
-- Pi safety guard now supports `/allow-repo [path]` for session-scoped file
-  mutation allowlists, with `/allow-repo list` and `/allow-repo clear`, and
-  sensitive edit prompts can add an allowlist entry directly.
+- Pi safety guard now permanently allowlists file mutations under `/tmp` and
+  supports `/allow-repo [path]` for session-scoped file mutation allowlists,
+  with `/allow-repo list` and `/allow-repo clear`, and sensitive edit prompts
+  can add an allowlist entry directly.
 - Global Pi prompt templates for reviewing changes, committing changes,
   drafting PR bodies, fixing Copilot PR review suggestions, explaining repos,
   finding tests, and running tests.

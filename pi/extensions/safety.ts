@@ -78,9 +78,20 @@ function nearestExistingDirectory(path: string): string {
   return statSync(current).isDirectory() ? current : dirname(current);
 }
 
-function formatAllowedRoots(roots: Set<string>): string {
-  if (roots.size === 0) return "No session mutation allowlist entries.";
-  return [...roots].sort().map((root) => `- ${root}`).join("\n");
+function formatAllowedRoots(sessionRoots: Set<string>, permanentRoots: Set<string>): string {
+  const sections: string[] = [];
+
+  if (permanentRoots.size > 0) {
+    sections.push(`Permanent mutation allowlist:\n${[...permanentRoots].sort().map((root) => `- ${root}`).join("\n")}`);
+  }
+
+  sections.push(
+    sessionRoots.size === 0
+      ? "Session mutation allowlist:\n- none"
+      : `Session mutation allowlist:\n${[...sessionRoots].sort().map((root) => `- ${root}`).join("\n")}`,
+  );
+
+  return sections.join("\n\n");
 }
 
 async function confirmSensitive(ctx: any, title: string, message: string): Promise<boolean> {
@@ -89,10 +100,11 @@ async function confirmSensitive(ctx: any, title: string, message: string): Promi
 }
 
 export default function safetyExtension(pi: ExtensionAPI) {
+  const permanentAllowedMutationRoots = new Set<string>(["/tmp", canonicalPath("/tmp")]);
   const allowedMutationRoots = new Set<string>();
 
   function isAllowedMutationPath(path: string): boolean {
-    return [...allowedMutationRoots].some((root) => pathIsWithinRoot(path, root));
+    return [...permanentAllowedMutationRoots, ...allowedMutationRoots].some((root) => pathIsWithinRoot(path, root));
   }
 
   async function allowedRootForPath(path: string): Promise<string> {
@@ -143,7 +155,7 @@ export default function safetyExtension(pi: ExtensionAPI) {
       }
 
       if (requested === "list") {
-        ctx.ui.notify(formatAllowedRoots(allowedMutationRoots), "info");
+        ctx.ui.notify(formatAllowedRoots(allowedMutationRoots, permanentAllowedMutationRoots), "info");
         return;
       }
 

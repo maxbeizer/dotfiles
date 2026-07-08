@@ -108,6 +108,11 @@ ensure_dir "$GLOBAL_PI_DIR/prompts"
 ensure_dir "$GLOBAL_PI_DIR/themes"
 ensure_dir "$HOME/.agents"
 
+if [ -f "$PI_DIR/AGENTS.md" ]; then
+  fancy_echo "Linking global Pi context instructions"
+  link_exact "$PI_DIR/AGENTS.md" "$GLOBAL_PI_DIR/AGENTS.md"
+fi
+
 if [ -d "$PI_DIR/extensions" ]; then
   fancy_echo "Linking global Pi extensions"
   remove_link_if_target "$GLOBAL_PI_DIR/extensions/repo-status.ts" "$PI_DIR/extensions/repo-status.ts"
