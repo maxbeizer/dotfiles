@@ -5,6 +5,9 @@ Notable changes to this dotfiles repo, newest first.
 ## Unreleased
 
 ### Added
+- Copilot tmux attention markers now carry lightweight state, letting
+  `sesh-picker` sort and label blocked/error sessions (`❓`) ahead of completed
+  sessions (`✓`) and generic bells (`🔔`).
 - Global Pi context instructions now tell agents to use authenticated `gh` CLI/API
   calls for pasted GitHub URLs and to keep them read-only unless explicitly asked
   to mutate GitHub state.

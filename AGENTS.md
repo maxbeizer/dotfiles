@@ -62,10 +62,11 @@ tome                    # Start main session directly
 ```
 
 ### Session picker (prefix S)
-Uses `bin/sesh-picker` — shows all tmux sessions (with 🔔 bell indicators sorted
-to the top), zoxide directories, and configured sessions from `sesh/sesh.toml`.
+Uses `bin/sesh-picker` — shows all tmux sessions (with Copilot attention states
+sorted to the top: `❓` blocked/error, `✓` done, `🔔` bell), zoxide directories,
+and configured sessions from `sesh/sesh.toml`.
 - `Enter` to connect, `ctrl-d` to remove a session
-- Sessions with pending bells (e.g., Copilot CLI finished) appear first
+- Sessions needing attention (e.g., Copilot CLI blocked or finished) appear first
 
 ### After a reboot
 ```bash
@@ -90,14 +91,15 @@ Custom cable channels in `television/cable/` provide fuzzy pickers with previews
 ## Copilot CLI hooks (tmux bells)
 
 Global hooks live in `copilot/hooks/` and are linked to `~/.copilot/hooks/` by
-`install.sh`. These send a tmux terminal bell and write a local attention marker
-when the Copilot CLI agent needs user input (`ask_user`) or a session ends
-(`sessionEnd`), so `bin/sesh-picker` can float sessions needing attention even
-if tmux's transient bell flag is missed or cleared. If no local tmux pane can be
-resolved (for example inside an SSH-backed Codespace), the hook falls back to
-ringing `/dev/tty`. Attention clears
-automatically when the marked session/window becomes visible, and `sesh-picker`
-suppresses bells for sessions attached to active tmux clients.
+`install.sh`. These send a tmux terminal bell and write a local state marker when
+Copilot needs user input (`ask_user`), hits an error, or a session/agent stops.
+`bin/sesh-picker` floats those sessions above ordinary sessions with `❓`
+blocked/error, `✓` done, and `🔔` generic bell markers, even when tmux's
+transient bell flag is missed or cleared. If no local tmux pane can be resolved
+(for example inside an SSH-backed Codespace), the hook falls back to ringing
+`/dev/tty`. Attention clears automatically when the marked session/window
+becomes visible, and `sesh-picker` suppresses bells for sessions attached to
+active tmux clients.
 
 ## Theme switching
 ```bash

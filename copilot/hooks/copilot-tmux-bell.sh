@@ -42,14 +42,15 @@ attention_marker() {
 }
 
 mark_attention() {
-  local pane="$1" session marker
+  local pane="$1" state="$2" session marker
   session=$(session_name_for_pane "$pane")
   marker=$(attention_marker "$session")
   [ -n "$marker" ] || return 0
 
   mkdir -p "$STATE_DIR" || return 0
-  printf '%s\n' "$session" > "$marker" || true
+  printf '%s\n%s\n' "$state" "$session" > "$marker" || true
   [ -n "$pane" ] && tmux set-window-option -t "$pane" -q @copilot_attention 1 || true
+  [ -n "$pane" ] && tmux set-window-option -t "$pane" -q @copilot_attention_state "$state" || true
 }
 
 # Send a terminal bell to the tmux pane so window_bell_flag lights up.
@@ -70,7 +71,7 @@ send_direct_bell() {
 }
 
 notify_attention() {
-  local pane
+  local state="$1" pane
   pane=$(resolve_target_pane)
   if [ -z "$pane" ]; then
     send_direct_bell
@@ -79,28 +80,29 @@ notify_attention() {
 
   if pane_is_visible "$pane"; then
     tmux set-window-option -t "$pane" -qu @copilot_attention || true
+    tmux set-window-option -t "$pane" -qu @copilot_attention_state || true
     return 0
   fi
 
-  mark_attention "$pane"
+  mark_attention "$pane" "$state"
   send_tmux_bell "$pane" || send_direct_bell
 }
 
 case "$EVENT_TYPE:$INPUT" in
   sessionEnd:*)
-    notify_attention
+    notify_attention done
     ;;
   agentStop:*)
-    notify_attention
+    notify_attention done
     ;;
   subagentStop:*)
-    notify_attention
+    notify_attention done
     ;;
   errorOccurred:*)
-    notify_attention
+    notify_attention blocked
     ;;
   *ask_user*)
-    notify_attention
+    notify_attention blocked
     ;;
 esac
 exit 0

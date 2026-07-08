@@ -153,7 +153,8 @@ and diff checks so new tmux splits do not hang on the huge repository.
 ## Session management (sesh + fzf)
 
 `sesh` manages tmux sessions with automatic project discovery via zoxide.
-`fzf` provides the fuzzy picker with previews. Sessions with pending bells (🔔) float to the top.
+`fzf` provides the fuzzy picker with previews. Sessions needing attention float
+to the top, with Copilot states shown before generic bells.
 
 ### Daily workflow
 
@@ -163,7 +164,7 @@ tome                    # Start your main session directly
 # Then use prefix S to pick/create more sessions
 
 # Inside tmux:
-prefix S                # Session picker (fuzzy search, preview, 🔔 indicators)
+prefix S                # Session picker (fuzzy search, preview, attention indicators)
 prefix s                # Default tmux session list (tree view)
 prefix Ctrl-s           # Save all sessions (tmux-resurrect)
 prefix Ctrl-r           # Restore sessions after reboot
@@ -177,10 +178,11 @@ prefix Ctrl-r           # Restore sessions after reboot
 | `ctrl-d` | Remove selected session and reload list |
 | Type to filter | Fuzzy search across all sessions |
 
-Sessions with a 🔔 (bell/notification) are sorted to the top — useful for spotting
-when Copilot CLI or a background process needs attention. Copilot hooks also
-write local attention markers under `~/.local/state/copilot-attention/`, so
-sessions stay surfaced even if tmux's transient bell flag is missed or cleared.
+Sessions with Copilot attention markers or tmux bells are sorted to the top:
+`❓` means Copilot is blocked or hit an error, `✓` means an agent/session stopped,
+and `🔔` means a generic tmux bell/attention marker. Copilot hooks write local
+attention markers under `~/.local/state/copilot-attention/`, so sessions stay
+surfaced even if tmux's transient bell flag is missed or cleared.
 When Copilot runs inside an SSH-backed Codespace where the local tmux pane cannot
 be resolved, the hook falls back to ringing the attached terminal directly.
 Attention clears automatically when the marked session/window becomes visible,

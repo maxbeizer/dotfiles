@@ -15,4 +15,5 @@ fi
 
 if [ -n "$window" ]; then
   tmux set-window-option -t "$window" -qu @copilot_attention 2>/dev/null || true
+  tmux set-window-option -t "$window" -qu @copilot_attention_state 2>/dev/null || true
 fi
