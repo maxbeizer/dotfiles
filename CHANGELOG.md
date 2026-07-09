@@ -35,11 +35,14 @@ Notable changes to this dotfiles repo, newest first.
   status and diff checks when opening new shells in the huge repository.
 
 ### Removed
+- Removed the disabled `g` git wrapper experiment and stale alias documentation.
 - Pi repo status extension was removed to avoid startup git status checks.
 - Tri-State Relay Service/`relay` integration was removed from the local
   machine and dotfiles; Copilot attention alerts are tmux-only again.
 
 ### Changed
+- Pi safety guard now permanently allowlists file mutations under
+  `~/code/one-to-one` without naming individual 1:1 repositories.
 - Pi prompt hint now renders as a startup header (art plus prompt-template hint)
   instead of a persistent editor widget, so it appears during boot without
   staying above the editor.

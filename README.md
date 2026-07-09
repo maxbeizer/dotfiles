@@ -92,7 +92,7 @@ Global Pi customizations live in `pi/` and are linked by `install.sh` via `pi/in
 
 - `pi/AGENTS.md` — global Pi instructions, including using authenticated `gh` CLI/API calls for pasted GitHub URLs and keeping them read-only unless asked
 - `pi/extensions/clean-footer.ts` — replaces the default footer with a compact model/thinking/time line
-- `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits; permanently allows `/tmp` writes and adds `/allow-repo` for session-scoped mutation allowlists
+- `pi/extensions/safety.ts` — confirms dangerous commands and sensitive edits; permanently allows `/tmp` and `~/code/one-to-one` writes and adds `/allow-repo` for session-scoped mutation allowlists
 - `pi/extensions/vault-vibes.ts` — Catppuccin-friendly working indicator/message
 - `pi/extensions/prompt-hint.ts` — startup header art plus a random global prompt-template hint; `/prompt-hint show` can display the hint widget on demand
 - `pi/extensions/mcp/` — on-demand MCP helpers that lazy-load the MCP SDK only when a server starts
@@ -272,7 +272,6 @@ Prefix is `Ctrl-a`.
 | Alias | Command |
 |-------|---------|
 | `tome` | Start tome tmux session via sesh |
-| `g` | `git` |
 | `gs` | `git status -b -s` |
 | `lg` | `lazygit` |
 | `ghpr` | `gh pr create --fill` |

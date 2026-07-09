@@ -100,7 +100,11 @@ async function confirmSensitive(ctx: any, title: string, message: string): Promi
 }
 
 export default function safetyExtension(pi: ExtensionAPI) {
-  const permanentAllowedMutationRoots = new Set<string>(["/tmp", canonicalPath("/tmp")]);
+  const permanentAllowedMutationRoots = new Set<string>([
+    "/tmp",
+    canonicalPath("/tmp"),
+    canonicalPath("~/code/one-to-one"),
+  ]);
   const allowedMutationRoots = new Set<string>();
 
   function isAllowedMutationPath(path: string): boolean {
