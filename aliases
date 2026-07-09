@@ -13,6 +13,7 @@ alias .....="cd ../../../.."
 alias -- -="cd -"
 
 # Git
+alias g="git"
 alias gs="git status -b -s"
 
 # GitHub CLI

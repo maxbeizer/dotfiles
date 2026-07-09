@@ -5,6 +5,7 @@ Notable changes to this dotfiles repo, newest first.
 ## Unreleased
 
 ### Added
+- `g` is restored as a plain alias for `git`.
 - Copilot tmux attention markers now carry lightweight state, letting
   `sesh-picker` sort and label blocked/error sessions (`❓`) ahead of completed
   sessions (`✓`) and generic bells (`🔔`).

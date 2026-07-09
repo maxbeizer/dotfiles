@@ -272,6 +272,7 @@ Prefix is `Ctrl-a`.
 | Alias | Command |
 |-------|---------|
 | `tome` | Start tome tmux session via sesh |
+| `g` | `git` |
 | `gs` | `git status -b -s` |
 | `lg` | `lazygit` |
 | `ghpr` | `gh pr create --fill` |
