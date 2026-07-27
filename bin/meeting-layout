@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -euo pipefail
+
+script_path="${BASH_SOURCE[0]}"
+while [ -L "$script_path" ]; do
+  script_dir="$(cd -P "$(dirname "$script_path")" && pwd)"
+  script_path="$(readlink "$script_path")"
+  [[ "$script_path" = /* ]] || script_path="$script_dir/$script_path"
+done
+source_file="$(cd "$(dirname "$script_path")/.." && pwd)/meeting-layout/main.swift"
+cache_dir="${XDG_CACHE_HOME:-$HOME/Library/Caches}/dotfiles"
+binary="$cache_dir/meeting-layout"
+
+if [ ! -x "$binary" ] || [ "$source_file" -nt "$binary" ]; then
+  mkdir -p "$cache_dir"
+  temporary_binary="$(mktemp "$cache_dir/meeting-layout.XXXXXX")"
+  trap 'rm -f "$temporary_binary"' EXIT
+  xcrun swiftc -O "$source_file" -o "$temporary_binary"
+  mv "$temporary_binary" "$binary"
+  trap - EXIT
+fi
+
+exec "$binary"

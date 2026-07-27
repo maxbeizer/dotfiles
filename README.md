@@ -12,6 +12,7 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 │   ├── copilot-clear-attention # Clear Copilot tmux attention markers
 │   ├── sesh-picker           # Session picker with 🔔 bell indicators
 │   ├── theme                 # Switch between solarized dark ↔ catppuccin mocha
+│   ├── meeting-layout        # Put Zoom/Teams left and other windows right
 │   ├── codespaces-vim-lab    # Codespaces helper for Vim/Neovim testing
 │   └── rdm-connect           # Connect to codespace with clipboard forwarding
 │
@@ -85,6 +86,26 @@ theme              # show current
 ```
 
 Ghostty auto-reloads; tmux and nvim update live.
+
+## Meeting layout shortcut
+
+`meeting-layout` puts visible Zoom or Microsoft Teams windows in the left third
+of the main display and all other standard application windows in the right two
+thirds. It leaves minimized windows and non-standard windows alone. Its native
+helper is compiled once into `~/Library/Caches/dotfiles/`, so later runs are
+fast.
+
+Create a macOS Shortcut named **Meeting Layout**, add a **Run Shell Script**
+action containing:
+
+```zsh
+~/.local/bin/meeting-layout
+```
+
+Then assign your preferred keyboard shortcut in the Shortcut's Details pane.
+Grant the calling app Accessibility permission in **System Settings > Privacy &
+Security > Accessibility** when macOS asks. Run `./install.sh` first when
+setting up a new machine so `meeting-layout` is linked into `~/.local/bin/`.
 
 ## Pi coding agent
 

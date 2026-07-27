@@ -5,6 +5,9 @@ Notable changes to this dotfiles repo, newest first.
 ## Unreleased
 
 ### Added
+- `meeting-layout` applies a one-key meeting layout: visible Zoom/Teams windows
+  occupy the left third of the main display and other standard app windows
+  occupy the right two-thirds. It can be called from a macOS Shortcut.
 - `g` is restored as a plain alias for `git`.
 - Copilot tmux attention markers now carry lightweight state, letting
   `sesh-picker` sort and label blocked/error sessions (`❓`) ahead of completed

@@ -135,6 +135,7 @@ CODESPACES=true ./install.sh
 | `bin/gh-new-cs` | Creates/connects a github/github Codespace and deploys gh-test |
 | `bin/sesh-picker` | Session picker with 🔔 bell indicators |
 | `bin/theme` | Theme switcher (solarized ↔ mocha) |
+| `bin/meeting-layout` | Native Accessibility command for the Zoom/Teams meeting layout |
 | `zshrc` | Shell config (prompt, PATH, tools) |
 | `aliases` | Shell aliases (including `tome`) |
 | `.gitignore` | Repo-local ignores for generated dependency folders |
