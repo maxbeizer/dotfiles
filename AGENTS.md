@@ -132,7 +132,7 @@ CODESPACES=true ./install.sh
 | `install.sh` | Idempotent installer (local + codespace) |
 | `bin/bootstrap-machine` | Fresh machine setup |
 | `bin/copilot-clear-attention` | Clears Copilot tmux attention markers when sessions/windows become visible |
-| `bin/gh-new-cs` | Creates/connects a github/github Codespace and deploys gh-test |
+| `bin/gh-new-cs` | Creates a github/github Codespace with a four-hour idle timeout, then connects and deploys gh-test |
 | `bin/sesh-picker` | Session picker with 🔔 bell indicators |
 | `bin/theme` | Theme switcher (solarized ↔ mocha) |
 | `bin/meeting-layout` | Native Accessibility command for the Zoom/Teams meeting layout |

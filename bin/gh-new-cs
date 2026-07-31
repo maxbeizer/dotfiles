@@ -27,12 +27,14 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo="github/github"
 machine="xLargePremiumLinux"
 devcontainer_path=".devcontainer/devcontainer.json"
+idle_timeout="4h"
 display_name="${1:-}"
 
 create_args=(
   codespace create
   -R "$repo"
   -m "$machine"
+  --idle-timeout "$idle_timeout"
   --devcontainer-path "$devcontainer_path"
 )
 

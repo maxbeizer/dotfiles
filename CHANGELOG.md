@@ -45,6 +45,8 @@ Notable changes to this dotfiles repo, newest first.
   machine and dotfiles; Copilot attention alerts are tmux-only again.
 
 ### Changed
+- `gh new-cs` now creates `github/github` Codespaces with GitHub's maximum
+  four-hour idle timeout, reducing interruptions during meetings.
 - Pi safety guard now permanently allowlists file mutations under
   `~/code/one-to-one` without naming individual 1:1 repositories.
 - Pi prompt hint now renders as a startup header (art plus prompt-template hint)

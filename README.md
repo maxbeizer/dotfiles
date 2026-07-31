@@ -59,7 +59,8 @@ git clone https://github.com/maxbeizer/dotfiles.git ~/dotfiles
 
 `install-gh-extensions.sh` also installs repo-backed `gh` aliases, including
 `gh new-cs [display-name]` for creating a `github/github` Codespace, connecting
-with `rdm-connect`, and deploying `gh-test`.
+with `rdm-connect`, and deploying `gh-test`. New Codespaces created by
+`gh new-cs` use GitHub's maximum four-hour idle timeout.
 
 ## Codespaces
 
