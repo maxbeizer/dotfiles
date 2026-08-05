@@ -5,6 +5,8 @@ Notable changes to this dotfiles repo, newest first.
 ## Unreleased
 
 ### Added
+- Copilot CLI user settings are now managed by `copilot/settings.json` and
+  linked to `~/.copilot/settings.json` without the obsolete `sessionSync` key.
 - `meeting-layout` applies a one-key meeting layout: visible Zoom/Teams windows
   occupy the left third of the main display and other standard app windows
   occupy the right two-thirds. It can be called from a macOS Shortcut.

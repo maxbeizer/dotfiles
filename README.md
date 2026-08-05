@@ -41,6 +41,7 @@ Self-contained personal dotfiles. No external base layer — everything lives in
 ├── ripgreprc                 # Ripgrep defaults
 ├── codespaces.local          # Codespace-specific bash setup + dotup function
 ├── copilot/
+│   ├── settings.json         # Copilot CLI user settings
 │   ├── hooks/                # Copilot CLI hooks (symlinked to ~/.copilot/hooks/)
 │   └── skills/               # Agent skills (symlinked to ~/.copilot/skills/ and ~/.agents/skills)
 ├── pi/                       # Pi coding agent global extensions, prompts, themes, installer

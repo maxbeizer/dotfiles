@@ -1,0 +1,23 @@
+{
+  "renderMarkdown": true,
+  "screenReader": false,
+  "theme": "high-contrast",
+  "logLevel": "all",
+  "experimental": true,
+  "showReasoning": true,
+  "colorMode": "high-contrast",
+  "enabledPlugins": {
+    "workiq@copilot-plugins": true
+  },
+  "extraKnownMarketplaces": {
+    "github-slack-mcp": {
+      "source": {
+        "source": "github",
+        "repo": "github/copilot-slack-mcp"
+      }
+    }
+  },
+  "enabledMcpServers": [
+    "computer-use"
+  ]
+}

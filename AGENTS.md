@@ -28,6 +28,7 @@ Useful flags:
 - Links Ghostty config to `~/.config/ghostty/`
 - Links sesh config to `~/.config/sesh/`
 - Links television cable channels to `~/.config/television/cable/`
+- Links Copilot CLI user settings to `~/.copilot/settings.json`
 - Links Pi global customizations with `pi/install.sh` into `~/.pi/agent/`
   and `~/.agents/skills`, including global context instructions, extensions,
   prompt templates, themes, safety defaults (including permanent `/tmp` write
@@ -146,6 +147,7 @@ CODESPACES=true ./install.sh
 | `sesh/sesh.toml` | sesh session manager config |
 | `television/cable/` | Television custom cable channels |
 | `codespaces.local` | Bash extras for codespaces + `dotup` |
+| `copilot/settings.json` | Copilot CLI user settings (symlinked to `~/.copilot/settings.json`) |
 | `copilot/hooks/` | Copilot CLI hooks (symlinked to `~/.copilot/hooks/`) |
 | `copilot/skills/` | Copilot CLI skills (symlinked to `~/.copilot/skills/` and `~/.agents/skills`) |
 | `pi/` | Pi coding agent global context instructions, extensions, safety defaults, MCP bridge, prompts, themes, installer, and doctor |

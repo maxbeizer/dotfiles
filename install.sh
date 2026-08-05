@@ -194,7 +194,13 @@ if [ -d "$DOTFILES_DIR/television/cable" ]; then
   done
 fi
 
-# --- Copilot CLI hooks ---
+# --- Copilot CLI settings and hooks ---
+if [ -f "$DOTFILES_DIR/copilot/settings.json" ]; then
+  fancy_echo "Linking Copilot CLI settings"
+  mkdir -p "$HOME/.copilot"
+  link_file "$DOTFILES_DIR/copilot/settings.json" "$HOME/.copilot/settings.json"
+fi
+
 if [ -d "$DOTFILES_DIR/copilot/hooks" ]; then
   fancy_echo "Linking Copilot CLI hooks"
   mkdir -p "$HOME/.copilot/hooks"
